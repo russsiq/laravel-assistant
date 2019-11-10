@@ -58,6 +58,7 @@ use Assistant;
 ```
 
 ### Удаление пакета из вашего проекта на Laravel
+
 ```console
 composer remove russsiq/laravel-assistant
 ```
