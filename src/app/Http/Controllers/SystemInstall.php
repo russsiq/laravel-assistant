@@ -54,7 +54,7 @@ class SystemInstall extends SetupController
         'storage/app/uploads/'
     ];
 
-    protected $requestNamespace = '\BBCMS\Http\Requests\Setup\SystemInstall';
+    protected $requestNamespace = '\Russsiq\Assistant\Http\Requests\Setup\SystemInstall';
 
     public function __construct()
     {
