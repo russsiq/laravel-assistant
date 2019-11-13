@@ -87,7 +87,7 @@ class SystemInstall extends SetupController
             $exit_code = \Artisan::call('route:clear');
             $exit_code = \Artisan::call('view:clear');
 
-            return redirect()->route('system.install.step_choice');
+            return redirect()->route('assistant.install.step_choice');
         }
 
         if ($this->step > 1 and method_exists($this, $method = $this->steps[$this->step])) {
