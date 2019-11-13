@@ -11,7 +11,7 @@ class AssistantServiceProvider extends ServiceProvider
      *
      * @var bool
      */
-    protected $defer = false;
+    protected $defer = true;
 
     /**
      * Bootstrap the application events.
@@ -20,7 +20,20 @@ class AssistantServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
+
+        $this->loadJsonTranslationsFrom(__DIR__.'/../resources/lang');
+        // $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'assistant');
+        // echo trans('assistant::messages.welcome');
+        // $this->publishes([
+        //     __DIR__.'/../resources/lang' => resource_path('lang/vendor/assistant'),
+        // ]);
+
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'assistant');
+        // return view('assistant::admin');
+        // $this->publishes([
+        //     __DIR__.'/../resources/views' => resource_path('views/vendor/assistant'),
+        // ]);
     }
 
     /**
