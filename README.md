@@ -69,4 +69,4 @@ composer remove russsiq/laravel-assistant
 
 ### Лицензия
 
-laravel-assistant - программное обеспечение с открытым исходным кодом, распространяющееся по лицензии [MIT](https://choosealicense.com/licenses/mit/).
+`laravel-assistant` - программное обеспечение с открытым исходным кодом, распространяющееся по лицензии [MIT](https://choosealicense.com/licenses/mit/).
