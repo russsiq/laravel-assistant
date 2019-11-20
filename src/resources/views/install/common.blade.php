@@ -1,4 +1,4 @@
-@extends('assistant::install.layouts.app')
+@extends('assistant::_layouts.app')
 
 @section('action_title', __('header.menu.common'))
 
@@ -12,29 +12,29 @@
 	<hr>
 	<fieldset>
 		<div class="form-group row{{ $errors->has('APP_NAME') ? ' has-error' : '' }}">
-			<label class="col-sm-4 col-form-label">@lang('APP_NAME')</label>
-			<div class="col-sm-8">
+			<label class="col-sm-3 col-form-label">@lang('APP_NAME')</label>
+			<div class="col-sm-9">
 				<input type="text" name="APP_NAME" value="{{ old('APP_NAME', '') }}" placeholder="@lang('common.app_name.default')" class="form-control">
 				@if ($errors->has('APP_NAME'))<div class="invalid-feedback d-block">{{ $errors->first('APP_NAME') }}</div>@endif
 			</div>
 		</div>
 		<div class="form-group row{{ $errors->has('name') ? ' has-error' : '' }}">
-			<label class="col-sm-4 col-form-label">@lang('common.name')</label>
-			<div class="col-sm-8">
+			<label class="col-sm-3 col-form-label">@lang('common.name')</label>
+			<div class="col-sm-9">
 				<input type="text" name="name" value="{{ old('name', '') }}" placeholder="admin" class="form-control">
 				@if ($errors->has('name'))<div class="invalid-feedback d-block">{{ $errors->first('name') }}</div>@endif
 			</div>
 		</div>
 		<div class="form-group row{{ $errors->has('email') ? ' has-error' : '' }}">
-			<label class="col-sm-4 col-form-label">@lang('common.email')</label>
-			<div class="col-sm-8">
+			<label class="col-sm-3 col-form-label">@lang('common.email')</label>
+			<div class="col-sm-9">
 				<input type="email" name="email" value="{{ old('email', '') }}" placeholder="{{ $email }}" class="form-control">
 				@if ($errors->has('email'))<div class="invalid-feedback d-block">{{ $errors->first('email') }}</div>@endif
 			</div>
 		</div>
 		<div class="form-group row{{ $errors->has('password') ? ' has-error' : '' }}">
-			<label class="col-sm-4 col-form-label">@lang('common.password')</label>
-			<div class="col-sm-8">
+			<label class="col-sm-3 col-form-label">@lang('common.password')</label>
+			<div class="col-sm-9">
 				<input type="password" name="password" value="" placeholder="********" class="form-control">
 				@if ($errors->has('password'))<div class="invalid-feedback d-block">{{ $errors->first('password') }}</div>@endif
 			</div>
@@ -75,7 +75,7 @@
 
 	<fieldset>
 		<div class="form-group row{{ $errors->has('test_seed') ? ' has-error' : '' }}">
-			<div class="col-sm-8 offset-sm-4">
+			<div class="col-sm-9 offset-sm-3">
 				<label class="form-label">
 					<input type="checkbox" name="test_seed" value="1" /> @lang('common.test_seed')
 				</label>
@@ -83,7 +83,7 @@
 			</div>
 		</div>
 			<div class="form-group row{{ $errors->has('original_theme') ? ' has-error' : '' }}">
-				<div class="col-sm-8 offset-sm-4">
+				<div class="col-sm-9 offset-sm-3">
 					<label class="form-label">
 						<input type="checkbox" name="original_theme" value="1" /> @lang('common.original_theme')
 					</label>

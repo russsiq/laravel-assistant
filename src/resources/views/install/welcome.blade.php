@@ -1,4 +1,4 @@
-@extends('assistant::install.layouts.app')
+@extends('assistant::_layouts.app')
 
 @section('action_title', __('header.menu.welcome'))
 

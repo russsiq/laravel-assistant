@@ -1,4 +1,4 @@
-@extends('assistant::install.layouts.app')
+@extends('assistant::_layouts.app')
 
 @section('action_title', __('header.menu.permission'))
 
@@ -6,7 +6,15 @@
 	<p>@lang('perm.textblock')</p>
 	<fieldset>
 		<table class="table" style="vertical-align:top">
-			<thead><tr><th>@lang('perm.minreq')</th><th></th><th>@lang('perm.globals')</th><th></th><th colspan="3">@lang('perm.files')</th></tr></thead>
+			<thead>
+				<tr>
+					<th>@lang('perm.minreq')</th>
+					<th></th>
+					<th>@lang('perm.globals')</th>
+					<th></th>
+					<th colspan="3">@lang('perm.files')</th>
+				</tr>
+			</thead>
 			<tbody>
 				<tr>
 					<td class="p-0">
