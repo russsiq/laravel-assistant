@@ -11,13 +11,6 @@ use Illuminate\Support\Facades\Route;
 class AssistantServiceProvider extends ServiceProvider implements DeferrableProvider
 {
     /**
-     * Указывает, что загрузка поставщика отложенная.
-     *
-     * @var bool
-     */
-    protected $defer = true;
-
-    /**
      * Bootstrap the application events.
      *
      * @return void
