@@ -17,7 +17,7 @@ class AssistantServiceProvider extends ServiceProvider implements DeferrableProv
      */
     public function boot()
     {
-        $this->setAssistanMiddlewareGroup();
+        $this->setAssistantMiddlewareGroup();
 
         $this->loadAssistantFiles($sourceDir = __DIR__.'/../');
 
@@ -54,7 +54,7 @@ class AssistantServiceProvider extends ServiceProvider implements DeferrableProv
      *
      * @return void
      */
-    protected function setAssistanMiddlewareGroup()
+    protected function setAssistantMiddlewareGroup()
     {
         Route::prependMiddlewareToGroup('web', CheckEnvFileExists::class);
     }
