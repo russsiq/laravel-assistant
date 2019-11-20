@@ -37,7 +37,7 @@ class AssistantServiceProvider extends ServiceProvider
     }
 
     /**
-     * Register the service provider.
+     * Регистрация Ассистента как поставщика служб.
      *
      * @return void
      */
@@ -46,6 +46,11 @@ class AssistantServiceProvider extends ServiceProvider
         //
     }
 
+    /**
+     * Получить службы, предоставляемые Ассистентом.
+     *
+     * @return array
+     */
     public function provides()
     {
         //
