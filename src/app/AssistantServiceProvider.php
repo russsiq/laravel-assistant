@@ -2,8 +2,11 @@
 
 namespace Russsiq\Assistant;
 
+use Russsiq\Assistant\Http\Middleware\CheckEnvFileExists;
+
 use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Route;
 
 class AssistantServiceProvider extends ServiceProvider implements DeferrableProvider
 {
@@ -21,9 +24,9 @@ class AssistantServiceProvider extends ServiceProvider implements DeferrableProv
      */
     public function boot()
     {
-        $sourceDir = __DIR__.'/../';
+        $this->setAssistanMiddlewareGroup();
 
-        $this->loadAssistantFiles($sourceDir);
+        $this->loadAssistantFiles($sourceDir = __DIR__.'/../');
 
         // Публикация ресурсов может быть выполнена только из консоли.
         if ($this->app->runningInConsole()) {
@@ -51,6 +54,16 @@ class AssistantServiceProvider extends ServiceProvider implements DeferrableProv
         return [
             //
         ];
+    }
+
+    /**
+     * Установка посредников группы `web`.
+     *
+     * @return void
+     */
+    protected function setAssistanMiddlewareGroup()
+    {
+        Route::prependMiddlewareToGroup('web', CheckEnvFileExists::class);
     }
 
     /**
