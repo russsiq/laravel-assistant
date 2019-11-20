@@ -8,7 +8,7 @@ use Illuminate\Support\Collection as BaseCollection;
 
 use Russsiq\EnvManager\Support\Facades\EnvManager;
 
-class SystemInstall extends SetupController
+class SystemInstall extends BaseController
 {
     protected $template = 'install';
 
