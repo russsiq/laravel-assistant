@@ -2,12 +2,13 @@
 
 namespace Russsiq\Assistant;
 
+use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
 
-class AssistantServiceProvider extends ServiceProvider
+class AssistantServiceProvider extends ServiceProvider implements DeferrableProvider
 {
     /**
-     * Indicates if loading of the provider is deferred.
+     * Указывает, что загрузка поставщика отложенная.
      *
      * @var bool
      */
@@ -53,6 +54,8 @@ class AssistantServiceProvider extends ServiceProvider
      */
     public function provides()
     {
-        //
+        return [
+            //
+        ];
     }
 }
