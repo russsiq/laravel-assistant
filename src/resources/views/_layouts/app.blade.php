@@ -21,7 +21,7 @@
             <div class="assistant__body">
                 <aside class="assistant__aside">
                     <ul class="aside__list">
-                        <li class="aside_list__item"><a href="{{ route('assistant.install.step_choice') }}" class="aside_list__action active">Установка</a></li>
+                        <li class="aside_list__item"><a href="{{ route('assistant.install.welcome') }}" class="aside_list__action active">Установка</a></li>
                         <li class="aside_list__item"><a href="#" class="aside_list__action disabled">Обновление</a></li>
                         <li class="aside_list__item"><a href="#" class="aside_list__action disabled">Архивация</a></li>
                         <li class="aside_list__item"><a href="#" class="aside_list__action">Очистка</a></li>
@@ -30,17 +30,17 @@
                 </aside>
 
                 <main class="assistant__main">
-                    <form action="{{ route('assistant.install.step_choice', compact('action')) }}" method="post">
+                    <form action="{{ $action }}" method="post">
                         @csrf
 
                         <div class="form__header">
                             <div class="form-progress">
-                                <div class="form-progress-line" style="width: {{ round(100 * $curstep / ($count = count($steps)), 5) }}%;"></div>
+                                <div class="form-progress-line" style="width: {{ round(100 * $cur_step / $count_steps, 5) }}%;"></div>
                             </div>
                             @foreach ($steps as $key => $step)
-                                <div class="form-step{{ $key == $curstep ? ' active' : '' }}{{ $key < $curstep ? ' activated' : '' }}">
+                                <div class="form-step{{ $key == $cur_step ? ' active' : '' }}{{ $key < $cur_step ? ' activated' : '' }}">
                                     <div class="form-step-icon"></div>
-                                    <p>@lang('header.menu.' . $step)</p>
+                                    <p>@lang('header.menu.'.$step)</p>
                                 </div>
                             @endforeach
                         </div>
@@ -50,18 +50,18 @@
                         </div>
 
                         <div class="form__footer">
-                            @if (1 == $curstep)
+                            @if ($onFirstStep)
                                 {{-- <div class="btn-group">
                                     <a href="{{ route('assistant.install.step_choice', ['app_locale'=>'ru']) }}" class="btn">Русский</a>
                                 </div> --}}
                                 <button type="submit" class="btn ml-auto">@lang('common.btn.continue')</button>
                             @else
                                 <div class="btn-group ml-auto">
-                                    @if (($count - 1) == $curstep)
+                                    @if ($onFinishStep)
                                         <button type="submit" class="btn">@lang('common.btn.finish')</button>
-                                    @elseif ($count > $curstep)
+                                    @elseif ($count_steps > $cur_step)
                                         <button type="submit" class="btn">@lang('common.btn.next')</button>
-                                    @elseif ($count == $curstep)
+                                    @elseif ($onLastStep)
                                         <a href="{{ route('panel') }}" class="btn">@lang('common.btn.continue')</a>
                                     @endif
                                 </div>
