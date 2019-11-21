@@ -7,11 +7,11 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
-class BaseController extends Controller
+abstract class BaseController extends Controller
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    protected $template = 'setup';
+    protected $template;
     protected $templatePrefix = 'assistant::';
 
     public function __construct()
