@@ -1,6 +1,6 @@
 <?php
 
-namespace Russsiq\Assistant\Http\Requests\Setup\SystemInstall;
+namespace Russsiq\Assistant\Http\Requests\Install;
 
 use Russsiq\Assistant\Http\Requests\Request;
 use Russsiq\Assistant\Exceptions\InstallerFailed;
@@ -48,36 +48,43 @@ class DatabaseRequest extends Request
                 'string',
                 'in:mysql',
             ],
+
             'DB_HOST' => [
                 'bail',
                 'required',
                 'string',
             ],
+
             'DB_PORT' => [
                 'bail',
                 'required',
                 'integer',
             ],
+
             'DB_DATABASE' => [
                 'bail',
                 'required',
                 'string',
             ],
+
             'DB_PREFIX' => [
                 'bail',
                 'required',
                 'string',
             ],
+
             'DB_USERNAME' => [
                 'bail',
                 'required',
                 'string',
             ],
+
             'DB_PASSWORD' => [
                 'bail',
                 'nullable',
                 'string',
             ],
+
         ];
     }
 
@@ -108,6 +115,7 @@ class DatabaseRequest extends Request
             'DB_PREFIX' => __('DB_PREFIX'),
             'DB_USERNAME' => __('DB_USERNAME'),
             'DB_PASSWORD' => __('DB_PASSWORD'),
+
         ];
     }
 
@@ -121,30 +129,32 @@ class DatabaseRequest extends Request
     {
         if ($validator->passes()) {
             $validator->after(function ($validator) {
-
                 try {
                     // get validated data
                     $data = $this->validated();
 
                     // Set temporary DB connection
-                    config(['database.connections.mysql' => [
-                        'driver' => 'mysql',
-                        'host' =>  $data['DB_HOST'],
-                        'database' => $data['DB_DATABASE'],
-                        'prefix' => $data['DB_PREFIX'],
-                        'username' => $data['DB_USERNAME'],
-                        'password' => $data['DB_PASSWORD'],
-                        'charset' => 'utf8',
-                        'collation' => 'utf8_unicode_ci',
-                        'strict' => true,
-                        'engine' => 'InnoDB',
-                    ]]);
+                    config([
+                        'database.connections.mysql' => [
+                            'driver' => 'mysql',
+                            'host' =>  $data['DB_HOST'],
+                            'database' => $data['DB_DATABASE'],
+                            'prefix' => $data['DB_PREFIX'],
+                            'username' => $data['DB_USERNAME'],
+                            'password' => $data['DB_PASSWORD'],
+                            'charset' => 'utf8',
+                            'collation' => 'utf8_unicode_ci',
+                            'strict' => true,
+                            'engine' => 'InnoDB',
+                        ],
+                    ]);
 
                     // Check DB connection and exists table
                     \DB::purge('mysql');
                     \DB::reconnect('mysql');
                     \DB::setTablePrefix($data['DB_PREFIX']);
                     \DB::connection()->getPdo();
+
                     if (is_null(\DB::connection('mysql')->getDatabaseName())) {
                         throw new InstallerFailed(__('msg.not_dbconnect'));
                     }
@@ -165,7 +175,6 @@ class DatabaseRequest extends Request
                 } finally {
                     \DB::rollback();
                 }
-
             });
         }
 

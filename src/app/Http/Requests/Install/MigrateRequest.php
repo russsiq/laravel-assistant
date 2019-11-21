@@ -1,10 +1,10 @@
 <?php
 
-namespace Russsiq\Assistant\Http\Requests\Setup\SystemInstall;
+namespace Russsiq\Assistant\Http\Requests\Install;
 
 use Russsiq\Assistant\Http\Requests\Request;
 
-class WelcomeRequest extends Request
+class MigrateRequest extends Request
 {
     /**
      * Get the validation rules that apply to the request.
@@ -14,10 +14,7 @@ class WelcomeRequest extends Request
     public function rules()
     {
         return [
-            'agree' => [
-                'required',
-                'boolean'
-            ],
+            //
         ];
     }
 
@@ -29,7 +26,7 @@ class WelcomeRequest extends Request
     public function messages()
     {
         return [
-            'agree.*' => __('msg.not_accept_licence'),
+            //
         ];
     }
 

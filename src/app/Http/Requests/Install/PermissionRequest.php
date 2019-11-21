@@ -1,10 +1,10 @@
 <?php
 
-namespace Russsiq\Assistant\Http\Requests\Setup\SystemInstall;
+namespace Russsiq\Assistant\Http\Requests\Install;
 
 use Russsiq\Assistant\Http\Requests\Request;
 
-class MigrateRequest extends Request
+class PermissionRequest extends Request
 {
     /**
      * Get the validation rules that apply to the request.

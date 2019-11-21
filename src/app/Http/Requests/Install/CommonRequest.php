@@ -1,8 +1,7 @@
 <?php
 
-namespace Russsiq\Assistant\Http\Requests\Setup\SystemInstall;
+namespace Russsiq\Assistant\Http\Requests\Install;
 
-// use BBCMS\Models\User; // config('auth.providers.users.model')
 use Russsiq\Assistant\Http\Requests\Request;
 use Russsiq\Assistant\Exceptions\InstallerFailed;
 
@@ -20,16 +19,19 @@ class CommonRequest extends Request
                 'required',
                 'string',
             ],
+
             'APP_THEME' => [
                 'required',
                 'string',
                 'in:'.implode(',', select_dir('themes')),
             ],
+
             'name' => [
                 'required',
                 'string',
                 'between:3,255',
             ],
+
             'email' => [
                 'required',
                 'string',
@@ -37,19 +39,23 @@ class CommonRequest extends Request
                 'email',
                 'unique:users',
             ],
+
             'password' => [
                 'required',
                 'string',
                 'between:6,255',
             ],
+
             'original_theme' => [
                 'sometimes',
                 'boolean',
             ],
+
             'test_seed' => [
                 'sometimes',
                 'boolean',
             ],
+
         ];
     }
 
@@ -66,6 +72,7 @@ class CommonRequest extends Request
             'name' => __('common.name'),
             'email' => __('common.email'),
             'password' => __('common.password'),
+
         ];
     }
 
@@ -87,9 +94,11 @@ class CommonRequest extends Request
                     if (empty($data['original_theme'])) {
                         $theme = string_slug($data['APP_NAME']);
                         $dest = app()->resourcePath('themes' . DS . $theme);
+
                         if (is_dir($dest)) {
                             throw new InstallerFailed(str_replace(':theme', $theme, __('msg.theme_exists')));
                         }
+
                         $files = new \RecursiveIteratorIterator(
                             new \RecursiveDirectoryIterator(
                                 app()->resourcePath('themes' . DS . $data['APP_THEME']),
@@ -97,6 +106,7 @@ class CommonRequest extends Request
                             ),
                             \RecursiveIteratorIterator::SELF_FIRST
                         );
+
                         foreach ($files as $file) {
                             $pathname = $dest . DS . $files->getSubPathName();
                             $file->isDir() ? mkdir($pathname, 0755, true) : copy($file, $pathname);
@@ -105,6 +115,7 @@ class CommonRequest extends Request
 
                     // 2 Creat symlink to uploads dir
                     clearstatcache(true, $uploads_path = app()->basePath('uploads'));
+
                     if (! file_exists($uploads_path)) {
                         symlink(
                             app()->basePath('storage' . DS . 'app' . DS . 'uploads'),
