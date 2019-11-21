@@ -179,7 +179,7 @@
         padding: .3rem;
     }
 
-    .table > tbody:first-child > tr:first-child > td {
+    .table>tbody:first-child>tr:first-child>td {
         border-top: 0;
     }
 
@@ -756,10 +756,42 @@
         color: var(--white);
     }
 
-    .alert-dark,
-    .alert-dark>td,
-    .alert-dark>th {
+    .alert-link {
+        font-weight: normal;
+        color: var(--white);
+        text-decoration: underline;
+    }
+
+    .alert-dark {
         background-color: var(--dark);
+    }
+
+    .alert-light {
+        background-color: var(--light);
+    }
+
+    .alert-primary {
+        background-color: var(--primary);
+    }
+
+    .alert-secondary {
+        background-color: var(--secondary);
+    }
+
+    .alert-success {
+        background-color: var(--success);
+    }
+
+    .alert-info {
+        background-color: var(--info);
+    }
+
+    .alert-danger {
+        background-color: var(--danger);
+    }
+
+    .alert-warning {
+        background-color: var(--warning);
     }
 
     .invalid-feedback {
