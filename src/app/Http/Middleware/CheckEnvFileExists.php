@@ -6,6 +6,7 @@ use Closure;
 use LogicException;
 use RuntimeException;
 
+use Artisan;
 use Illuminate\Encryption\Encrypter;
 
 use Russsiq\EnvManager\Support\Facades\EnvManager;
@@ -32,7 +33,7 @@ class CheckEnvFileExists
     public function handle($request, Closure $next)
     {
         $args = func_get_args();
-        $this->location = $request->decodedPath();
+        $this->location = $request->route()->getPrefix(); // $request->decodedPath();
 
         if (EnvManager::fileExists()) {
             return $this->handleWithEnvFile(...$args);
@@ -65,8 +66,7 @@ class CheckEnvFileExists
         // текущий маршрут - не маршрут установщика,
         // то перенаправляем на установку.
         if (! $installed and ! $this->isLocation('assistant/install')) {
-            return redirect()
-                ->route('assistant.install.step_choice');
+            return redirect()->route('assistant.install.welcome');
         }
 
         return $next($request);
@@ -80,25 +80,29 @@ class CheckEnvFileExists
      */
     public function handleWithoutEnvFile($request, Closure $next)
     {
-        // Предварительно генерируем ключ приложения.
-        $key = $this->generateRandomKey();
+        // Создаем новый файл из образца,
+        // попутно генерируя ключ для приложения.
+        EnvManager::newFromPath(base_path('.env.example'), true)
+            // Устанавливаем необходимые значения.
+            ->setMany([
+                'APP_URL' => url('/'),
+            ])
+            // Сохраняем новый файл в корне как `.env`.
+            ->save();
+
+        // Очищаем ненужный хлам.
+        $exit_code = Artisan::call('cache:clear');
+        $exit_code = Artisan::call('config:clear');
+        $exit_code = Artisan::call('route:clear');
+        $exit_code = Artisan::call('view:clear');
 
         // Для запуска приложения необходимо задать минимальные параметры.
         config([
-            'app.key' => $request->APP_KEY ?? $key,
+            'app.key' => EnvManager::get('APP_KEY')
         ]);
 
-        // Если в запросе не был передан ключ приложения или
-        // текущий маршрут - не маршрут установщика,
-        // то редирект на страницу установки с передачей ключа в запросе.
-        if (! $request->APP_KEY or ! $this->isLocation('assistant/install')) {
-            return redirect()
-                ->route('assistant.install.step_choice', [
-                    'APP_KEY' => $key,
-                ]);
-        }
-
-        return $next($request);
+        // Перенаправляем на страницу установки.
+        return redirect()->route('assistant.install.welcome');
     }
 
     /**
@@ -118,15 +122,5 @@ class CheckEnvFileExists
     protected function isLocation(string $path): bool
     {
         return $path === $this->location();
-    }
-
-    /**
-     * Сгенерировать случайный ключ для приложения.
-     * По мотивам: `Illuminate\Foundation\Console\KeyGenerateCommand`.
-     * @return string
-     */
-    protected function generateRandomKey(): string
-    {
-        return 'base64:'.base64_encode(Encrypter::generateKey('AES-256-CBC'));
     }
 }
