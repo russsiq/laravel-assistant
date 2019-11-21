@@ -8,7 +8,7 @@ use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Route;
 
-class AssistantServiceProvider extends ServiceProvider implements DeferrableProvider
+class AssistantServiceProvider extends ServiceProvider// implements DeferrableProvider
 {
     /**
      * Bootstrap the application events.
