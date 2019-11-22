@@ -25,7 +25,7 @@ if (! function_exists('minreq')) {
             case 'ssl':
                 return OPENSSL_VERSION_TEXT ?? false; break;
             case 'gd':
-                return gd_info() ? gd_info()['GD Version'] : false; break;
+                return function_exists('gd_info') ? gd_info()['GD Version'] : false; break;
             case 'finfo':
                 return function_exists('finfo_open') ?? false; break; // PHP >= 7.2.0
             case 'mb':
