@@ -2,10 +2,7 @@
 
 namespace Russsiq\Assistant\Http\Controllers\Install;
 
-use Artisan;
-
 use Russsiq\Assistant\Http\Requests\Install\WelcomeRequest;
-use Russsiq\EnvManager\Support\Facades\EnvManager;
 
 class WelcomeController extends Controller
 {

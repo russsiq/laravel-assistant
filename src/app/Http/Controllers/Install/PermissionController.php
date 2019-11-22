@@ -2,10 +2,9 @@
 
 namespace Russsiq\Assistant\Http\Controllers\Install;
 
-use Artisan;
+use EnvManager;
 
 use Russsiq\Assistant\Http\Requests\Install\PermissionRequest;
-use Russsiq\EnvManager\Support\Facades\EnvManager;
 
 class PermissionController extends Controller
 {
