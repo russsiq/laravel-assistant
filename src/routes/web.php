@@ -8,6 +8,9 @@ Route::prefix('assistant')
     ->group(function () {
         Route::prefix('install')
             ->namespace('Install')
+            ->middleware([
+                'already-installed',
+            ])
             ->group(function () {
                 // 1. Welcome
                 Route::get('/', 'WelcomeController@index')->name('assistant.install.welcome');

@@ -7,7 +7,6 @@ use LogicException;
 use RuntimeException;
 
 use Artisan;
-use Illuminate\Encryption\Encrypter;
 
 use Russsiq\EnvManager\Support\Facades\EnvManager;
 
@@ -54,13 +53,6 @@ class CheckEnvFileExists
     {
         // Маркер, что приложение считается установленным.
         $installed = strtotime(EnvManager::get('APP_INSTALLED_AT'));
-
-        // Если ключ приложения уже был создан и
-        // приложение считается установленным,
-        // но был запрошен маршрут установщика.
-        if ($installed and $this->isLocation('assistant/install')) {
-            throw new LogicException('File `.env` already exists! Delete it and continue.');
-        }
 
         // Если приложение не установлено и
         // текущий маршрут - не маршрут установщика,

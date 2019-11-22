@@ -2,6 +2,7 @@
 
 namespace Russsiq\Assistant;
 
+use Russsiq\Assistant\Http\Middleware\AlreadyInstalled;
 use Russsiq\Assistant\Http\Middleware\CheckEnvFileExists;
 use Russsiq\Assistant\Support\Archivist;
 use Russsiq\Assistant\Support\Installer;
@@ -80,6 +81,10 @@ class AssistantServiceProvider extends ServiceProvider// implements DeferrablePr
     protected function setAssistantMiddlewareGroup()
     {
         Route::prependMiddlewareToGroup('web', CheckEnvFileExists::class);
+        
+        Route::middlewareGroup('already-installed', [
+            AlreadyInstalled::class
+        ]);
     }
 
     /**
