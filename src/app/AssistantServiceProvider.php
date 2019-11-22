@@ -11,6 +11,13 @@ use Illuminate\Support\Facades\Route;
 class AssistantServiceProvider extends ServiceProvider// implements DeferrableProvider
 {
     /**
+     * Путь до директории с исходниками.
+     *
+     * @var string
+     */
+    const SOURCE_DIR = __DIR__.'/../';
+
+    /**
      * Bootstrap the application events.
      *
      * @return void
@@ -19,11 +26,11 @@ class AssistantServiceProvider extends ServiceProvider// implements DeferrablePr
     {
         $this->setAssistantMiddlewareGroup();
 
-        $this->loadAssistantFiles($sourceDir = __DIR__.'/../');
+        $this->loadAssistantFiles();
 
         // Публикация ресурсов может быть выполнена только из консоли.
         if ($this->app->runningInConsole()) {
-            $this->publishAssistantFiles($sourceDir);
+            $this->publishAssistantFiles();
         }
     }
 
@@ -62,39 +69,37 @@ class AssistantServiceProvider extends ServiceProvider// implements DeferrablePr
     /**
      * Загрузка файлов Ассистента.
      *
-     * @param  string $sourceDir
      * @return void
      */
-    protected function loadAssistantFiles(string $sourceDir)
+    protected function loadAssistantFiles()
     {
-        $this->loadRoutesFrom($sourceDir.'routes/web.php');
-        $this->loadJsonTranslationsFrom($sourceDir.'resources/lang');
-        // $this->loadTranslationsFrom($sourceDir.'resources/lang', 'assistant');
-        $this->loadViewsFrom($sourceDir.'resources/views', 'assistant');
+        $this->loadRoutesFrom(self::SOURCE_DIR.'routes/web.php');
+        $this->loadJsonTranslationsFrom(self::SOURCE_DIR.'resources/lang');
+        // $this->loadTranslationsFrom(self::SOURCE_DIR.'resources/lang', 'assistant');
+        $this->loadViewsFrom(self::SOURCE_DIR.'resources/views', 'assistant');
     }
 
     /**
      * Публикация файлов Ассистента.
      * `php artisan vendor:publish --provider="Russsiq\Assistant\AssistantServiceProvider"`
      *
-     * @param  string $sourceDir
      * @return void
      */
-    protected function publishAssistantFiles(string $sourceDir)
+    protected function publishAssistantFiles()
     {
         // php artisan vendor:publish --provider="Russsiq\Assistant\AssistantServiceProvider" --tag=config --force
         $this->publishes([
-            $sourceDir.'config/assistant.php' => config_path('assistant.php'),
+            self::SOURCE_DIR.'config/assistant.php' => config_path('assistant.php'),
         ], 'config');
 
         // php artisan vendor:publish --provider="Russsiq\Assistant\AssistantServiceProvider" --tag=lang --force
         $this->publishes([
-            $sourceDir.'resources/lang' => resource_path('lang/vendor/assistant'),
+            self::SOURCE_DIR.'resources/lang' => resource_path('lang/vendor/assistant'),
         ], 'lang');
 
         // php artisan vendor:publish --provider="Russsiq\Assistant\AssistantServiceProvider" --tag=views --force
         $this->publishes([
-            $sourceDir.'resources/views' => resource_path('views/vendor/assistant'),
+            self::SOURCE_DIR.'resources/views' => resource_path('views/vendor/assistant'),
         ], 'views');
     }
 }
