@@ -23,7 +23,11 @@ class CommonController extends Controller
         // Save to `.env` file prev request from form
         EnvManager::setMany($request->all())->save();
 
-        cache()->flush();
+        // Очищаем ненужный хлам.
+        $exit_code = Artisan::call('cache:clear');
+        $exit_code = Artisan::call('config:clear');
+        $exit_code = Artisan::call('route:clear');
+        $exit_code = Artisan::call('view:clear');
 
         return redirect('/')->withStatus(trans('finish.textblock'));//->route('assistant.install.finish');
     }
