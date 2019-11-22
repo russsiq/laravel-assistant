@@ -4,8 +4,6 @@
  * minreq - Get info about minimum requirements.
  */
 
-use RuntimeException;
-
 if (! function_exists('minreq')) {
     /**
      * Get info about minimum requirements.
@@ -14,7 +12,7 @@ if (! function_exists('minreq')) {
      *
      * @return string
      *
-     * @throws RuntimeException  Unknown `requirement` argument.
+     * @throws \RuntimeException  Unknown `requirement` argument.
      */
     function minreq(string $requirement)
     {
@@ -48,6 +46,6 @@ if (! function_exists('minreq')) {
                 return class_exists('ZipArchive') ?? false; break;
         }
 
-        throw new RuntimeException('Unknown requirement argument.');
+        throw new \RuntimeException('Unknown requirement argument.');
     }
 }
