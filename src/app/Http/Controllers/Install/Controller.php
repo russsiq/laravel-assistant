@@ -11,21 +11,7 @@ abstract class Controller extends BaseController
 {
     protected $routeName;
 
-    protected $curstep;
-
-    /**
-     * [protected description]
-     * // don't delete `finish` step.
-     * @var array
-     */
-    protected $steps = [
-        1 => 'welcome',
-        2 => 'permission',
-        3 => 'database',
-        4 => 'migrate',
-        5 => 'common',
-        6 => 'finish',
-    ];
+    protected $onFinishScreen = false;
 
     protected $template = 'install';
 
@@ -38,36 +24,33 @@ abstract class Controller extends BaseController
         parent::__construct();
 
         $this->routeName = Route::currentRouteName();
-        $this->curstep = $this->getCurrentStep($this->routeName);
 
         $this->fillable($vars);
     }
 
     protected function fillable(array $vars)
     {
-        $count = count($this->steps);
-
         $this->vars = array_merge([
-            'action' => route($this->routeName),
-            'steps' => $this->steps,
-            'count_steps' => $count,
-            'cur_step' => $this->curstep,
-
-            'onFirstStep' => $this->curstep === 1,
-            'onFinishStep' => $this->curstep === ($count - 1),
-            'onLastStep' => $this->curstep === $count,
+            'action' => $this->getCurrentAction(),
+            'section' => $this->getCurrentSection(),
+            'onFinishScreen' => $this->onFinishScreen(),
         ], $this->vars, $vars);
     }
 
-    protected function getCurrentStepName(string $name): string
+    protected function getCurrentAction(): string
     {
-        $parts = explode('.', $name);
+        return route($this->routeName);
+    }
+
+    protected function getCurrentSection(): string
+    {
+        $parts = explode('.', $this->routeName);
 
         return end($parts);
     }
 
-    protected function getCurrentStep(string $name): int
+    protected function onFinishScreen(): bool
     {
-        return array_search($this->getCurrentStepName($name), $this->steps);
+        return $this->onFinishScreen;
     }
 }

@@ -34,15 +34,7 @@
                         @csrf
 
                         <div class="form__header">
-                            <div class="form-progress">
-                                <div class="form-progress-line" style="width: {{ round(100 * $cur_step / $count_steps, 5) }}%;"></div>
-                            </div>
-                            @foreach ($steps as $key => $step)
-                                <div class="form-step{{ $key == $cur_step ? ' active' : '' }}{{ $key < $cur_step ? ' activated' : '' }}">
-                                    <div class="form-step-icon"></div>
-                                    <p>@lang('header.menu.'.$step)</p>
-                                </div>
-                            @endforeach
+                            <h2>@lang('header.menu.'.$section)</h2>
                         </div>
 
                         <div class="form__body">
@@ -50,21 +42,10 @@
                         </div>
 
                         <div class="form__footer">
-                            @if ($onFirstStep)
-                                {{-- <div class="btn-group">
-                                    <a href="{{ route('assistant.install.step_choice', ['app_locale'=>'ru']) }}" class="btn">Русский</a>
-                                </div> --}}
-                                <button type="submit" class="btn ml-auto">@lang('common.btn.continue')</button>
+                            @if ($onFinishScreen)
+                                <button type="submit" class="btn ml-auto">@lang('common.btn.finish')</button>
                             @else
-                                <div class="btn-group ml-auto">
-                                    @if ($onFinishStep)
-                                        <button type="submit" class="btn">@lang('common.btn.finish')</button>
-                                    @elseif ($count_steps > $cur_step)
-                                        <button type="submit" class="btn">@lang('common.btn.next')</button>
-                                    @elseif ($onLastStep)
-                                        <a href="{{ route('panel') }}" class="btn">@lang('common.btn.continue')</a>
-                                    @endif
-                                </div>
+                                <button type="submit" class="btn ml-auto">@lang('common.btn.next')</button>
                             @endif
                         </div>
                     </form>

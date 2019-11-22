@@ -456,13 +456,9 @@
     }
 
     .form__header {
-        padding: 1.25rem;
-        display: flex;
-        justify-content: space-around;
-        overflow: hidden;
-        position: relative;
-        text-align: center;
-        background: var(--white);
+        padding: .75rem 0;
+        border-bottom: 1px solid var(--primary);
+        margin: .75rem 1.25rem;
     }
 
     .form__body {
@@ -475,66 +471,6 @@
         border-top: none;
         display: flex;
         background: var(--white);
-    }
-
-    /**
-     * ASSISTANT
-     */
-    .form-progress {
-        position: absolute;
-        top: calc(1.25rem + 20px);
-        left: 0;
-        width: 100%;
-        height: 1px;
-        background: rgba(0, 0, 0, .125);
-    }
-
-    .form-progress-line {
-        position: absolute;
-        top: 0;
-        left: 0;
-        height: 1px;
-        background: var(--primary);
-    }
-
-    .form-step {
-        position: relative;
-        float: left;
-        width: 14.28%;
-    }
-
-    .form-step-icon {
-        display: inline-block;
-        width: 40px;
-        height: 40px;
-        line-height: 40px;
-        background: var(--light);
-        border-radius: 50%;
-    }
-
-    .form-step.active .form-step-icon {
-        background: var(--primary);
-    }
-
-    .form-step.activated .form-step-icon {
-        background: var(--white);
-        border: 1px solid var(--primary);
-        color: var(--primary);
-    }
-
-    .form-step p {
-        color: #ccc;
-        font-size: 12px;
-        font-weight: 300;
-        margin: 0;
-    }
-
-    .form-step.active p {
-        color: var(--primary);
-    }
-
-    .form-step.activated p {
-        color: var(--primary);
     }
 
     /**
