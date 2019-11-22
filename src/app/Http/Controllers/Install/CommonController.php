@@ -29,6 +29,6 @@ class CommonController extends Controller
         $exit_code = Artisan::call('route:clear');
         $exit_code = Artisan::call('view:clear');
 
-        return redirect('/')->withStatus(trans('finish.textblock'));//->route('assistant.install.finish');
+        return redirect('/');
     }
 }
