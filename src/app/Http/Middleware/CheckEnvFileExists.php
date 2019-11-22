@@ -32,7 +32,7 @@ class CheckEnvFileExists
     public function handle($request, Closure $next)
     {
         $args = func_get_args();
-        $this->location = $request->route()->getPrefix(); // $request->decodedPath();
+        $this->location = $request->route()->getPrefix();
 
         if (EnvManager::fileExists()) {
             return $this->handleWithEnvFile(...$args);
@@ -46,8 +46,6 @@ class CheckEnvFileExists
      * @param  \Illuminate\Http\Request  $request
      * @param  Closure  $next
      * @return mixed
-     *
-     * @throws LogicException
      */
     public function handleWithEnvFile($request, Closure $next)
     {
