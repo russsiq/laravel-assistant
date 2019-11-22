@@ -28,8 +28,9 @@ class AssistantServiceProvider extends ServiceProvider// implements DeferrablePr
 
         $this->loadAssistantFiles();
 
-        // Публикация ресурсов может быть выполнена только из консоли.
+        // Действия, выполнение которых может быть только из консоли.
         if ($this->app->runningInConsole()) {
+            // Публикация ресурсов.
             $this->publishAssistantFiles();
         }
     }
