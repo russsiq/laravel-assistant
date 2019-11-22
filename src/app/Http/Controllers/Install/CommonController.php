@@ -3,9 +3,9 @@
 namespace Russsiq\Assistant\Http\Controllers\Install;
 
 use Artisan;
+use EnvManager;
 
 use Russsiq\Assistant\Http\Requests\Install\CommonRequest;
-use Russsiq\EnvManager\Support\Facades\EnvManager;
 
 class CommonController extends Controller
 {
