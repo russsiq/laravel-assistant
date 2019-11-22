@@ -3,6 +3,9 @@
 namespace Russsiq\Assistant;
 
 use Russsiq\Assistant\Http\Middleware\CheckEnvFileExists;
+use Russsiq\Assistant\Support\Archivist;
+use Russsiq\Assistant\Support\Installer;
+use Russsiq\Assistant\Support\Updater;
 
 use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
@@ -10,6 +13,18 @@ use Illuminate\Support\Facades\Route;
 
 class AssistantServiceProvider extends ServiceProvider// implements DeferrableProvider
 {
+    /**
+     * Все синглтоны (одиночки) контейнера,
+     * которые должны быть зарегистрированы.
+     *
+     * @var array
+     */
+    public $singletons = [
+        'laravel-archivist' => Archivist::class,
+        'laravel-installer' => Installer::class,
+        'laravel-updater' => Updater::class,
+    ];
+
     /**
      * Путь до директории с исходниками.
      *
