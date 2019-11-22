@@ -30,7 +30,7 @@ class WelcomeRequest extends Request
     {
         return [
             'agree.*' => __('msg.not_accept_licence'),
-            
+
         ];
     }
 
