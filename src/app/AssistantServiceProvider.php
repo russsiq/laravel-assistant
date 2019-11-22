@@ -42,7 +42,7 @@ class AssistantServiceProvider extends ServiceProvider// implements DeferrablePr
      */
     public function register()
     {
-        //
+        // $this->mergeConfigFrom(self::SOURCE_DIR.'config/assistant.php', 'assistant');
     }
 
     /**
