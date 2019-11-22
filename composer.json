@@ -22,6 +22,9 @@
     },
     "require-dev": {},
     "autoload": {
+        "files": [
+            "src/app/Support/helpers.php"
+        ],
         "psr-4": {
             "Russsiq\\Assistant\\": "src/app/"
         }
