@@ -3,13 +3,13 @@
 namespace Russsiq\Assistant\Http\Middleware;
 
 use Closure;
-
-use Russsiq\EnvManager\Support\Facades\EnvManager;
+use EnvManager;
 
 /**
- * Если ключ приложения уже был создан и
- * приложение считается установленным,
- * но был запрошен маршрут установщика.
+ * Если существует дата установки приложения,
+ * то приложение считается установленным,
+ *
+ * Исходя из этого - маршрут установщика должен быть блокирован.
  */
 class AlreadyInstalled
 {
