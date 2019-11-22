@@ -2,13 +2,9 @@
 
 namespace Russsiq\Assistant\Http\Middleware;
 
-use Closure;
-use LogicException;
-use RuntimeException;
-
 use Artisan;
-
-use Russsiq\EnvManager\Support\Facades\EnvManager;
+use Closure;
+use EnvManager;
 
 /**
  * Проверка на то, что система является установленной.
