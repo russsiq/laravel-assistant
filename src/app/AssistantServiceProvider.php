@@ -83,7 +83,7 @@ class AssistantServiceProvider extends ServiceProvider// implements DeferrablePr
     protected function setAssistantMiddlewareGroup()
     {
         Route::prependMiddlewareToGroup('web', CheckEnvFileExists::class);
-        
+
         Route::middlewareGroup('already-installed', [
             AlreadyInstalled::class
         ]);
