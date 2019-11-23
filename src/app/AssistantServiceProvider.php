@@ -5,6 +5,7 @@ namespace Russsiq\Assistant;
 use Russsiq\Assistant\Http\Middleware\AlreadyInstalled;
 use Russsiq\Assistant\Http\Middleware\CheckEnvFileExists;
 use Russsiq\Assistant\Support\Archivist;
+use Russsiq\Assistant\Support\Cleaner;
 use Russsiq\Assistant\Support\Installer;
 use Russsiq\Assistant\Support\Updater;
 
@@ -22,6 +23,7 @@ class AssistantServiceProvider extends ServiceProvider// implements DeferrablePr
      */
     public $singletons = [
         'laravel-archivist' => Archivist::class,
+        'laravel-cleaner' => Cleaner::class,
         'laravel-installer' => Installer::class,
         'laravel-updater' => Updater::class,
     ];
