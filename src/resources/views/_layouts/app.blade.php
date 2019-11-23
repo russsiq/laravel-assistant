@@ -21,11 +21,13 @@
             <div class="assistant__body">
                 <aside class="assistant__aside">
                     <ul class="aside__list">
-                        <li class="aside_list__item"><a href="{{ route('assistant.install.welcome') }}" class="aside_list__action active">Установка</a></li>
-                        <li class="aside_list__item"><a href="#" class="aside_list__action disabled">Обновление</a></li>
-                        <li class="aside_list__item"><a href="#" class="aside_list__action disabled">Архивация</a></li>
-                        <li class="aside_list__item"><a href="#" class="aside_list__action">Очистка</a></li>
-                        <li class="aside_list__item"><a href="#" class="aside_list__action">Параметры</a></li>
+                        @foreach (['install', 'update', 'archive', 'clean'] as $key)
+                            <li class="aside_list__item">
+                                <a href="{{ route("assistant.$key.welcome") }}"
+                                    class="aside_list__action {{ $key === $master ? 'active' : '' }} {{ $key === 'install' and $installed ? 'disabled' : '' }}"
+                                >@lang("aside.$key")</a>
+                            </li>
+                        @endforeach
                     </ul>
                 </aside>
 
@@ -34,7 +36,7 @@
                         @csrf
 
                         <div class="form__header">
-                            <h2>@lang('header.menu.'.$section)</h2>
+                            <h2>@lang('header.menu.'.$stage)</h2>
                         </div>
 
                         <div class="form__body">
@@ -42,7 +44,7 @@
                         </div>
 
                         <div class="form__footer">
-                            @if ($onFinishScreen)
+                            @if ($onFinishStage)
                                 <button type="submit" class="btn ml-auto">@lang('common.btn.finish')</button>
                             @else
                                 <button type="submit" class="btn ml-auto">@lang('common.btn.next')</button>

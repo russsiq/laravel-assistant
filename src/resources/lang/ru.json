@@ -3,6 +3,11 @@
 
     "msg.env_fails": "Не удалось прочесть `.env` файл! Проверьте его на наличие ошибок.",
 
+    "aside.archive": "Архивация",
+    "aside.clean": "Очистка",
+    "aside.install": "Установка",
+    "aside.update": "Обновление",
+
     "header.title": "Установка BixBite CMS",
 
     "header.menu.welcome": "Приветствие",
