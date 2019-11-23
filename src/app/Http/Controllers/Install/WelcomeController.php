@@ -2,13 +2,16 @@
 
 namespace Russsiq\Assistant\Http\Controllers\Install;
 
+use EnvManager;
+
+use Russsiq\Assistant\Http\Controllers\BaseController;
 use Russsiq\Assistant\Http\Requests\Install\WelcomeRequest;
 
-class WelcomeController extends Controller
+class WelcomeController extends BaseController
 {
     public function index()
     {
-        return $this->makeResponse('welcome', $this->vars);
+        return $this->makeResponse('install.welcome');
     }
 
     public function store(WelcomeRequest $request)

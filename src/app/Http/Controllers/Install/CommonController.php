@@ -5,17 +5,20 @@ namespace Russsiq\Assistant\Http\Controllers\Install;
 use Artisan;
 use EnvManager;
 
+use Russsiq\Assistant\Http\Controllers\BaseController;
 use Russsiq\Assistant\Http\Requests\Install\CommonRequest;
 
-class CommonController extends Controller
+class CommonController extends BaseController
 {
+    protected $onFinishScreen = true;
+
     public function index()
     {
-        return $this->makeResponse('common', array_merge($this->vars, [
+        return $this->makeResponse('install.common', [
             'APP_URL' => url('/'),
             'email' => 'admin@'.request()->getHttpHost(),
             'themes' => collect(select_dir('themes'))->map('theme_version')->filter(),
-        ]));
+        ]);
     }
 
     public function store(CommonRequest $request)

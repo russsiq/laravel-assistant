@@ -4,9 +4,10 @@ namespace Russsiq\Assistant\Http\Controllers\Install;
 
 use EnvManager;
 
+use Russsiq\Assistant\Http\Controllers\BaseController;
 use Russsiq\Assistant\Http\Requests\Install\PermissionRequest;
 
-class PermissionController extends Controller
+class PermissionController extends BaseController
 {
     protected $minreq = [
         'php',
@@ -55,7 +56,9 @@ class PermissionController extends Controller
 
         $chmod = collect($this->chmod)
             ->mapWithKeys(function ($item) {
+
                 clearstatcache(true, $path = app()->basePath($item));
+
                 return [
                     $item => (object) [
                         'perm' => ((file_exists($path) and $x = fileperms($path)) === false) ? null : (decoct($x) % 1000),
@@ -64,9 +67,7 @@ class PermissionController extends Controller
                 ];
             })->all();
 
-        return $this->makeResponse('permission', array_merge(
-            $this->vars, compact('minreq', 'globals', 'chmod')
-        ));
+        return $this->makeResponse('install.permission', compact('minreq', 'globals', 'chmod'));
     }
 
     public function store(PermissionRequest $request)

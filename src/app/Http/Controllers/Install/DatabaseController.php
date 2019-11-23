@@ -2,16 +2,16 @@
 
 namespace Russsiq\Assistant\Http\Controllers\Install;
 
-use Artisan;
+use EnvManager;
 
+use Russsiq\Assistant\Http\Controllers\BaseController;
 use Russsiq\Assistant\Http\Requests\Install\DatabaseRequest;
-use Russsiq\EnvManager\Support\Facades\EnvManager;
 
-class DatabaseController extends Controller
+class DatabaseController extends BaseController
 {
     public function index()
     {
-        return $this->makeResponse('database', $this->vars);
+        return $this->makeResponse('install.database');
     }
 
     public function store(DatabaseRequest $request)
