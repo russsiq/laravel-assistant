@@ -2,6 +2,7 @@
 
 namespace Russsiq\Assistant\Http\Controllers;
 
+use EnvManager;
 use Route;
 
 use Illuminate\Routing\Controller;
@@ -20,10 +21,10 @@ abstract class BaseController extends Controller
     protected $templatePrefix = 'assistant::';
 
     /**
-     * Индикатор, что данный экран мастера завершающий.
+     * Индикатор, что данная стадия мастера завершающая.
      * @var boolean
      */
-    protected $onFinishScreen = false;
+    protected $onFinishStage = false;
 
     /**
      * Массив переменных для шаблона.
@@ -40,15 +41,17 @@ abstract class BaseController extends Controller
 
     /**
      * Заполнить массив переменных начальными данными.
-     * 
+     *
      * @return void
      */
     protected function fillableVariables()
     {
         $this->variables = array_merge($this->variables, [
+            'installed' => strtotime(EnvManager::get('APP_INSTALLED_AT')),
             'action' => $this->getCurrentAction(),
-            'section' => $this->getCurrentSection(),
-            'onFinishScreen' => $this->onFinishScreen(),
+            'master' => $this->getCurrentMaster(),
+            'stage' => $this->getCurrentStage(),
+            'onFinishStage' => $this->onFinishStage(),
         ]);
     }
 
@@ -74,16 +77,39 @@ abstract class BaseController extends Controller
     }
 
     /**
-     * Получить значение текущущего раздела
-     * для формирования заголовка.
+     *
+     *
+     * @return array
+     */
+    protected function getRoutePart(int $part): string
+    {
+        static $parts = null;
+
+        if (is_null($parts)) {
+            $parts = explode('.', $this->routeName());
+        }
+
+        return $parts[$part];
+    }
+
+    /**
+     * Получить название текущущего мастера.
      *
      * @return string
      */
-    protected function getCurrentSection(): string
+    protected function getCurrentMaster(): string
     {
-        $parts = explode('.', $this->routeName());
+        return $this->getRoutePart(1);
+    }
 
-        return end($parts);
+    /**
+     * Получить название текущущей стадии.
+     *
+     * @return string
+     */
+    protected function getCurrentStage(): string
+    {
+        return $this->getRoutePart(2);
     }
 
     /**
@@ -91,9 +117,9 @@ abstract class BaseController extends Controller
      *
      * @return string
      */
-    protected function onFinishScreen(): bool
+    protected function onFinishStage(): bool
     {
-        return $this->onFinishScreen;
+        return $this->onFinishStage;
     }
 
     /**

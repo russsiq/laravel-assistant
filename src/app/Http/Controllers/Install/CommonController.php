@@ -10,7 +10,11 @@ use Russsiq\Assistant\Http\Requests\Install\CommonRequest;
 
 class CommonController extends BaseController
 {
-    protected $onFinishScreen = true;
+    /**
+     * Индикатор, что данная стадия мастера завершающая.
+     * @var boolean
+     */
+    protected $onFinishStage = true;
 
     public function index()
     {
