@@ -24,7 +24,7 @@
                         @foreach (['install', 'update', 'archive', 'clean'] as $key)
                             <li class="aside_list__item">
                                 <a href="{{ route("assistant.$key.welcome") }}"
-                                    class="aside_list__action {{ $key === $master ? 'active' : '' }} {{ $key === 'install' and $installed ? 'disabled' : '' }}"
+                                    class="aside_list__action {{ $key === $master ? 'active' : '' }} {{ $key === 'install' && $installed ? 'disabled' : '' }}"
                                 >@lang("aside.$key")</a>
                             </li>
                         @endforeach
