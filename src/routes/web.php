@@ -6,6 +6,28 @@ Route::prefix('assistant')
         'web',
     ])
     ->group(function () {
+        Route::prefix('archive')
+            ->namespace('Archive')
+            ->middleware([
+                //
+            ])
+            ->group(function () {
+                // 1. Welcome
+                Route::get('/', 'WelcomeController@index')->name('assistant.archive.welcome');
+                Route::post('/', 'WelcomeController@store')->name('assistant.archive.welcome.store');
+            });
+
+        Route::prefix('clean')
+            ->namespace('Clean')
+            ->middleware([
+                //
+            ])
+            ->group(function () {
+                // 1. Welcome
+                Route::get('/', 'WelcomeController@index')->name('assistant.clean.welcome');
+                Route::post('/', 'WelcomeController@store')->name('assistant.clean.welcome.store');
+            });
+
         Route::prefix('install')
             ->namespace('Install')
             ->middleware([
@@ -31,5 +53,16 @@ Route::prefix('assistant')
                 // 5. Common
                 Route::get('/common', 'CommonController@index')->name('assistant.install.common');
                 Route::post('/common', 'CommonController@store')->name('assistant.install.common.store');
+            });
+
+        Route::prefix('update')
+            ->namespace('Update')
+            ->middleware([
+                //
+            ])
+            ->group(function () {
+                // 1. Welcome
+                Route::get('/', 'WelcomeController@index')->name('assistant.update.welcome');
+                Route::post('/', 'WelcomeController@store')->name('assistant.update.welcome.store');
             });
     });
