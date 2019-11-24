@@ -26,8 +26,6 @@ class Installer implements InstallerContract
     public function __construct(Application $app)
     {
         $this->app = $app;
-
-        dump('INSTALLER');
     }
 
     /**
