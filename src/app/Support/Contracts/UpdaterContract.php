@@ -5,13 +5,6 @@ namespace Russsiq\Assistant\Support\Contracts;
 interface UpdaterContract
 {
     /**
-     * Маркер, что приложение установлено.
-     *
-     * @return boolean
-     */
-    public function isInstalled(): bool;
-
-    /**
      * Получить дату установки приложения.
      *
      * @return mixed

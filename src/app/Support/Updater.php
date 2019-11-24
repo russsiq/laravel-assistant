@@ -28,16 +28,6 @@ class Updater implements UpdaterContract
     }
 
     /**
-     * Маркер, что приложение установлено.
-     *
-     * @return boolean
-     */
-    public function isInstalled(): bool
-    {
-        // code...
-    }
-
-    /**
      * Получить дату установки приложения.
      *
      * @return mixed
