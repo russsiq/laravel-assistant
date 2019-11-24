@@ -3,7 +3,7 @@
 namespace Russsiq\Assistant\Http\Middleware;
 
 use Closure;
-use EnvManager;
+use Installer;
 
 /**
  * Если существует дата установки приложения,
@@ -24,7 +24,7 @@ class AlreadyInstalled
     public function handle($request, Closure $next)
     {
         // Маркер, что приложение считается установленным.
-        if (strtotime(EnvManager::get('APP_INSTALLED_AT'))) {
+        if (Installer::alreadyInstalled()) {
             return redirect('/')
                 ->withErrors('File `.env` already exists! Delete it and continue.');
         }
