@@ -12,6 +12,21 @@ interface InstallerContract
     public function initiate();
 
     /**
+     * Маркер того, что была выполнена
+     * первоначальная инициализация установки.
+     *
+     * @return boolean
+     */
+    public function alreadyInitiated(): bool;
+
+    /**
+     * Маркер, что приложение установлено.
+     *
+     * @return boolean
+     */
+    public function alreadyInstalled(): bool;
+
+    /**
      * Получить массив с минимальными требованиями.
      *
      * @return array

@@ -4,7 +4,7 @@ namespace Russsiq\Assistant\Http\Middleware;
 
 use Artisan;
 use Closure;
-use EnvManager;
+use Installer;
 
 /**
  * Проверка на то, что система является установленной.
@@ -30,7 +30,7 @@ class CheckEnvFileExists
         $args = func_get_args();
         $this->location = $request->route()->getPrefix();
 
-        if (EnvManager::fileExists()) {
+        if (Installer::alreadyInitiated()) {
             return $this->handleWithEnvFile(...$args);
         }
 
@@ -46,7 +46,7 @@ class CheckEnvFileExists
     public function handleWithEnvFile($request, Closure $next)
     {
         // Маркер, что приложение считается установленным.
-        $installed = strtotime(EnvManager::get('APP_INSTALLED_AT'));
+        $installed = Installer::alreadyInstalled();
 
         // Если приложение не установлено и
         // текущий маршрут - не маршрут установщика,
@@ -66,26 +66,7 @@ class CheckEnvFileExists
      */
     public function handleWithoutEnvFile($request, Closure $next)
     {
-        // Создаем новый файл из образца,
-        // попутно генерируя ключ для приложения.
-        EnvManager::newFromPath(base_path('.env.example'), true)
-            // Устанавливаем необходимые значения.
-            ->setMany([
-                'APP_URL' => url('/'),
-            ])
-            // Сохраняем новый файл в корне как `.env`.
-            ->save();
-
-        // Очищаем ненужный хлам.
-        $exit_code = Artisan::call('cache:clear');
-        $exit_code = Artisan::call('config:clear');
-        $exit_code = Artisan::call('route:clear');
-        $exit_code = Artisan::call('view:clear');
-
-        // Для запуска приложения необходимо задать минимальные параметры.
-        config([
-            'app.key' => EnvManager::get('APP_KEY')
-        ]);
+        Installer::initiate();
 
         // Перенаправляем на страницу установки.
         return redirect()->route('assistant.install.welcome');
