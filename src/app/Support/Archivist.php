@@ -26,4 +26,24 @@ class Archivist implements ArchivistContract
 
         dump('ARCHIVIST');
     }
+
+    /**
+     * Создать резервную копию.
+     *
+     * @return void
+     */
+    public function backup()
+    {
+        // code...
+    }
+
+    /**
+     * Восстановить резервную копию.
+     *
+     * @return void
+     */
+    public function restore()
+    {
+        // code...
+    }
 }

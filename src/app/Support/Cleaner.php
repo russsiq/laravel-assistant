@@ -26,4 +26,54 @@ class Cleaner implements CleanerContract
 
         dump('CLEANER');
     }
+
+    /**
+     * Очистка кэша приложения.
+     *
+     * @return void
+     */
+    public function clearCache()
+    {
+        // code...
+    }
+
+    /**
+     * Очистка кэша настроек приложения.
+     *
+     * @return void
+     */
+    public function clearConfig()
+    {
+        // code...
+    }
+
+    /**
+     * Очистка кэша маршрутов приложения.
+     *
+     * @return void
+     */
+    public function clearRoute()
+    {
+        // code...
+    }
+
+    /**
+     * Очистка скомпилированных шаблонов приложения.
+     *
+     * @return void
+     */
+    public function clearView()
+    {
+        // code...
+    }
+
+    /**
+     * Комплексная очистка и последующее кэширование.
+     *
+     * @return void
+     */
+    public function complexOptimize()
+    {
+        // code...
+    }
 }
