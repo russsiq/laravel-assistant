@@ -6,7 +6,7 @@ use Illuminate\Foundation\Application;
 
 use Russsiq\Assistant\Support\Contracts\CleanerContract;
 
-class Cleaner implements CleanertContract
+class Cleaner implements CleanerContract
 {
     /**
      * Экземпляр приложения.
