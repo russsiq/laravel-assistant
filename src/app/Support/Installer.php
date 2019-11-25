@@ -94,7 +94,7 @@ class Installer implements InstallerContract
      *
      * @return array
      */
-    public function requirements(): array
+    public static function requirements(): array
     {
         return server_requirements();
     }
@@ -104,7 +104,7 @@ class Installer implements InstallerContract
      *
      * @return array
      */
-    public function antiGlobals(): array
+    public static function antiGlobals(): array
     {
         return anti_globals();
     }
@@ -114,7 +114,7 @@ class Installer implements InstallerContract
      *
      * @return array
      */
-    public function filePermissions(): array
+    public static function filePermissions(): array
     {
         return file_permissions();
     }
@@ -124,7 +124,7 @@ class Installer implements InstallerContract
      *
      * @return array
      */
-    public function themes(): array
+    public static function themes(): array
     {
         // code...
     }

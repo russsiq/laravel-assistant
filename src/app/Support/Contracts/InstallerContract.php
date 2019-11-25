@@ -31,26 +31,26 @@ interface InstallerContract
      *
      * @return array
      */
-    public function requirements(): array;
+    public static function requirements(): array;
 
     /**
      * Получить массив "зловредных" глобальных переменных.
      *
      * @return array
      */
-    public function antiGlobals(): array;
+    public static function antiGlobals(): array;
 
     /**
      * Получить массив прав на доступ к директориям.
      *
      * @return array
      */
-    public function filePermissions(): array;
+    public static function filePermissions(): array;
 
     /**
      * Получить массив доступных при установке тем.
      *
      * @return array
      */
-    public function themes(): array;
+    public static function themes(): array;
 }
