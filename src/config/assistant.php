@@ -51,6 +51,15 @@ return [
 
         ],
 
+        'permissions' => [
+            'bootstrap/cache',
+            'config',
+            'config/settings',
+            'storage/app/backups',
+            'storage/app/uploads',
+
+        ],
+
     ],
 
     // Настройки Мастера обновлений.

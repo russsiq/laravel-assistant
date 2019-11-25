@@ -10,33 +10,13 @@ use Russsiq\Assistant\Http\Requests\Install\PermissionRequest;
 
 class PermissionController extends BaseController
 {
-    protected $chmod = [
-        'bootstrap/cache/',
-        'config/',
-        'config/settings/',
-        'storage/app/backups/',
-        'storage/app/uploads/'
-    ];
-
     public function index()
     {
         $requirements = Installer::requirements();
         $globals = Installer::antiGlobals();
+        $permissions = Installer::filePermissions();
 
-        $chmod = collect($this->chmod)
-            ->mapWithKeys(function ($item) {
-
-                clearstatcache(true, $path = app()->basePath($item));
-
-                return [
-                    $item => (object) [
-                        'perm' => ((file_exists($path) and $x = fileperms($path)) === false) ? null : (decoct($x) % 1000),
-                        'status' => is_writable($path) ?? null,
-                    ]
-                ];
-            })->all();
-
-        return $this->makeResponse('install.permission', compact('requirements', 'globals', 'chmod'));
+        return $this->makeResponse('install.permission', compact('requirements', 'globals', 'permissions'));
     }
 
     public function store(PermissionRequest $request)

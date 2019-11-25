@@ -116,7 +116,7 @@ class Installer implements InstallerContract
      */
     public function filePermissions(): array
     {
-        // code...
+        return file_permissions();
     }
 
     /**

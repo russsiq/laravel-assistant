@@ -50,7 +50,7 @@
 					<td class="p-0">
 						<table class="table table-sm">
 							<tbody>
-								@foreach ($chmod as $key => $flag)
+								@foreach ($permissions as $key => $flag)
 									<tr>
 										<td>{{ $key }}</td>
 										<td>{{ $flag->perm }}</td>
