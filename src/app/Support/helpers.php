@@ -3,8 +3,31 @@
 use Illuminate\Support\Str;
 
 /**
+ * anti_globals - Получить массив "зловредных" глобальных переменных.
  * server_requirements - Получить массив с набором минимальных системных требований к серверу.
  */
+
+if (! function_exists('anti_globals')) {
+    /**
+    * Получить массив "зловредных" глобальных переменных.
+    *
+    * @return array
+    */
+    function anti_globals(): array
+    {
+        static $globals = null;
+
+        if (is_null($globals)) {
+            $config = config('assistant.installer.globals');
+
+            foreach ($config as $key => $value) {
+                $globals[$key] = $value === (bool) ini_get($key);
+            }
+        }
+
+        return $globals;
+    }
+}
 
 if (! function_exists('server_requirements')) {
     /**

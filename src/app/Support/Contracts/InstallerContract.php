@@ -34,7 +34,7 @@ interface InstallerContract
     public function requirements(): array;
 
     /**
-     * Получить массив "зловредных" переменных.
+     * Получить массив "зловредных" глобальных переменных.
      *
      * @return array
      */

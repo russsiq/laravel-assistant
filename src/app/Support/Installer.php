@@ -100,13 +100,13 @@ class Installer implements InstallerContract
     }
 
     /**
-     * Получить массив "зловредных" переменных.
+     * Получить массив "зловредных" глобальных переменных.
      *
      * @return array
      */
     public function antiGlobals(): array
     {
-        // code...
+        return anti_globals();
     }
 
     /**

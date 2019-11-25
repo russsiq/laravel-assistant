@@ -10,13 +10,6 @@ use Russsiq\Assistant\Http\Requests\Install\PermissionRequest;
 
 class PermissionController extends BaseController
 {
-    protected $antiGlobals = [
-        'register_globals',
-        'magic_quotes_gpc',
-        'magic_quotes_runtime',
-        'magic_quotes_sybase',
-    ];
-
     protected $chmod = [
         'bootstrap/cache/',
         'config/',
@@ -28,13 +21,7 @@ class PermissionController extends BaseController
     public function index()
     {
         $requirements = Installer::requirements();
-
-        $globals = collect($this->antiGlobals)
-            ->mapWithKeys(function ($item) {
-                return [
-                    $item => ini_get($item),
-                ];
-            })->all();
+        $globals = Installer::antiGlobals();
 
         $chmod = collect($this->chmod)
             ->mapWithKeys(function ($item) {

@@ -43,6 +43,14 @@ return [
 
         ],
         
+        'globals' => [
+            'magic_quotes_gpc' => false,
+            'magic_quotes_runtime' => false,
+            'magic_quotes_sybase' => false,
+            'register_globals' => false,
+
+        ],
+
     ],
 
     // Настройки Мастера обновлений.

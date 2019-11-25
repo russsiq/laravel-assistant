@@ -38,7 +38,7 @@
 								@foreach ($globals as $key => $flag)
 									<tr>
 										<td>@lang($key)</td>
-										<td><b class="float-right text-{{ $flag ? 'danger' : 'success' }}">{{ $flag ? 'X' : '✓' }}</b></td>
+										<td><b class="float-right text-{{ $flag ? 'success' : 'danger' }}">{{ $flag ? '✓' : 'X' }}</b></td>
 									</tr>
 								@endforeach
 							</tbody>
