@@ -42,7 +42,7 @@ return [
             'fileinfo' => function_exists('finfo_open'),
 
         ],
-        
+
         'globals' => [
             'magic_quotes_gpc' => false,
             'magic_quotes_runtime' => false,
