@@ -6,6 +6,7 @@ use Artisan;
 use EnvManager;
 
 use Illuminate\Foundation\Application;
+use Illuminate\Support\Str;
 
 use Russsiq\Assistant\Support\Contracts\InstallerContract;
 
@@ -89,13 +90,13 @@ class Installer implements InstallerContract
     }
 
     /**
-     * Получить массив с минимальными требованиями.
+     * Получить массив с набором минимальных системных требований к серверу.
      *
      * @return array
      */
     public function requirements(): array
     {
-        // code...
+        return server_requirements();
     }
 
     /**

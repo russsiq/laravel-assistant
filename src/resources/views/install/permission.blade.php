@@ -8,7 +8,7 @@
 		<table class="table" style="vertical-align:top">
 			<thead>
 				<tr>
-					<th>@lang('perm.minreq')</th>
+					<th>@lang('perm.requirements')</th>
 					<th></th>
 					<th>@lang('perm.globals')</th>
 					<th></th>
@@ -20,9 +20,9 @@
 					<td class="p-0">
 						<table class="table table-sm">
 							<tbody>
-								@foreach ($minreq as $key => $value)
+								@foreach ($requirements as $key => $value)
 									<tr>
-										<td>@lang('perm.minreq.'.$key)</td>
+										<td>@lang('perm.requirements.'.$key)</td>
 										<td><b class="text-{{ $value ? 'success' : 'danger' }}">{{ $value ? '✓' : 'X' }}</b></td>
 									</tr>
 								@endforeach

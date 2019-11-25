@@ -27,7 +27,7 @@ interface InstallerContract
     public function alreadyInstalled(): bool;
 
     /**
-     * Получить массив с минимальными требованиями.
+     * Получить массив с набором минимальных системных требований к серверу.
      *
      * @return array
      */

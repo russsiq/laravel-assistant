@@ -3,26 +3,13 @@
 namespace Russsiq\Assistant\Http\Controllers\Install;
 
 use EnvManager;
+use Installer;
 
 use Russsiq\Assistant\Http\Controllers\BaseController;
 use Russsiq\Assistant\Http\Requests\Install\PermissionRequest;
 
 class PermissionController extends BaseController
 {
-    protected $minreq = [
-        'php',
-        'pdo',
-        'ssl',
-        'gd',
-        'finfo',
-        'mb',
-        'tokenizer',
-        'ctype',
-        'json',
-        'xml',
-        'zlib',
-    ];
-
     protected $antiGlobals = [
         'register_globals',
         'magic_quotes_gpc',
@@ -40,12 +27,7 @@ class PermissionController extends BaseController
 
     public function index()
     {
-        $minreq = collect($this->minreq)
-            ->mapWithKeys(function ($item) {
-                return [
-                    $item => minreq($item),
-                ];
-            })->all();
+        $requirements = Installer::requirements();
 
         $globals = collect($this->antiGlobals)
             ->mapWithKeys(function ($item) {
@@ -67,7 +49,7 @@ class PermissionController extends BaseController
                 ];
             })->all();
 
-        return $this->makeResponse('install.permission', compact('minreq', 'globals', 'chmod'));
+        return $this->makeResponse('install.permission', compact('requirements', 'globals', 'chmod'));
     }
 
     public function store(PermissionRequest $request)
