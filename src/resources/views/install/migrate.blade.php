@@ -3,10 +3,12 @@
 @section('action_title', __('header.menu.migrate'))
 
 @section('card_body')
-	<p>@lang('migrate.textblock')</p>
 	<fieldset>
-		<div id="migrate" class="alert alert-dark">
-			{!! nl2br(session('flash_output_migrate')) !!}
-		</div>
+		@if ($message = session('status'))
+			<p>@lang('migrate.textblock')</p>
+			<pre id="migrate" class="alert alert-dark">{{ $message }}</pre>
+		@else
+			<div id="migrate" class="alert alert-danger">Прямой доступ на данную страницу запрещен.</div>
+		@endif
 	</fieldset>
 @endsection
