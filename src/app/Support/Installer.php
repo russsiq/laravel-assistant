@@ -127,4 +127,34 @@ class Installer implements InstallerContract
     {
         // code...
     }
+
+    /**
+     * Выполнить проверку подключения к БД с переданными параметрами.
+     *
+     * @return void
+     */
+    public function checkConnection(array $params, string $connection)
+    {
+        // code...
+    }
+
+    /**
+     * Выполнить миграции БД.
+     *
+     * @return string   Сообщение о выполненной операции.
+     */
+    public function migrate(): string
+    {
+        // code...
+    }
+
+    /**
+     * Заполнить БД фиктивными данными.
+     *
+     * @return string   Сообщение о выполненной операции.
+     */
+    public function seed(): string
+    {
+        // code...
+    }
 }

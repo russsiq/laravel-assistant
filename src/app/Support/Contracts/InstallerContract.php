@@ -53,4 +53,25 @@ interface InstallerContract
      * @return array
      */
     public static function themes(): array;
+
+    /**
+     * Выполнить проверку подключения к БД с переданными параметрами.
+     *
+     * @return void
+     */
+    public function checkConnection(array $params, string $connection);
+
+    /**
+     * Выполнить миграции БД.
+     *
+     * @return string   Сообщение о выполненной операции.
+     */
+    public function migrate(): string;
+
+    /**
+     * Заполнить БД фиктивными данными.
+     *
+     * @return string   Сообщение о выполненной операции.
+     */
+    public function seed(): string;
 }
