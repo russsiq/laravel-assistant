@@ -16,7 +16,11 @@ class PermissionController extends BaseController
         $globals = Installer::antiGlobals();
         $permissions = Installer::filePermissions();
 
-        return $this->makeResponse('install.permission', compact('requirements', 'globals', 'permissions'));
+        return $this->makeResponse('install.permission', compact(
+            'requirements',
+            'globals',
+            'permissions'
+        ));
     }
 
     public function store(PermissionRequest $request)
