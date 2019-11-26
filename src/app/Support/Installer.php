@@ -3,10 +3,12 @@
 namespace Russsiq\Assistant\Support;
 
 use Artisan;
+use DB;
 use EnvManager;
 
 use Illuminate\Foundation\Application;
 
+use Russsiq\Assistant\Exceptions\InstallerFailed;
 use Russsiq\Assistant\Support\Contracts\InstallerContract;
 
 class Installer implements InstallerContract
@@ -132,10 +134,35 @@ class Installer implements InstallerContract
      * Выполнить проверку подключения к БД с переданными параметрами.
      *
      * @return void
+     *
+     * @throws InstallerFailed
      */
-    public function checkConnection(array $params, string $connection)
+    public function checkConnection(array $params, string $connection = 'mysql')
     {
-        // code...
+        // $params = $this->validated();
+
+        // Set temporary DB connection
+        $config = config("database.connections.$connection");
+
+        config([
+            "database.connections.$connection" => array_merge($config, [
+                'host' =>  $params['DB_HOST'],
+                'database' => $params['DB_DATABASE'],
+                'prefix' => $params['DB_PREFIX'],
+                'username' => $params['DB_USERNAME'],
+                'password' => $params['DB_PASSWORD'],
+            ]),
+        ]);
+
+        // Check DB connection and exists table
+        DB::purge($connection);
+        DB::reconnect($connection);
+        DB::setTablePrefix($params['DB_PREFIX']);
+        DB::connection()->getPdo();
+
+        if (is_null(DB::connection($connection)->getDatabaseName())) {
+            throw new InstallerFailed(__('msg.not_dbconnect'));
+        }
     }
 
     /**
@@ -145,7 +172,27 @@ class Installer implements InstallerContract
      */
     public function migrate(): string
     {
-        // code...
+        try {
+            // Запускаем запись транзакции.
+            DB::beginTransaction();
+
+            // Выполняем миграции через Artisan.
+            Artisan::call('migrate', ['--force' => true]);
+
+            // После коммита текущая транзакция минусуется.
+            DB::commit();
+        } catch (\Throwable $e) {
+
+            throw $e;
+        } finally {
+            // Откат применяется только к текущей транзакции.
+            // После коммита нечего откатывать.
+            // Если выброшено исключение до коммита,
+            // то будет выполнен откат транзакции.
+            DB::rollback();
+        }
+
+        return Artisan::output();
     }
 
     /**
