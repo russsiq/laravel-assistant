@@ -79,6 +79,11 @@ class DatabaseRequest extends Request
                 'string',
             ],
 
+            'test_seed' => [
+                'sometimes',
+                'boolean',
+            ],
+
         ];
     }
 
