@@ -69,9 +69,11 @@ interface InstallerContract
     public function migrate(): string;
 
     /**
-     * Заполнить БД фиктивными данными.
+     * Заполнить БД данными.
      *
-     * @return string   Сообщение о выполненной операции.
+     * @param  string $class Класс заполнителя.
+     *
+     * @return string        Сообщение о выполненной операции.
      */
-    public function seed(): string;
+    public function seed(string $class): string;
 }
