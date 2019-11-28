@@ -175,7 +175,10 @@ class Installer implements InstallerContract
             DB::beginTransaction();
 
             // Выполняем миграции через Artisan.
-            Artisan::call('migrate', ['--force' => true]);
+            Artisan::call('migrate', [
+                '--force' => true,
+
+            ]);
 
             // После коммита текущая транзакция минусуется.
             DB::commit();
