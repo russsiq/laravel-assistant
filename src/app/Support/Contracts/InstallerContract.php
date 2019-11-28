@@ -76,4 +76,14 @@ interface InstallerContract
      * @return string        Сообщение о выполненной операции.
      */
     public function seed(string $class): string;
+
+    /**
+     * Применить замыкание, если переданное значение `$value` правдиво.
+     *
+     * @param  bool  $value
+     * @param  callable  $callback
+     *
+     * @return self
+     */
+    public function when(bool $value, callable $callback): self;
 }
