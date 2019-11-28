@@ -3,6 +3,16 @@
 @section('action_title', __('header.menu.common'))
 
 @section('card_body')
+	@if ($errors->any())
+	    <div class="alert alert-danger">
+	        <ul>
+	            @foreach ($errors->all() as $error)
+	                <li>{{ $error }}</li>
+	            @endforeach
+	        </ul>
+	    </div>
+	@endif
+
 	@if ($errors->has('common'))
 		<div class="form-group">
 			<div class="alert alert-danger">{{ $errors->first('common') }}</div>
@@ -37,6 +47,23 @@
 			<div class="col-sm-9">
 				<input type="password" name="password" value="" placeholder="********" class="form-control">
 				@if ($errors->has('password'))<div class="invalid-feedback d-block">{{ $errors->first('password') }}</div>@endif
+			</div>
+		</div>
+
+
+		<div class="form-group row">
+			<label class="col-sm-3 col-form-label">@lang('auth.password_confirmation')</label>
+			<div class="col-sm-9">
+				<input type="password" name="password_confirmation" placeholder="********" class="form-control" autocomplete="new-password" required/>
+			</div>
+		</div>
+
+		<div class="form-group row">
+			<div class="col-sm-3 col-form-label"></div>
+			<div class="col-sm-9">
+				<label class="col-form-label">
+					<input type="checkbox" name="registration_rules" value="1" /> @lang('auth.registration_rules')</label>
+				@if ($errors->has('registration_rules'))<span class="invalid-feedback d-block">{{ $errors->first('registration_rules') }}</span>@endif
 			</div>
 		</div>
 	</fieldset>
@@ -74,21 +101,13 @@
 	<hr>
 
 	<fieldset>
-		<div class="form-group row{{ $errors->has('test_seed') ? ' has-error' : '' }}">
+		<div class="form-group row{{ $errors->has('original_theme') ? ' has-error' : '' }}">
 			<div class="col-sm-9 offset-sm-3">
 				<label class="form-label">
-					<input type="checkbox" name="test_seed" value="1" /> @lang('common.test_seed')
+					<input type="checkbox" name="original_theme" value="1" /> @lang('common.original_theme')
 				</label>
-				@if ($errors->has('test_seed'))<div class="invalid-feedback d-block">{{ $errors->first('test_seed') }}</div>@endif
+				@if ($errors->has('original_theme'))<div class="invalid-feedback d-block">{{ $errors->first('original_theme') }}</div>@endif
 			</div>
 		</div>
-			<div class="form-group row{{ $errors->has('original_theme') ? ' has-error' : '' }}">
-				<div class="col-sm-9 offset-sm-3">
-					<label class="form-label">
-						<input type="checkbox" name="original_theme" value="1" /> @lang('common.original_theme')
-					</label>
-					@if ($errors->has('original_theme'))<div class="invalid-feedback d-block">{{ $errors->first('original_theme') }}</div>@endif
-				</div>
-			</div>
 	</fieldset>
 @endsection

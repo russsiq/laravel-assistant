@@ -8,7 +8,9 @@
 			<div class="alert alert-danger">{{ $errors->first('database') }}</div>
 		</div>
 	@endif
+
 	<p>@lang('database.textblock')</p>
+
 	<fieldset>
 		<div class="form-group row{{ $errors->has('DB_HOST') ? ' has-error' : '' }}">
             <label class="col-sm-6 control-label">@lang('DB_HOST')<small class="form-text text-muted">@lang('DB_HOST#desc')</small></label>
@@ -49,5 +51,17 @@
                 @if ($errors->has('DB_PREFIX'))<div class="invalid-feedback d-block">{{ $errors->first('DB_PREFIX') }}</div>@endif
             </div>
         </div>
+
+		<hr>
+
+		<div class="form-group row{{ $errors->has('test_seed') ? ' has-error' : '' }}">
+			<div class="col-sm-6"></div>
+			<div class="col-sm-6">
+				<label class="control-label">
+					<input type="checkbox" name="test_seed" value="1" /> @lang('database.test_seed')
+				</label>
+				@if ($errors->has('test_seed'))<div class="invalid-feedback d-block">{{ $errors->first('test_seed') }}</div>@endif
+			</div>
+		</div>
 	</fieldset>
 @endsection
