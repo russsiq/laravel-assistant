@@ -205,6 +205,47 @@ class Installer implements InstallerContract
      */
     public function seed(string $class): string
     {
-        // code...
+        try {
+            // Запускаем запись транзакции.
+            DB::beginTransaction();
+
+            // Заполняем БД данными при помощи Artisan.
+            Artisan::call('db:seed', [
+                '--force' => true,
+                '--class' => $class,
+
+            ]);
+
+            // После коммита текущая транзакция минусуется.
+            DB::commit();
+        } catch (\Throwable $e) {
+
+            throw $e;
+        } finally {
+            // Откат применяется только к текущей транзакции.
+            // После коммита нечего откатывать.
+            // Если выброшено исключение до коммита,
+            // то будет выполнен откат транзакции.
+            DB::rollback();
+        }
+
+        return Artisan::output();
+    }
+
+    /**
+     * Применить замыкание, если переданное значение `$value` правдиво.
+     *
+     * @param  bool  $value
+     * @param  callable  $callback
+     *
+     * @return self
+     */
+    public function when(bool $value, $callback): InstallerContract
+    {
+        if ($value) {
+            $callback($this, $value);
+        }
+
+        return $this;
     }
 }
