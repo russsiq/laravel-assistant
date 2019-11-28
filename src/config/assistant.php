@@ -60,6 +60,20 @@ return [
 
         ],
 
+        'seeds' => [
+            'database' => 'DatabaseSeeder',
+            'test' => 'TestContentSeeder',
+        ],
+
+        'users' => [
+            'table' => 'users',
+            'fields' => [
+                'role' => 'owner',
+                
+            ]
+
+        ],
+
     ],
 
     // Настройки Мастера обновлений.

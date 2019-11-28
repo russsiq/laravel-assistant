@@ -232,6 +232,30 @@ class Installer implements InstallerContract
         return Artisan::output();
     }
 
+    public function registerOwner(array $data)
+    {
+        if ($this->alreadyInstalled()) {
+            throw new InstallerFailed(__('msg.not_register_owner'));
+        }
+
+        $table = config('assistant.installer.users.table', 'users');
+
+        \DB::table($table)->insert([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => bcrypt($data['password']),
+            'role' => 'owner',
+            'last_ip' => request()->ip(),
+            'created_at' => date('Y-m-d H:i:s'),
+            'email_verified_at' => date('Y-m-d H:i:s'),
+        ]);
+
+        // $namespace = Route::getRoutes()->getByName('register')->action['namespace'];
+        // $controller = app()->make($namespace.'\\Auth\\RegisterController');
+        // return $controller->callAction('register', [$request]);
+        // return $controller->register($request);
+    }
+
     /**
      * Применить замыкание, если переданное значение `$value` правдиво.
      *
