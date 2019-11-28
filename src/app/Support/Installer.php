@@ -139,8 +139,6 @@ class Installer implements InstallerContract
      */
     public function checkConnection(array $params, string $connection = 'mysql')
     {
-        // $params = $this->validated();
-
         // Set temporary DB connection
         $config = config("database.connections.$connection");
 
@@ -196,11 +194,13 @@ class Installer implements InstallerContract
     }
 
     /**
-     * Заполнить БД фиктивными данными.
+     * Заполнить БД данными.
      *
-     * @return string   Сообщение о выполненной операции.
+     * @param  string $class Класс заполнителя.
+     *
+     * @return string        Сообщение о выполненной операции.
      */
-    public function seed(): string
+    public function seed(string $class): string
     {
         // code...
     }
