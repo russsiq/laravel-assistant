@@ -17,10 +17,22 @@ class DatabaseController extends BaseController
 
     public function store(DatabaseRequest $request)
     {
-        try {
-            Installer::checkConnection($request->validated());
+        $data = $request->all();
 
-            $message = Installer::migrate();
+        try {
+            Installer::checkConnection($data);
+
+            $messages = [
+                'migrate' => Installer::migrate(),
+                'seeds' => [
+                    Installer::seed('DatabaseSeeder'),
+                ],
+            ];
+
+            Installer::when($data['test_seed'], function($installer) use (&$messages) {
+                $messages['seeds'][] = $installer->seed('TestContentSeeder');
+            });
+
         } catch (\Exception $e) {
             return redirect()
                 ->back()
@@ -31,10 +43,20 @@ class DatabaseController extends BaseController
         }
 
         // Save to `.env` file prev request from form
-        EnvManager::setMany($request->all())->save();
+        EnvManager::setMany($data)->save();
 
         return redirect()
-            ->route('assistant.install.migrate')
-            ->withStatus($message);
+            ->route('assistant.install.database-complete')
+            ->with(compact('messages'));
+    }
+
+    public function complete()
+    {
+        return $this->makeResponse('install.database-complete');
+    }
+
+    public function redirect()
+    {
+        return redirect()->route('assistant.install.common');
     }
 }
