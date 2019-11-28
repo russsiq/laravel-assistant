@@ -46,9 +46,9 @@ Route::prefix('assistant')
                 Route::get('/database', 'DatabaseController@index')->name('assistant.install.database');
                 Route::post('/database', 'DatabaseController@store')->name('assistant.install.database.store');
 
-                // 4. Migrate
-                Route::get('/migrate', 'MigrateController@index')->name('assistant.install.migrate');
-                Route::post('/migrate', 'MigrateController@store')->name('assistant.install.migrate.store');
+                // 4. Database complete
+                Route::get('/database-complete', 'DatabaseController@complete')->name('assistant.install.database-complete');
+                Route::post('/database-complete', 'DatabaseController@redirect')->name('assistant.install.database-redirect');
 
                 // 5. Common
                 Route::get('/common', 'CommonController@index')->name('assistant.install.common');
