@@ -21,7 +21,7 @@
         --info: var(--cyan);
         --warning: var(--yellow);
         --danger: var(--red);
-        --font-family-sans-serif: Ubuntu, sans-serif;
+        --font-family-sans-serif: 'Ubuntu', sans-serif;
         --font-family-monospace: 'Courier New', monospace;
         --spacer: 1.25rem;
     }
@@ -96,6 +96,10 @@
         line-height: 1.2;
         margin-top: 0;
         margin-bottom: .5rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
     }
 
     h5 {
@@ -189,10 +193,25 @@
     }
 
     fieldset {
-        min-width: 0;
+        /* min-width: 0;
         padding: 0;
         margin: 0;
-        border: 0;
+        border: 0; */
+        border: 1px solid rgba(0, 0, 0, .1);
+        min-width: 0;
+        margin: 1.25rem 0;
+        padding: 1rem;
+    }
+
+    legend {
+        display: block;
+        max-width: 100%;
+        margin: 0;
+        padding: 0 0.5rem;
+        font-size: 1.2rem;
+        line-height: inherit;
+        color: inherit;
+        white-space: normal;
     }
 
     label {
@@ -462,11 +481,12 @@
     }
 
     .form__body {
-        padding: 0.75rem 1.25rem;
+        padding: 0.75rem 1.25rem 0;
     }
 
     .form__footer {
         padding: 1.25rem;
+        padding-top: 0;
         border-top: 1px solid rgba(0, 0, 0, 0.125);
         border-top: none;
         display: flex;
@@ -480,7 +500,7 @@
         background-size: cover;
         box-shadow: 0 8px 12px 0 rgba(0, 0, 0, .25);
         font-size: .78rem;
-        color: rgba(0, 0, 0, .125);
+        color: var(--white);
         height: 100%
     }
 

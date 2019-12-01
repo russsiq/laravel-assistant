@@ -52,8 +52,6 @@
             </div>
         </div>
 
-		<hr>
-
 		<div class="form-group row{{ $errors->has('test_seed') ? ' has-error' : '' }}">
 			<div class="col-sm-6"></div>
 			<div class="col-sm-6">
