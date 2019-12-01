@@ -65,14 +65,7 @@ return [
             'test' => 'TestContentSeeder',
         ],
 
-        'users' => [
-            'table' => 'users',
-            'fields' => [
-                'role' => 'owner',
-                
-            ]
-
-        ],
+        'before-installed' => '\\Russsiq\\Assistant\\Services\\BeforeInstalled',
 
     ],
 
