@@ -24,6 +24,7 @@ class DatabaseRequest extends Request
                 'DB_CONNECTION' => 'mysql',
                 'DB_HOST' => $this->input('DB_HOST', '127.0.0.1'),
                 'DB_PORT' => $this->input('DB_PORT', '3306'),
+                'test_seed' => $this->input('test_seed', false),
             ])
             ->all();
     }
