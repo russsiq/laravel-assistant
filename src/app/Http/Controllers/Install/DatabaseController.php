@@ -17,7 +17,7 @@ class DatabaseController extends BaseController
 
     public function store(DatabaseRequest $request)
     {
-        $data = $request->all();
+        $data = $request->validated();
 
         try {
             Installer::checkConnection($data);
