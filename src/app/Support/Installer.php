@@ -5,15 +5,17 @@ namespace Russsiq\Assistant\Support;
 use Artisan;
 use DB;
 use EnvManager;
+use SplFileInfo;
 
 use Illuminate\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 use Russsiq\Assistant\Exceptions\InstallerFailed;
+use Russsiq\Assistant\Services\Abstracts\AbstractBeforeInstalled;
 use Russsiq\Assistant\Support\Contracts\InstallerContract;
 
-use Russsiq\Assistant\Services\Abstracts\AbstractBeforeInstalled;
+use Symfony\Component\Finder\Finder;
 
 class Installer implements InstallerContract
 {
@@ -255,6 +257,58 @@ class Installer implements InstallerContract
     protected function createBeforeInstalled(string $class): AbstractBeforeInstalled
     {
         return new $class($this->app);
+    }
+
+    public function copyDirectories()
+    {
+        $directories = config('assistant.installer.directories');
+
+        if (is_array($directories) and count($directories)) {
+            $filesystem = $this->app->make('files');
+
+            foreach ($directories as $fromDir => $toDir) {
+                $this->copyDirectory($fromDir, $toDir, $filesystem);
+            }
+        }
+    }
+
+    public function copyDirectory(string $fromDir, string $toDir, $filesystem = null)
+    {
+        $filesystem = $filesystem ?: $this->app->make('files');
+
+        collect(Finder::create()->directories()->in($fromDir)->sortByName())
+            ->each(function (SplFileInfo $directory) use ($toDir, $filesystem) {
+                $filesystem->copyDirectory(
+                    $directory->getRealPath(),
+                    $toDir.DS.$directory->getRelativePath().DS.$directory->getBasename()
+                );
+            });
+
+        collect(Finder::create()->files()->in($fromDir)->depth(0)->ignoreDotFiles(true)->sortByName())
+            ->each(function (SplFileInfo $file) use ($toDir, $filesystem) {
+                $filesystem->copy(
+                    $file->getRealPath(),
+                    $toDir.DS.$file->getFilename()
+                );
+            });
+    }
+
+    // Artisan::call('storage:link');
+    public function createSymbolicLinks()
+    {
+        $symlinks = config('assistant.installer.symlinks');
+
+        if (is_array($symlinks) and count($symlinks)) {
+            $filesystem = $this->app->make('files');
+
+            foreach ($symlinks as $target => $link) {
+                clearstatcache(true, $link);
+
+                if (! $filesystem->exists($link)) {
+                    $filesystem->link($target, $link);
+                }
+            }
+        }
     }
 
     /**
