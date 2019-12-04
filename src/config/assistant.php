@@ -73,8 +73,7 @@ return [
 
         // Создание ссылок на директории: target => link.
         'symlinks' => [
-            // storage_path('app/public') => public_path('storage'),
-            storage_path('app/uploads') => base_path('uploads'),
+            storage_path('app/public') => public_path('storage'),
 
         ],
 
