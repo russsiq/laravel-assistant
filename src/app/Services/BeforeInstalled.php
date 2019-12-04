@@ -63,7 +63,18 @@ class BeforeInstalled extends AbstractBeforeInstalled
      */
     protected function validator(array $data): ValidatorContract
     {
-        return validator($data, [
+        return validator($data, $this->rules());
+    }
+
+    /**
+     * Получить правила валидации,
+     * применяемые к входящим данным запроса.
+     *
+     * @return array
+     */
+    protected function rules(): array
+    {
+        return [
             // // Пример возвращаемых данных.
             // 'SOME_VAR' => [
             //     'required',
@@ -71,6 +82,6 @@ class BeforeInstalled extends AbstractBeforeInstalled
             //
             // ],
 
-        ]);
+        ];
     }
 }
