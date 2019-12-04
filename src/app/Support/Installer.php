@@ -257,17 +257,17 @@ class Installer implements InstallerContract
     }
 
     /**
-     * Применить замыкание, если переданное значение `$value` правдиво.
+     * Применить замыкание, если переданное условие `$condition` правдиво.
      *
-     * @param  bool  $value
+     * @param  bool  $condition
      * @param  callable  $callback
      *
      * @return self
      */
-    public function when(bool $value, $callback): InstallerContract
+    public function when(bool $condition, $callback): InstallerContract
     {
-        if ($value) {
-            $callback($this, $value);
+        if ($condition) {
+            $callback($this, $condition);
         }
 
         return $this;
