@@ -5,7 +5,9 @@ return [
     'log_events' => env('ASSISTENT_LOG_EVENTS', false),
 
     // Настройки почтовых уведомлений о событиях.
-    'mail' => [],
+    'mail' => [
+        //
+    ],
 
     // Настройки Архивариуса.
     'archivist' => [
@@ -63,6 +65,7 @@ return [
         'seeds' => [
             'database' => 'DatabaseSeeder',
             'test' => 'TestContentSeeder',
+
         ],
 
         // Копирование директорий: fromDir, toDir.
