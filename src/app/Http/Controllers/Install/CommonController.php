@@ -6,8 +6,12 @@ use Artisan;
 use EnvManager;
 use Installer;
 
+use Throwable;
+
 use Russsiq\Assistant\Http\Controllers\BaseController;
 use Russsiq\Assistant\Http\Requests\Install\CommonRequest;
+
+use Illuminate\Validation\ValidationException;
 
 class CommonController extends BaseController
 {
@@ -22,7 +26,6 @@ class CommonController extends BaseController
         return $this->makeResponse('install.common', [
             'APP_URL' => url('/'),
             'email' => 'admin@'.request()->getHttpHost(),
-            'themes' => collect(select_dir('themes'))->map('theme_version')->filter(),
         ]);
     }
 
@@ -31,19 +34,40 @@ class CommonController extends BaseController
         $data = $request->all();
 
         try {
-            Installer::registerOwner($data);
-        } catch (\Exception $e) {
+            // Выполняем копирование необходимх директорий.
+            Installer::copyDirectories();
+
+            // Создаем ссылки на необходимые директории.
+            Installer::createSymbolicLinks();
+
+            $response = Installer::beforeInstalled($request);
+
+        } catch (ValidationException $ex) {
+
+            throw $ex;
+        } catch (Throwable $e) {
             return redirect()
                 ->back()
                 ->withInput()
                 ->withErrors([
-                    'database' => $e->getMessage()
+                    'common' => $e->getMessage()
                 ]);
         }
 
+        // Finaly set to `.env` variables
         EnvManager::setMany(array_merge($data, [
+                // Режим отладки приложения.
+                'APP_DEBUG' => $data['APP_DEBUG'],
+
                 // Теперь система будет считаться установленной.
                 'APP_INSTALLED_AT' => date('Y-m-d H:i:s'),
+
+                // Название сайта.
+                'APP_NAME' => $data['APP_NAME'],
+
+                // Ссылка на главную страницу сайта.
+                'APP_URL' => $data['APP_URL'],
+                
             ]))
             ->save();
 
@@ -53,6 +77,6 @@ class CommonController extends BaseController
         $exit_code = Artisan::call('route:clear');
         $exit_code = Artisan::call('view:clear');
 
-        return redirect('/');
+        return $response;
     }
 }
