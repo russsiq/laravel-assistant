@@ -7,9 +7,13 @@ use DB;
 use EnvManager;
 
 use Illuminate\Foundation\Application;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
 use Russsiq\Assistant\Exceptions\InstallerFailed;
 use Russsiq\Assistant\Support\Contracts\InstallerContract;
+
+use Russsiq\Assistant\Services\Abstracts\AbstractBeforeInstalled;
 
 class Installer implements InstallerContract
 {
@@ -230,6 +234,27 @@ class Installer implements InstallerContract
         }
 
         return Artisan::output();
+    }
+
+    /**
+     * [beforeInstalled description]
+     *
+     * @param  Request  $request
+     *
+     * @return RedirectResponse
+     */
+    public function beforeInstalled(Request $request): RedirectResponse
+    {
+        $provider = $this->createBeforeInstalled(
+            config('assistant.installer.before-installed')
+        );
+
+        return $provider->handle($request);
+    }
+
+    protected function createBeforeInstalled(string $class): AbstractBeforeInstalled
+    {
+        return new $class($this->app);
     }
 
     /**
