@@ -3,7 +3,6 @@
 namespace Russsiq\Assistant\Http\Requests\Install;
 
 use Russsiq\Assistant\Http\Requests\Request;
-use Russsiq\Assistant\Exceptions\InstallerFailed;
 
 class CommonRequest extends Request
 {
@@ -18,15 +17,18 @@ class CommonRequest extends Request
             '_token',
             '_method',
             'submit',
-        ]);
+            'APP_INSTALLED_AT',
 
-        if (empty($input['original_theme'])) {
-            $input['APP_THEME'] = Str::slug($this->input('APP_NAME', 'default'));
-        }
+        ]);
 
         return $this->replace($input)
             ->merge([
-                //
+                // Режим отладки приложения.
+                'APP_DEBUG' => $input['APP_DEBUG'] ?? false,
+
+                // Ссылка на главную страницу сайта.
+                'APP_URL' => $input['APP_URL'] ?? url('/'),
+
             ])
             ->all();
     }
@@ -39,59 +41,26 @@ class CommonRequest extends Request
     public function rules()
     {
         return [
+            // Режим отладки приложения.
+            'APP_DEBUG' => [
+                'required',
+                'boolean',
+
+            ],
+
+            // Название сайта.
             'APP_NAME' => [
                 'required',
                 'string',
+
             ],
 
-            'APP_THEME' => [
+            // Ссылка на главную страницу сайта.
+            'APP_URL' => [
                 'required',
-                'string',
-                'in:'.implode(',', select_dir('themes')),
+                'url',
+
             ],
-
-            'name' => [
-                'required',
-                'string',
-                'between:3,255',
-            ],
-
-            'email' => [
-                'required',
-                'string',
-                'between:6,255',
-                'email',
-                'unique:users',
-            ],
-
-            'password' => [
-                'required',
-                'string',
-                'between:6,255',
-            ],
-
-            'original_theme' => [
-                'sometimes',
-                'boolean',
-            ],
-
-        ];
-    }
-
-    /**
-     * Get custom attributes for validator errors.
-     *
-     * @return array
-     */
-    public function attributes()
-    {
-        return [
-            'APP_NAME' => __('APP_NAME'),
-            'APP_THEME' => __('APP_THEME'),
-            'name' => __('common.name'),
-            'email' => __('common.email'),
-            'password' => __('common.password'),
-
         ];
     }
 }
