@@ -65,6 +65,19 @@ return [
             'test' => 'TestContentSeeder',
         ],
 
+        // Копирование директорий: fromDir, toDir.
+        'directories' => [
+            // 'fromDir' => 'toDir',
+
+        ],
+
+        // Создание ссылок на директории: target => link.
+        'symlinks' => [
+            // storage_path('app/public') => public_path('storage'),
+            storage_path('app/uploads') => base_path('uploads'),
+
+        ],
+
         'before-installed' => '\\Russsiq\\Assistant\\Services\\BeforeInstalled',
 
     ],
