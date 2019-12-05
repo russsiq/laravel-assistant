@@ -95,9 +95,9 @@ class DatabaseRequest extends Request
      */
     public function messages()
     {
-        return [
-            //
-        ];
+        $trans = trans('assistant::install.forms.validation');
+
+        return is_array($trans) ? $trans : [];
     }
 
     /**
@@ -107,15 +107,8 @@ class DatabaseRequest extends Request
      */
     public function attributes()
     {
-        return [
-            'DB_CONNECTION' => __('DB_CONNECTION'),
-            'DB_HOST' => __('DB_HOST'),
-            'DB_PORT' => __('DB_PORT'),
-            'DB_DATABASE' => __('DB_DATABASE'),
-            'DB_PREFIX' => __('DB_PREFIX'),
-            'DB_USERNAME' => __('DB_USERNAME'),
-            'DB_PASSWORD' => __('DB_PASSWORD'),
+        $trans = trans('assistant::install.forms.attributes');
 
-        ];
+        return is_array($trans) ? $trans : [];
     }
 }

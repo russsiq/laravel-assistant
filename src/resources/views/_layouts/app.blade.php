@@ -2,7 +2,7 @@
 <html lang="{{ app()->getLocale() }}">
 
 <head>
-    <title>@yield('action_title') - @lang('header.title')</title>
+    <title>@lang("assistant::$master.headers.$stage") - @lang('assistant::assistant.title')</title>
     <meta charset="utf-8" />
     <meta http-equiv="Cache-Control" content="no-cache" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -17,7 +17,7 @@
 <body>
     <div id="app" class="container">
         <div class="assistant">
-            <h1 class="assistant__header">Ассистент приложения</h1>
+            <h1 class="assistant__header">@lang('assistant::assistant.title')</h1>
             <div class="assistant__body">
                 <aside class="assistant__aside">
                     <ul class="aside__list">
@@ -25,7 +25,7 @@
                             <li class="aside_list__item">
                                 <a href="{{ route("assistant.$key.welcome") }}"
                                     class="aside_list__action {{ $key === $master ? 'active' : '' }} {{ ($key === 'install' and $installed) ? 'disabled' : '' }}"
-                                >@lang("aside.$key")</a>
+                                >@lang("assistant::assistant.aside_items.$key")</a>
                             </li>
                         @endforeach
                     </ul>
@@ -36,7 +36,7 @@
                         @csrf
 
                         <div class="form__header">
-                            <h2>@lang('header.menu.'.$stage)</h2>
+                            <h2>@lang("assistant::$master.headers.$stage")</h2>
                         </div>
 
                         <div class="form__body">
@@ -45,9 +45,9 @@
 
                         <div class="form__footer">
                             @if ($onFinishStage)
-                                <button type="submit" class="btn ml-auto">@lang('common.btn.finish')</button>
+                                <button type="submit" class="btn ml-auto">@lang('assistant::assistant.buttons.finish')</button>
                             @else
-                                <button type="submit" class="btn ml-auto">@lang('common.btn.next')</button>
+                                <button type="submit" class="btn ml-auto">@lang('assistant::assistant.buttons.next')</button>
                             @endif
                         </div>
                     </form>

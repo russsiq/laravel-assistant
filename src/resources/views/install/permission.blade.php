@@ -1,18 +1,17 @@
 @extends('assistant::_layouts.app')
 
-@section('action_title', __('header.menu.permission'))
-
 @section('card_body')
-	<p>@lang('perm.textblock')</p>
+	@lang('assistant::install.descriptions.permission')
+
 	<fieldset>
-		<table class="table" style="vertical-align:top">
+		<table class="table">
 			<thead>
 				<tr>
-					<th>@lang('perm.requirements')</th>
+					<th>@lang('assistant::install.strings.requirements')</th>
 					<th></th>
-					<th>@lang('perm.globals')</th>
+					<th>@lang('assistant::install.strings.globals')</th>
 					<th></th>
-					<th colspan="3">@lang('perm.files')</th>
+					<th colspan="3">@lang('assistant::install.strings.files')</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -22,7 +21,7 @@
 							<tbody>
 								@foreach ($requirements as $key => $value)
 									<tr>
-										<td>@lang('perm.requirements.'.$key)</td>
+										<td>@lang('assistant::install.strings.'.$key)</td>
 										<td><b class="text-{{ $value ? 'success' : 'danger' }}">{{ $value ? '✓' : 'X' }}</b></td>
 									</tr>
 								@endforeach
@@ -37,8 +36,8 @@
 							<tbody>
 								@foreach ($globals as $key => $flag)
 									<tr>
-										<td>@lang($key)</td>
-										<td><b class="float-right text-{{ $flag ? 'success' : 'danger' }}">{{ $flag ? '✓' : 'X' }}</b></td>
+										<td>{{ $key }}</td>
+										<td><b class="text-{{ $flag ? 'success' : 'danger' }}">{{ $flag ? '✓' : 'X' }}</b></td>
 									</tr>
 								@endforeach
 							</tbody>
@@ -62,11 +61,6 @@
 					</td>
 				</tr>
 			</tbody>
-			<tfoot>
-				<tr>
-					<td colspan="5" class="p-0">@lang('perm.textblock_2')</td>
-				</tr>
-			</tfoot>
 		</table>
 	</fieldset>
 @endsection

@@ -13,7 +13,7 @@ use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Route;
 
-class AssistantServiceProvider extends ServiceProvider// implements DeferrableProvider
+class AssistantServiceProvider extends ServiceProvider // implements DeferrableProvider
 {
     /**
      * Все синглтоны (одиночки) контейнера,
@@ -97,8 +97,7 @@ class AssistantServiceProvider extends ServiceProvider// implements DeferrablePr
     protected function loadAssistantFiles()
     {
         $this->loadRoutesFrom(self::SOURCE_DIR.'routes/web.php');
-        $this->loadJsonTranslationsFrom(self::SOURCE_DIR.'resources/lang');
-        // $this->loadTranslationsFrom(self::SOURCE_DIR.'resources/lang', 'assistant');
+        $this->loadTranslationsFrom(self::SOURCE_DIR.'resources/lang', 'assistant');
         $this->loadViewsFrom(self::SOURCE_DIR.'resources/views', 'assistant');
     }
 

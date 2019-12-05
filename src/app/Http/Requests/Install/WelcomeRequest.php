@@ -14,7 +14,7 @@ class WelcomeRequest extends Request
     public function rules()
     {
         return [
-            'agree' => [
+            'licence' => [
                 'accepted'
             ],
 
@@ -28,10 +28,9 @@ class WelcomeRequest extends Request
      */
     public function messages()
     {
-        return [
-            'agree.*' => __('msg.not_accept_licence'),
+        $trans = trans('assistant::install.forms.validation');
 
-        ];
+        return is_array($trans) ? $trans : [];
     }
 
     /**
@@ -41,8 +40,8 @@ class WelcomeRequest extends Request
      */
     public function attributes()
     {
-        return [
-            //
-        ];
+        $trans = trans('assistant::install.forms.attributes');
+
+        return is_array($trans) ? $trans : [];
     }
 }
