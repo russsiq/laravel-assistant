@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 
-    @include('assistant::themes.default')
+    @include('assistant::_themes.default')
 
     <link href="{{ asset('favicon.ico') }}" rel="icon" type="image/x-icon" />
 </head>

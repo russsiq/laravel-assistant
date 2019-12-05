@@ -292,26 +292,37 @@
     pre,
     samp {
         font-family: var(--font-family-monospace);
-        font-size: 1em;
+        font-size: 90%;
+    }
+
+    code,
+    kbd,
+    mark {
+        padding: 2px 4px;
+        font-size: 90%;
+        word-break: break-word;
+        border-radius: 2px;
     }
 
     code {
-        padding: 2px 4px;
-        font-size: 90%;
         color: var(--pink);
         background-color: #f9f2f4;
-        word-break: break-word;
     }
 
-    .small code,
     small code {
         font-size: 100%;
     }
 
-    .mark,
+    kbd {
+        color: var(--light);
+        background-color: var(--dark);
+        white-space: nowrap;
+    }
+
     mark {
-        padding: .2em;
-        background-color: #fcf8e3;
+        color: var(--light);
+        background-color: var(--yellow);
+        white-space: nowrap;
     }
 
     ol.data {
