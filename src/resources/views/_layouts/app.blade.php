@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="{{ app()->getLocale() }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
     <title>@lang("assistant::$master.headers.$stage") - @lang("assistant::assistant.sections.$master") - @lang('assistant::assistant.title')</title>
@@ -7,7 +7,6 @@
     <meta http-equiv="Cache-Control" content="no-cache" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-    <meta name="csrf-token" content="{{ csrf_token() }}" />
 
     @include('assistant::_themes.default')
 
@@ -44,11 +43,7 @@
                         </div>
 
                         <div class="form__footer">
-                            @if ($onFinishStage)
-                                <button type="submit" class="btn ml-auto">@lang('assistant::assistant.buttons.finish')</button>
-                            @else
-                                <button type="submit" class="btn ml-auto">@lang('assistant::assistant.buttons.next')</button>
-                            @endif
+                            <button type="submit" class="btn ml-auto">@lang('assistant::assistant.buttons.'.($onFinishStage ? 'finish' : 'next'))</button>
                         </div>
                     </form>
                 </main>
