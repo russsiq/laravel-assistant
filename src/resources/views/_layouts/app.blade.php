@@ -2,7 +2,7 @@
 <html lang="{{ app()->getLocale() }}">
 
 <head>
-    <title>@lang("assistant::$master.headers.$stage") - @lang('assistant::assistant.title')</title>
+    <title>@lang("assistant::$master.headers.$stage") - @lang("assistant::assistant.sections.$master") - @lang('assistant::assistant.title')</title>
     <meta charset="utf-8" />
     <meta http-equiv="Cache-Control" content="no-cache" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -21,11 +21,11 @@
             <div class="assistant__body">
                 <aside class="assistant__aside">
                     <ul class="aside__list">
-                        @foreach (['install', 'update', 'archive', 'clean'] as $key)
+                        @foreach (trans("assistant::assistant.sections") as $section => $title)
                             <li class="aside_list__item">
-                                <a href="{{ route("assistant.$key.welcome") }}"
-                                    class="aside_list__action {{ $key === $master ? 'active' : '' }} {{ ($key === 'install' and $installed) ? 'disabled' : '' }}"
-                                >@lang("assistant::assistant.aside_items.$key")</a>
+                                <a href="{{ route("assistant.$section.welcome") }}"
+                                    class="aside_list__action {{ $section === $master ? 'active' : '' }} {{ ($section === 'install' and $installed) ? 'disabled' : '' }}"
+                                >{{ $title }}</a>
                             </li>
                         @endforeach
                     </ul>

@@ -3,7 +3,7 @@
 return [
     'title' => 'Ассистент приложения',
 
-    'aside_items' => [
+    'sections' => [
         'archive' => 'Архивация',
         'clean' => 'Очистка',
         'install' => 'Установка',
