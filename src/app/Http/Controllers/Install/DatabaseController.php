@@ -25,14 +25,28 @@ class DatabaseController extends BaseController
             $messages = [
                 'migrate' => Installer::migrate(),
                 'seeds' => [
-                    Installer::seed('DatabaseSeeder'),
+                    //
                 ],
+
             ];
 
-            Installer::when($data['test_seed'], function($installer) use (&$messages) {
-                $messages['seeds'][] = $installer->seed('TestContentSeeder');
-            });
+            Installer::when(
+                config('assistant.installer.seeds.database', false),
+                function ($installer) use (&$messages) {
+                    $messages['seeds'][] = $installer->seed(
+                        config('assistant.installer.seeds.database')
+                    );
+                }
+            );
 
+            Installer::when(
+                $data['test_seed'] && config('assistant.installer.seeds.test', false),
+                function ($installer) use (&$messages) {
+                    $messages['seeds'][] = $installer->seed(
+                        config('assistant.installer.seeds.test', false)
+                    );
+                }
+            );
         } catch (\Exception $e) {
             return redirect()
                 ->back()
