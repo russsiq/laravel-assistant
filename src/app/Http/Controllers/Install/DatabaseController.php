@@ -17,12 +17,16 @@ class DatabaseController extends BaseController
 
     public function store(DatabaseRequest $request)
     {
+        // Используем только те данные,
+        // для которых существуют правила валидации.
         $data = $request->validated();
 
         try {
+            // Выполнить проверку подключения к БД.
             Installer::checkConnection($data);
 
             $messages = [
+                // Применить миграции.
                 'migrate' => Installer::migrate(),
                 'seeds' => [
                     //
@@ -30,6 +34,7 @@ class DatabaseController extends BaseController
 
             ];
 
+            // Наполнить БД начальными данными.
             Installer::when(
                 config('assistant.installer.seeds.database', false),
                 function ($installer) use (&$messages) {
@@ -39,6 +44,7 @@ class DatabaseController extends BaseController
                 }
             );
 
+            // Наполнить БД фиктивными данными.
             Installer::when(
                 $data['test_seed'] && config('assistant.installer.seeds.test', false),
                 function ($installer) use (&$messages) {
