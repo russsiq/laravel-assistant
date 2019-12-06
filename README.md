@@ -59,6 +59,8 @@ php artisan vendor:publish --provider="Russsiq\Assistant\AssistantServiceProvide
 
 ### Краткое описание мастеров
 
+![Assistant](screenshot.png)
+
 #### Установщик
 Состоит из следующих шагов:
  - **Приветствие** - экран с краткой вступительной речью и обязательным принятием лицензионного соглашения.
