@@ -20,6 +20,13 @@ use Symfony\Component\Finder\Finder;
 class Installer implements InstallerContract
 {
     /**
+     * Расположение класса финальной стадии Установщика.
+     *
+     * @var string
+     */
+    const DEFAULT_BEFORE_INSTALLED = '\Russsiq\Assistant\Services\BeforeInstalled';
+
+    /**
      * Экземпляр приложения.
      *
      * @var Application
@@ -248,7 +255,7 @@ class Installer implements InstallerContract
     public function beforeInstalled(Request $request): RedirectResponse
     {
         $provider = $this->createBeforeInstalled(
-            config('assistant.installer.before-installed')
+            config('assistant.installer.before-installed', self::DEFAULT_BEFORE_INSTALLED)
         );
 
         return $provider->handle($request);
