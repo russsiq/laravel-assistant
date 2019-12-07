@@ -2,6 +2,7 @@
 
 namespace Russsiq\Assistant;
 
+use Russsiq\Assistant\Commands\BeforeInstalledMakeCommand;
 use Russsiq\Assistant\Http\Middleware\AlreadyInstalled;
 use Russsiq\Assistant\Http\Middleware\CheckEnvFileExists;
 use Russsiq\Assistant\Support\Archivist;
@@ -50,6 +51,9 @@ class AssistantServiceProvider extends ServiceProvider // implements DeferrableP
         if ($this->app->runningInConsole()) {
             // Публикация ресурсов.
             $this->publishAssistantFiles();
+
+            // Регистрация команд консоли Artisan.
+            $this->registerAssistantCommands();
         }
     }
 
@@ -123,5 +127,17 @@ class AssistantServiceProvider extends ServiceProvider // implements DeferrableP
         $this->publishes([
             self::SOURCE_DIR.'resources/views' => resource_path('views/vendor/assistant'),
         ], 'views');
+    }
+
+    /**
+     * Регистрация команд консоли Artisan.
+     *
+     * @return void
+     */
+    protected function registerAssistantCommands()
+    {
+        $this->commands([
+            BeforeInstalledMakeCommand::class,
+        ]);
     }
 }
