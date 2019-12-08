@@ -723,6 +723,11 @@
         color: var(--white);
     }
 
+    .alert-list {
+        margin: 0;
+        padding: 0;
+    }
+
     .alert-link {
         font-weight: normal;
         color: var(--white);
