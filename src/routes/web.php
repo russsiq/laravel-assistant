@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Описание посредников:
+ *  - 'can:use-assistant' - Текущий пользователь имеет право воспользоваться Ассистентом приложения.
+ *  - 'already-installed' - Проверить, что приложение установлено.
+ */
+
 Route::prefix('assistant')
     ->namespace('Russsiq\Assistant\Http\Controllers')
     ->middleware([
@@ -9,7 +15,7 @@ Route::prefix('assistant')
         Route::prefix('archive')
             ->namespace('Archive')
             ->middleware([
-                //
+                'can:use-assistant',
             ])
             ->group(function () {
                 // 1. Welcome
@@ -20,7 +26,7 @@ Route::prefix('assistant')
         Route::prefix('clean')
             ->namespace('Clean')
             ->middleware([
-                //
+                'can:use-assistant',
             ])
             ->group(function () {
                 // 1. Welcome
@@ -58,7 +64,7 @@ Route::prefix('assistant')
         Route::prefix('update')
             ->namespace('Update')
             ->middleware([
-                //
+                'can:use-assistant',
             ])
             ->group(function () {
                 // 1. Welcome

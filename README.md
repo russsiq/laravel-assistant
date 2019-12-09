@@ -59,6 +59,29 @@ php artisan vendor:publish --provider="Russsiq\Assistant\AssistantServiceProvide
 php artisan vendor:publish --provider="Russsiq\Assistant\AssistantServiceProvider" --tag=views --force
 ```
 
+### Ограничение прав доступа к разделам Ассистента
+
+Следующие мастера имеют посредника `can:use-assistant`: Мастер обновлений, Архивариус, Чистильщик. Вам необходимо самостоятельно описать правила доступа в поставщике вашего приложения `App\Providers\AuthServiceProvider`:
+
+```php
+/**
+ * Регистрация любых аутентификационных / авторизационных служб.
+ *
+ * @return void
+ */
+public function boot()
+{
+    $this->registerPolicies();
+
+    // Определить посредника, проверяющего,
+    // что текущий пользователь имеет право
+    // воспользоваться Ассистентом приложения.
+    Gate::define('use-assistant', function ($user) {
+        return $user->isAdmin;
+    });
+}
+```
+
 ### Краткое описание мастеров
 
 На изображении ниже представлен общий вид Ассистента приложения. Каждый из мастеров состоит из нескольких шагов. Каждый из шагов может быть представлен несколькими экранами: например, экран с вводом данных и экран, отображающий результат.
