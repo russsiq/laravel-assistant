@@ -32,6 +32,10 @@ Route::prefix('assistant')
                 // 1. Welcome
                 Route::get('/', 'WelcomeController@index')->name('assistant.clean.welcome');
                 Route::post('/', 'WelcomeController@store')->name('assistant.clean.store');
+
+                // 2. Сomplete
+                Route::get('/complete', 'WelcomeController@complete')->name('assistant.clean.complete');
+                Route::post('/complete', 'WelcomeController@redirect')->name('assistant.clean.redirect');
             });
 
         Route::prefix('install')
