@@ -2,6 +2,8 @@
 
 namespace Russsiq\Assistant\Http\Controllers\Clean;
 
+use Cleaner;
+
 use Russsiq\Assistant\Http\Controllers\BaseController;
 use Russsiq\Assistant\Http\Requests\Clean\CleanRequest;
 
@@ -14,12 +16,9 @@ class WelcomeController extends BaseController
 
     public function store(CleanRequest $request)
     {
-        $messages = [
-            'clean' => 'Выполнено',
-            'cache' => 'Выполнено',
-            'optimize' => 'Выполнено',
-
-        ];
+        $messages = Cleaner::proccess(
+            array_keys($request->all())
+        );
 
         return redirect()
             ->route('assistant.clean.complete')

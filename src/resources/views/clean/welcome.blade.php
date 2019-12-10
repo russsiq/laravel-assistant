@@ -14,11 +14,18 @@
 	@endif
 
 	<fieldset>
-		<legend>@lang('assistant::clean.forms.legends.clean')</legend>
-		<div class="form-group{{ $errors->has('clean') ? ' has-error' : '' }}">
-			<label><input type="checkbox" name="clean[]" value="1" /> @lang('welcome.licence.accept')</label>
-            @if ($errors->has('clean'))
-				<div class="invalid-feedback d-block">{{ $errors->first('clean') }}</div>
+		<legend>@lang('assistant::clean.forms.legends.clear')</legend>
+		<div class="form-group{{ $errors->has('clear_cache') ? ' has-error' : '' }}">
+			<label><input type="checkbox" name="clear_cache" value="1" /> @lang('assistant::clean.forms.attributes.clear_cache')</label>
+            @if ($errors->has('clear_cache'))
+				<div class="invalid-feedback d-block">{{ $errors->first('clear_cache') }}</div>
+			@endif
+		</div>
+
+		<div class="form-group{{ $errors->has('clear_view') ? ' has-error' : '' }}">
+			<label><input type="checkbox" name="clear_view" value="1" /> @lang('assistant::clean.forms.attributes.clear_view')</label>
+            @if ($errors->has('clear_view'))
+				<div class="invalid-feedback d-block">{{ $errors->first('clear_view') }}</div>
 			@endif
 		</div>
 	</fieldset>

@@ -5,6 +5,7 @@ namespace Russsiq\Assistant\Support;
 use Artisan;
 
 use Illuminate\Foundation\Application;
+use Illuminate\Support\Str;
 
 use Russsiq\Assistant\Support\Contracts\CleanerContract;
 
@@ -30,11 +31,29 @@ class Cleaner implements CleanerContract
     /**
      * Очистка кэша приложения.
      *
-     * @return void
+     * @return string
      */
     public function clearCache()
     {
-        // code...
+        return $this->artisanCall('cache:clear');
+    }
+
+    /**
+     * Очистка кэша по ключу.
+     *
+     * @return string
+     */
+    public function clearCacheByKey(string $key)
+    {
+        foreach (explode('|', $key) as $k) {
+            cache()->forget($k);
+        }
+
+        if (! request()->ajax()) {
+            return redirect()->back()->withStatus(
+                trans('assistant::clean.messages.success.cache_cleared')
+            );
+        }
     }
 
     /**
@@ -60,11 +79,23 @@ class Cleaner implements CleanerContract
     /**
      * Очистка скомпилированных шаблонов приложения.
      *
-     * @return void
+     * @return string
      */
     public function clearView()
     {
-        // code...
+        return $this->artisanCall('view:clear');
+    }
+
+    /**
+     * Комплексная очистка.
+     *
+     * @return void
+     */
+    public function complexClear()
+    {
+        return $this->proccess([
+
+        ]);
     }
 
     /**
@@ -74,7 +105,8 @@ class Cleaner implements CleanerContract
      */
     public function complexOptimize()
     {
-        // code...
+        $this->complexClear();
+
     }
 
     /**
@@ -88,6 +120,38 @@ class Cleaner implements CleanerContract
     {
         Artisan::call($name);
 
-        return Artisan::output();
+        return trim(Artisan::output());
+    }
+
+    public function proccess(array $methods)
+    {
+        $messages = [];
+
+        foreach ($methods as $method) {
+            $messages[] = $this->{$method}();
+        }
+
+        return $messages;
+    }
+
+    /**
+     * Dynamically call the default driver instance.
+     *
+     * @param  string  $method
+     * @param  array  $parameters
+     *
+     * @return string
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function __call($method, $parameters)
+    {
+        $dinamic = Str::camel($method);
+
+        if (method_exists($this, $dinamic)) {
+            return $this->{$dinamic}(...$parameters);
+        }
+
+        throw new \InvalidArgumentException("Method [{$method}] missing from ".get_class($this));
     }
 }
