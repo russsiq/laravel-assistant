@@ -17,6 +17,13 @@ use Illuminate\Support\Facades\Route;
 class AssistantServiceProvider extends ServiceProvider // implements DeferrableProvider
 {
     /**
+     * Путь до директории с исходниками.
+     *
+     * @var string
+     */
+    const SOURCE_DIR = __DIR__.'/../';
+    
+    /**
      * Все синглтоны (одиночки) контейнера,
      * которые должны быть зарегистрированы.
      *
@@ -28,13 +35,6 @@ class AssistantServiceProvider extends ServiceProvider // implements DeferrableP
         'laravel-installer' => Installer::class,
         'laravel-updater' => Updater::class,
     ];
-
-    /**
-     * Путь до директории с исходниками.
-     *
-     * @var string
-     */
-    const SOURCE_DIR = __DIR__.'/../';
 
     /**
      * Bootstrap the application events.
