@@ -10,6 +10,6 @@
 			@endforeach
 		</fieldset>
 	@else
-		<div class="alert alert-danger">@lang('assistant::install.messages.denied_database_complete')</div>
+		<div class="alert alert-danger">@lang('assistant::assistant.messages.errors.denied_page')</div>
 	@endif
 @endsection

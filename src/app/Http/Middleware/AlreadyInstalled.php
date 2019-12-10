@@ -26,7 +26,7 @@ class AlreadyInstalled
         // Маркер, что приложение считается установленным.
         if (Installer::alreadyInstalled()) {
             return redirect('/')
-                ->withErrors('File `.env` already exists! Delete it and continue.');
+                ->withErrors(trans('assistant::install.messages.errors.already_installed'));
         }
 
         return $next($request);
