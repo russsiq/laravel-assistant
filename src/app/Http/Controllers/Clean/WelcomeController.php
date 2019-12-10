@@ -2,10 +2,8 @@
 
 namespace Russsiq\Assistant\Http\Controllers\Clean;
 
-use EnvManager;
-
 use Russsiq\Assistant\Http\Controllers\BaseController;
-use Russsiq\Assistant\Http\Requests\Clean\WelcomeRequest;
+use Russsiq\Assistant\Http\Requests\Clean\CleanRequest;
 
 class WelcomeController extends BaseController
 {
@@ -14,8 +12,27 @@ class WelcomeController extends BaseController
         return $this->makeResponse('clean.welcome');
     }
 
-    public function store(WelcomeRequest $request)
+    public function store(CleanRequest $request)
     {
-        // return redirect()->route('assistant.clean.permission');
+        $messages = [
+            'clean' => 'Выполнено',
+            'cache' => 'Выполнено',
+            'optimize' => 'Выполнено',
+
+        ];
+
+        return redirect()
+            ->route('assistant.clean.complete')
+            ->with(compact('messages'));
+    }
+
+    public function complete()
+    {
+        return $this->makeResponse('clean.complete');
+    }
+
+    public function redirect()
+    {
+        return redirect()->route('assistant.clean.welcome');
     }
 }
