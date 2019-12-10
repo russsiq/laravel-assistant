@@ -31,7 +31,7 @@ Route::prefix('assistant')
             ->group(function () {
                 // 1. Welcome
                 Route::get('/', 'WelcomeController@index')->name('assistant.clean.welcome');
-                Route::post('/', 'WelcomeController@store')->name('assistant.clean.welcome.store');
+                Route::post('/', 'WelcomeController@store')->name('assistant.clean.store');
             });
 
         Route::prefix('install')
