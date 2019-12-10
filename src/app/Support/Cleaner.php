@@ -2,6 +2,8 @@
 
 namespace Russsiq\Assistant\Support;
 
+use Artisan;
+
 use Illuminate\Foundation\Application;
 
 use Russsiq\Assistant\Support\Contracts\CleanerContract;
@@ -23,8 +25,6 @@ class Cleaner implements CleanerContract
     public function __construct(Application $app)
     {
         $this->app = $app;
-
-        dump('CLEANER');
     }
 
     /**
@@ -75,5 +75,19 @@ class Cleaner implements CleanerContract
     public function complexOptimize()
     {
         // code...
+    }
+
+    /**
+     * Запустить команду консоли Artisan.
+     *
+     * @param  string $name [description]
+     *
+     * @return string
+     */
+    protected function artisanCall(string $name): string
+    {
+        Artisan::call($name);
+
+        return Artisan::output();
     }
 }
