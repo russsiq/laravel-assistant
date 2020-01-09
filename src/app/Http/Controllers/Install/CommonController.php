@@ -67,7 +67,7 @@ class CommonController extends BaseController
 
                 // Ссылка на главную страницу сайта.
                 'APP_URL' => $data['APP_URL'],
-                
+
             ]))
             ->save();
 
