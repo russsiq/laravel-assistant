@@ -16,11 +16,25 @@ interface CleanerContract
     public function clearCache();
 
     /**
-     * Очистка кэша настроек приложения.
+     * Кэширование конфигураций приложения.
+     *
+     * @return void
+     */
+    public function cacheConfig();
+
+    /**
+     * Очистка кэша конфигураций приложения.
      *
      * @return void
      */
     public function clearConfig();
+
+    /**
+     * Кэширование маршрутов приложения.
+     *
+     * @return void
+     */
+    public function cacheRoute();
 
     /**
      * Очистка кэша маршрутов приложения.
