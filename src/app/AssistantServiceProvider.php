@@ -22,7 +22,7 @@ class AssistantServiceProvider extends ServiceProvider // implements DeferrableP
      * @var string
      */
     const SOURCE_DIR = __DIR__.'/../';
-    
+
     /**
      * Все синглтоны (одиночки) контейнера,
      * которые должны быть зарегистрированы.
