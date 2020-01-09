@@ -326,7 +326,7 @@ class Installer implements InstallerContract
      *
      * @return self
      */
-    public function when(bool $condition, $callback): InstallerContract
+    public function when(bool $condition, callable $callback): InstallerContract
     {
         if ($condition) {
             $callback($this, $condition);
