@@ -56,4 +56,13 @@ interface CleanerContract
      * @return void
      */
     public function complexOptimize();
+
+    /**
+     * Запустить внутренние методы очистки, кэширования, оптимизации.
+     *
+     * @param  array  $methods Массив методов.
+     *
+     * @return void
+     */
+    public function process(array $methods);
 }

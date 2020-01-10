@@ -239,7 +239,7 @@ class Cleaner implements CleanerContract
      */
     public function complexOptimize()
     {
-        $this->proccess([
+        $this->process([
             'clear_cache',
             'clear_view',
             'clear_compiled',
@@ -277,7 +277,14 @@ class Cleaner implements CleanerContract
         return $exitCode;
     }
 
-    public function proccess(array $methods)
+    /**
+     * Запустить внутренние методы очистки, кэширования, оптимизации.
+     *
+     * @param  array  $methods Массив методов.
+     *
+     * @return void
+     */
+    public function process(array $methods)
     {
         foreach ($methods as $method) {
             $this->{$method}();
