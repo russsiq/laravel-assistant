@@ -16,18 +16,22 @@ class WelcomeController extends BaseController
 
     public function store(CleanRequest $request)
     {
-        $messages = Cleaner::proccess(
-            array_keys($request->all())
-        );
+        // Отправляем в обработку Чистильщику
+        // только ключи из запроса.
+        Cleaner::proccess($request->keys());
 
-        return redirect()
-            ->route('assistant.clean.complete')
-            ->with(compact('messages'));
+        // Обратите внимание, что после кэширования маршрутов или кэширования конфигураций
+		// становится невозможным передача/получение сообщений через сессии.
+		// Таким образом, не отрабатывает метод `with`,
+		// относящийся к классу `Illuminate\Http\RedirectResponse`.
+        return redirect()->route('assistant.clean.complete');
     }
 
     public function complete()
     {
-        return $this->makeResponse('clean.complete');
+        return $this->makeResponse('clean.complete', [
+            'messages_cache_key' => Cleaner::getMessagesCacheKey()
+        ]);
     }
 
     public function redirect()
