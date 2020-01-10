@@ -3,6 +3,7 @@
 namespace Russsiq\Assistant\Support;
 
 use Artisan;
+use SplFileInfo;
 
 // use Illuminate\Console\Events\CommandFinished;
 use Illuminate\Contracts\Console\Kernel as ConsoleKernelContract;
@@ -18,6 +19,13 @@ use Symfony\Component\Console\Output\NullOutput;
 class Cleaner implements CleanerContract
 {
     /**
+     * Ключ кэша сообщений.
+     *
+     * @var string
+     */
+    const MESSAGES_KEY_CACHE = 'laravel-cleaner:messages';
+
+    /**
      * Экземпляр приложения.
      *
      * @var Application
@@ -25,21 +33,21 @@ class Cleaner implements CleanerContract
     protected $app;
 
     /**
-     * Экземпляр приложения.
+     * Экземпляр Ядра консоли.
      *
      * @var ConsoleKernelContract
      */
     protected $artisan;
 
     /**
-     * Экземпляр приложения.
+     * Экземпляр Коллекционера сообщений.
      *
      * @var MessageBag
      */
     protected $messages;
 
     /**
-     * Экземпляр приложения.
+     * Экземпляр Буфера вывода сообщений консоли.
      *
      * @var BufferedOutput
      */
@@ -61,25 +69,56 @@ class Cleaner implements CleanerContract
         $this->outputBuffer = $outputBuffer;
     }
 
-    public function getMessages()
+    /**
+     * Получить Ключ кэша сообщений.
+     *
+     * @return string
+     */
+    public static function getMessagesCacheKey(): string
     {
-        return cache()->pull('laravel-cleaner:messages');
+        return self::MESSAGES_KEY_CACHE;
+    }
+
+    /**
+     * Получить все сообщения по каждому ключу.
+     *
+     * @return array
+     */
+    public function getMessages(): array
+    {
+        return $this->messages->all();
+    }
+
+    /**
+     * Добавить сообщение в Коллекционер.
+     *
+     * @param  string  $key
+     * @param  string  $message
+     *
+     * @return void
+     */
+    public function addMessage(string $key, string $message)
+    {
+        cache()->put(
+            self::getMessagesCacheKey(),
+            $this->messages->add($key, $message)->all()
+        );
     }
 
     /**
      * Очистка кэша приложения.
      *
-     * @return string
+     * @return void
      */
     public function clearCache()
     {
-        return $this->artisanCall('cache:clear');
+        $this->artisanCall('cache:clear');
     }
 
     /**
      * Очистка кэша по ключу.
      *
-     * @return string
+     * @return void
      */
     public function clearCacheByKey(string $key)
     {
@@ -99,9 +138,19 @@ class Cleaner implements CleanerContract
      *
      * @return void
      */
+    public function clearCompiled()
+    {
+        $this->artisanCall('clear-compiled');
+    }
+
+    /**
+     * Очистка кэша конфигураций приложения.
+     *
+     * @return void
+     */
     public function cacheConfig()
     {
-        return $this->artisanCall('config:cache');
+        $this->artisanCall('config:cache');
     }
 
     /**
@@ -111,7 +160,7 @@ class Cleaner implements CleanerContract
      */
     public function clearConfig()
     {
-        return $this->artisanCall('config:clear');
+        $this->artisanCall('config:clear');
     }
 
     /**
@@ -121,7 +170,7 @@ class Cleaner implements CleanerContract
      */
     public function cacheRoute()
     {
-        return $this->artisanCall('route:cache');
+        $this->artisanCall('route:cache');
     }
 
     /**
@@ -131,7 +180,7 @@ class Cleaner implements CleanerContract
      */
     public function clearRoute()
     {
-        return $this->artisanCall('route:clear');
+        $this->artisanCall('route:clear');
     }
 
     /**
@@ -146,70 +195,41 @@ class Cleaner implements CleanerContract
 
     public function clearStatCache()
     {
-        clearstatcache();
+        if (function_exists('clearstatcache')) {
+            clearstatcache();
 
-        $this->messages->add('clear_stat_cache', 'File status cache cleared!');
-        cache()->put('laravel-cleaner:messages', $this->messages->all());
+            $this->addMessage('clear_stat_cache', 'File status cache cleared!');
+        }
     }
 
     public function clearXCache()
     {
-        if (function_exists('xcache_get')) {
+        if (function_exists('xcache_clear_cache')) {
             xcache_clear_cache(XC_TYPE_PHP);
 
-            $this->messages->add('clear_x_cache', 'XCache cleared!');
-            cache()->put('laravel-cleaner:messages', $this->messages->all());
+            $this->addMessage('clear_x_cache', 'XCache cleared!');
         }
     }
 
     public function clearOpCache()
     {
         if (function_exists('opcache_invalidate')) {
-            $filesystem = $this->app['files'];
-
-            collect($filesystem->allFiles([
-                base_path('app'),
-                base_path('bootstrap'),
-                base_path('resources'),
-                base_path('storage/framework/views'),
-            ]))->filter(function ($file) {
+            collect(
+                $this->app->make('files')
+                    ->allFiles([
+                        $this->app->basePath('app'),
+                        $this->app->basePath('bootstrap'),
+                        $this->app->basePath('resources'),
+                        $this->app->basePath('storage/framework/views'),
+                    ])
+            )->filter(function (SplFileInfo $file) {
                 return 'php' === $file->getExtension();
-            })->each(function ($file) {
+            })->each(function (SplFileInfo $file) {
                 opcache_invalidate($file->getRealPath(), true);
             });
 
-            $this->messages->add('clear_op_cache', 'OpCache cleared!');
-            cache()->put('laravel-cleaner:messages', $this->messages->all());
+            $this->addMessage('clear_op_cache', 'OpCache cleared!');
         }
-    }
-
-    /**
-     * Комплексная очистка.
-     *
-     * @return void
-     */
-    public function complexClear(): array
-    {
-        return $this->proccess([
-            'clear_stat_cache',
-
-            'clear_cache',
-            'clear_config',
-            'clear_route',
-            'clear_view',
-            // 'debugbar:clear',
-
-            'clear_x_cache',
-            'clear_op_cache',
-
-        ]);
-    }
-
-    public function complexCache()
-    {
-        return $this->proccess([
-
-        ]);
     }
 
     /**
@@ -219,66 +239,49 @@ class Cleaner implements CleanerContract
      */
     public function complexOptimize()
     {
-        $this->complexClear();
+        $this->proccess([
+            'clear_cache',
+            'clear_view',
+            'clear_compiled',
+            // 'debugbar:clear',
+
+            'clear_stat_cache',
+            'clear_x_cache',
+            'clear_op_cache',
+
+            'cache_config',
+            'cache_route',
+
+        ]);
     }
 
     /**
      * Запустить команду консоли Artisan.
      *
-     * @param  string $name [description]
+     * @param  string $name
+     * @param  array  $options
      *
-     * @return string
+     * @return int
      */
-    protected function artisanCall(string $name, array $options = [])
+    protected function artisanCall(string $name, array $options = []): int
     {
-        if (0 === $this->artisan->call($name, $options, $this->outputBuffer)) {
-            array_map(
-                function ($message) use ($name) {
-                    $this->messages->add($name, trim($message));
-                },
-                preg_split('/\r\n|\n|\r/', $this->outputBuffer->fetch(), null, PREG_SPLIT_NO_EMPTY)
-            );
+        $exitCode = $this->artisan->call($name, $options, $this->outputBuffer);
 
-            cache()->put('laravel-cleaner:messages', $this->messages->all());
-        }
+        array_map(
+            function ($message) use ($name) {
+                $this->addMessage($name, trim($message));
+            },
+            preg_split('/\r\n|\n|\r/', $this->outputBuffer->fetch(), null, PREG_SPLIT_NO_EMPTY)
+        );
+
+        return $exitCode;
     }
 
-    // /**
-    //  * Запустить команду консоли Artisan.
-    //  *
-    //  * @param  string $name [description]
-    //  *
-    //  * @return string
-    //  */
-    // protected function artisanCallSilent(string $name, array $options = [])
-    // {
-    //     $this->artisan->call($name, $options, new NullOutput);
-    //
-    //     $array = array_map(function ($message) use ($name) {
-    //             $this->messages->add($name, trim($message));
-    //         },
-    //
-    //         preg_split('/\r\n|\n|\r/', $this->outputBuffer->fetch(), null, PREG_SPLIT_NO_EMPTY)
-    //     );
-    //
-    //     dump([
-    //         $name => $this->messages->first($name)
-    //     ]);
-    // }
-
-    public function proccess(array $methods): array
+    public function proccess(array $methods)
     {
-        $messages = [];
-
         foreach ($methods as $method) {
-            if ($result = $this->{$method}()) {
-                foreach ((array) $result as $message) {
-                    $messages[] = $message;
-                }
-            }
+            $this->{$method}();
         }
-
-        return $messages;
     }
 
     /**
@@ -291,7 +294,7 @@ class Cleaner implements CleanerContract
      *
      * @throws \InvalidArgumentException
      */
-    public function __call($method, $parameters)
+    public function __call(string $method, array $parameters)
     {
         $dinamic = Str::camel($method);
 
@@ -299,6 +302,8 @@ class Cleaner implements CleanerContract
             return $this->{$dinamic}(...$parameters);
         }
 
-        throw new \InvalidArgumentException("Method [{$method}] missing from ".get_class($this));
+        throw new \InvalidArgumentException(
+            "Method [{$method}] missing from ".get_class($this)
+        );
     }
 }
