@@ -2,16 +2,18 @@
 
 namespace Russsiq\Assistant\Http\Requests\Clean;
 
+use Illuminate\Validation\Validator;
+
 use Russsiq\Assistant\Http\Requests\Request;
 
 class CleanRequest extends Request
 {
     /**
-     * Get data to be validated from the request.
+     * Подготовить данные для валидации.
      *
-     * @return array
+     * @return void
      */
-    public function validationData()
+    protected function prepareForValidation()
     {
         $input = $this->except([
             '_token',
@@ -19,14 +21,12 @@ class CleanRequest extends Request
             'submit',
         ]);
 
-        return $this->replace($input)
-            ->merge([
-
-            ])
-            ->all();
+        $this->replace($input);
     }
+
     /**
-     * Get the validation rules that apply to the request.
+     * Получить правила валидации,
+     * которые будут применены к запросу.
      *
      * @return array
      */
@@ -34,19 +34,22 @@ class CleanRequest extends Request
     {
         return [
             'clear_cache' => 'boolean',
+            'clear_config' => 'boolean',
+            'clear_route' => 'boolean',
             'clear_view' => 'boolean',
+            'clear_compiled' => 'boolean',
 
-            // 'cache' => 'array',
-            // 'cache.*' => 'required|boolean',
-            //
-            // 'optimize' => 'array',
-            // 'optimize.*' => 'required|boolean',
+            'cache_config' => 'boolean',
+            'cache_route' => 'boolean',
+
+            'complex_optimize' => 'boolean',
 
         ];
     }
 
     /**
-     * Get custom messages for validator errors.
+     * Получить пользовательские строки
+     * для формирования сообщений валидатора.
      *
      * @return array
      */
@@ -58,9 +61,8 @@ class CleanRequest extends Request
     }
 
     /**
-     * Get custom attributes for validator errors.
-     *
-     * NOTE: Не оборачивать в коллекции - это только усложнит код.
+     * Получить пользовательские имена атрибутов
+     * для формирования сообщений валидатора.
      *
      * @return array
      */
@@ -69,15 +71,24 @@ class CleanRequest extends Request
         $trans = trans('assistant::clean.forms.attributes');
 
         return is_array($trans) ? $trans : [];
+    }
 
-        $output = [];
-
-        foreach ($trans as $prefix => $child) {
-            foreach ($child as $key => $value) {
-                $output[$prefix.'.'.$key] = $value;
+    /**
+     * Надстройка экземпляра валидатора.
+     *
+     * @param  Validator  $validator
+     *
+     * @return void
+     */
+    public function withValidator($validator)
+    {
+        $validator->after(function (Validator $validator) {
+            if (empty($this->keys())) {
+                $validator->errors()->add(
+                    'isset_options',
+                    trans('assistant::clean.messages.errors.isset_options')
+                );
             }
-        }
-
-        return $output;
+        });
     }
 }
