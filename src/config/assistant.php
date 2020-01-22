@@ -86,7 +86,10 @@ return [
 
     // Настройки Мастера обновлений.
     'updater' => [
-        //
+        'download_path' => env('ASSISTANT_DOWNLOAD_PATH', storage_path('tmp')),
+        'repository_url' => 'https://api.github.com/repos/<vendor>/<name>/releases/latest',
+        'version_format' => env('ASSISTANT_VERSION_FORMAT', 'app_name-v__VERSION__.zip'),
+
     ],
 
 ];
