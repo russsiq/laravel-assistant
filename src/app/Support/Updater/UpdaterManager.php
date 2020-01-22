@@ -1,12 +1,12 @@
 <?php
 
-namespace Russsiq\Assistant\Support;
+namespace Russsiq\Assistant\Support\Updater;
 
 use Illuminate\Foundation\Application;
 
 use Russsiq\Assistant\Contracts\UpdaterContract;
 
-class Updater implements UpdaterContract
+class UpdaterManager implements UpdaterContract
 {
     /**
      * Экземпляр приложения.

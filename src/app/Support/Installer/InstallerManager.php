@@ -1,6 +1,6 @@
 <?php
 
-namespace Russsiq\Assistant\Support;
+namespace Russsiq\Assistant\Support\Installer;
 
 use Artisan;
 use DB;
@@ -17,7 +17,7 @@ use Russsiq\Assistant\Services\Abstracts\AbstractBeforeInstalled;
 
 use Symfony\Component\Finder\Finder;
 
-class Installer implements InstallerContract
+class InstallerManager implements InstallerContract
 {
     /**
      * Расположение класса финальной стадии Установщика.

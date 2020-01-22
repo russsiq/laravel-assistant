@@ -1,6 +1,6 @@
 <?php
 
-namespace Russsiq\Assistant\Support;
+namespace Russsiq\Assistant\Support\Cleaner;
 
 use Artisan;
 use SplFileInfo;
@@ -16,7 +16,7 @@ use Russsiq\Assistant\Contracts\CleanerContract;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\NullOutput;
 
-class Cleaner implements CleanerContract
+class CleanerManager implements CleanerContract
 {
     /**
      * Ключ кэша сообщений.

@@ -1,12 +1,12 @@
 <?php
 
-namespace Russsiq\Assistant\Support;
+namespace Russsiq\Assistant\Support\Archivist;
 
 use Illuminate\Foundation\Application;
 
 use Russsiq\Assistant\Contracts\ArchivistContract;
 
-class Archivist implements ArchivistContract
+class ArchivistManager implements ArchivistContract
 {
     /**
      * Экземпляр приложения.
