@@ -18,7 +18,7 @@ class DatabaseController extends BaseController
     public function store(DatabaseRequest $request)
     {
         // Используем только те данные,
-        // для которых существуют правила валидации.
+        // для которых описаны правила валидации.
         $data = $request->validated();
 
         try {
