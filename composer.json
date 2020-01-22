@@ -37,10 +37,10 @@
                 "Russsiq\\Assistant\\AssistantServiceProvider"
             ],
             "aliases": {
-                "Archivist": "Russsiq\\Assistant\\Support\\Facades\\Archivist",
-                "Cleaner": "Russsiq\\Assistant\\Support\\Facades\\Cleaner",
-                "Installer": "Russsiq\\Assistant\\Support\\Facades\\Installer",
-                "Updater": "Russsiq\\Assistant\\Support\\Facades\\Updater"
+                "Archivist": "Russsiq\\Assistant\\Facades\\Archivist",
+                "Cleaner": "Russsiq\\Assistant\\Facades\\Cleaner",
+                "Installer": "Russsiq\\Assistant\\Facades\\Installer",
+                "Updater": "Russsiq\\Assistant\\Facades\\Updater"
             }
         }
     },
