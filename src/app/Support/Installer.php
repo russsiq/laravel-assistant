@@ -11,9 +11,9 @@ use Illuminate\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
+use Russsiq\Assistant\Contracts\InstallerContract;
 use Russsiq\Assistant\Exceptions\InstallerFailed;
 use Russsiq\Assistant\Services\Abstracts\AbstractBeforeInstalled;
-use Russsiq\Assistant\Support\Contracts\InstallerContract;
 
 use Symfony\Component\Finder\Finder;
 

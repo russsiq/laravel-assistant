@@ -4,7 +4,7 @@ namespace Russsiq\Assistant\Support;
 
 use Illuminate\Foundation\Application;
 
-use Russsiq\Assistant\Support\Contracts\ArchivistContract;
+use Russsiq\Assistant\Contracts\ArchivistContract;
 
 class Archivist implements ArchivistContract
 {

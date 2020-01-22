@@ -11,7 +11,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\MessageBag;
 use Illuminate\Support\Str;
 
-use Russsiq\Assistant\Support\Contracts\CleanerContract;
+use Russsiq\Assistant\Contracts\CleanerContract;
 
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\NullOutput;

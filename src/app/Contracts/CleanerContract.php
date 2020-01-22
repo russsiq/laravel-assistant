@@ -1,6 +1,6 @@
 <?php
 
-namespace Russsiq\Assistant\Support\Contracts;
+namespace Russsiq\Assistant\Contracts;
 
 /**
  * @see Illuminate\Foundation\Console\OptimizeClearCommand;

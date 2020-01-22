@@ -5,7 +5,7 @@ namespace Russsiq\Assistant\Facades;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see \Russsiq\Assistant\Support\Contracts\ArchivistContract
+ * @see \Russsiq\Assistant\Contracts\ArchivistContract
  * @see \Russsiq\Assistant\Support\Archivist
  */
 class Archivist extends Facade

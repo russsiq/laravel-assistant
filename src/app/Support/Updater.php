@@ -4,7 +4,7 @@ namespace Russsiq\Assistant\Support;
 
 use Illuminate\Foundation\Application;
 
-use Russsiq\Assistant\Support\Contracts\UpdaterContract;
+use Russsiq\Assistant\Contracts\UpdaterContract;
 
 class Updater implements UpdaterContract
 {
