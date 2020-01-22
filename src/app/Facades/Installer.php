@@ -1,6 +1,6 @@
 <?php
 
-namespace Russsiq\Assistant\Support\Facades;
+namespace Russsiq\Assistant\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
