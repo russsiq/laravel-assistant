@@ -74,5 +74,9 @@ Route::prefix('assistant')
                 // 1. Welcome
                 Route::get('/', 'WelcomeController@index')->name('assistant.update.welcome');
                 Route::post('/', 'WelcomeController@store')->name('assistant.update.welcome.store');
+
+                // 2. Сomplete
+                Route::get('/complete', 'WelcomeController@complete')->name('assistant.update.complete');
+                Route::post('/complete', 'WelcomeController@redirect')->name('assistant.update.redirect');
             });
     });
