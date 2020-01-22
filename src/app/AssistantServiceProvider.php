@@ -5,10 +5,10 @@ namespace Russsiq\Assistant;
 use Russsiq\Assistant\Commands\BeforeInstalledMakeCommand;
 use Russsiq\Assistant\Http\Middleware\AlreadyInstalled;
 use Russsiq\Assistant\Http\Middleware\CheckEnvFileExists;
-use Russsiq\Assistant\Support\Archivist;
-use Russsiq\Assistant\Support\Cleaner;
-use Russsiq\Assistant\Support\Installer;
-use Russsiq\Assistant\Support\Updater;
+use Russsiq\Assistant\Support\Archivist\ArchivistManager as Archivist;
+use Russsiq\Assistant\Support\Cleaner\CleanerManager as Cleaner;
+use Russsiq\Assistant\Support\Installer\InstallerManager as Installer;
+use Russsiq\Assistant\Support\Updater\UpdaterManager as Updater;
 
 use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
