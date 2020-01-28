@@ -21,8 +21,10 @@ class CheckEnvFileExists
 
     /**
      * Обработка входящего запроса.
+     *
      * @param  \Illuminate\Http\Request  $request
      * @param  Closure  $next
+     *
      * @return mixed
      */
     public function handle($request, Closure $next)
@@ -39,11 +41,13 @@ class CheckEnvFileExists
 
     /**
      * Обработка входящего запроса, если файл окружения существует.
+     *
      * @param  \Illuminate\Http\Request  $request
      * @param  Closure  $next
+     *
      * @return mixed
      */
-    public function handleWithEnvFile($request, Closure $next)
+    protected function handleWithEnvFile($request, Closure $next)
     {
         // Маркер, что приложение считается установленным.
         $installed = Installer::alreadyInstalled();
@@ -60,11 +64,13 @@ class CheckEnvFileExists
 
     /**
      * Обработка входящего запроса, если файл окружения не существует.
+     *
      * @param  \Illuminate\Http\Request  $request
      * @param  Closure  $next
+     *
      * @return mixed
      */
-    public function handleWithoutEnvFile($request, Closure $next)
+    protected function handleWithoutEnvFile($request, Closure $next)
     {
         Installer::initiate();
 
@@ -74,6 +80,7 @@ class CheckEnvFileExists
 
     /**
      * Получить текущий раздел маршрута.
+     *
      * @return string|null
      */
     protected function location()
@@ -83,7 +90,9 @@ class CheckEnvFileExists
 
     /**
      * Проверить, что текущий раздел маршрута совпадает с переданным.
+     *
      * @param  string  $path
+     * 
      * @return bool
      */
     protected function isLocation(string $path): bool
