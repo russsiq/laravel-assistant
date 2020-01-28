@@ -86,9 +86,25 @@ return [
 
     // Настройки Мастера обновлений.
     'updater' => [
+        // Путь к временной папке для загрузки обновления из репозитория.
         'download_path' => env('ASSISTANT_DOWNLOAD_PATH', storage_path('tmp')),
-        'repository_url' => 'https://api.github.com/repos/<vendor>/<name>/releases/latest',
+
+        // Формат строки имени архива, описывающий версию приложения.
         'version_format' => env('ASSISTANT_VERSION_FORMAT', 'app_name-v__VERSION__.zip'),
+
+        // Драйвер, используемый по умолчанию.
+        // Поддерживаемые типы: "github".
+        'driver' => 'github',
+
+        // Настройки драйверов.
+        'drivers' => [
+            'github' => [
+                'driver' => 'github',
+                'repository_url' => 'https://api.github.com/repos/<vendor>/<name>/releases/latest',
+
+            ],
+
+        ],
 
     ],
 
