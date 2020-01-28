@@ -2,7 +2,6 @@
 
 namespace Russsiq\Assistant\Http\Middleware;
 
-use Artisan;
 use Closure;
 use Installer;
 
@@ -92,7 +91,7 @@ class CheckEnvFileExists
      * Проверить, что текущий раздел маршрута совпадает с переданным.
      *
      * @param  string  $path
-     * 
+     *
      * @return bool
      */
     protected function isLocation(string $path): bool
