@@ -23,8 +23,6 @@ class UpdaterManager implements UpdaterContract
     public function __construct(Application $app)
     {
         $this->app = $app;
-
-        dump('UPDATER');
     }
 
     /**
