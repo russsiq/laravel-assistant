@@ -131,4 +131,26 @@ class GithubDriver extends AbstractUpdater
     {
         return $this->release->downloadPath($this->availableVersion());
     }
+
+    /**
+     * Получить номер доступной версии приложения,
+     * опубликованного в репозитории.
+     *
+     * @return string
+     */
+    public function availableVersion(): string
+    {
+        return $this->release->version();
+    }
+
+    /**
+     * Загрузить архив новой версии приложения
+     * из репозитория с помощью НТТР-метода GЕТ.
+     *
+     * @return void
+     */
+    public function fetch()
+    {
+        return $this->release->fetch();
+    }
 }
