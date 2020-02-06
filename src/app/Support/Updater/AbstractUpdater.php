@@ -2,6 +2,8 @@
 
 namespace Russsiq\Assistant\Support\Updater;
 
+use EnvManager;
+
 use Russsiq\Assistant\Contracts\UpdaterContract;
 
 abstract class AbstractUpdater implements UpdaterContract
