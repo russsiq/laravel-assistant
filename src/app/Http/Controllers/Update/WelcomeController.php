@@ -14,6 +14,18 @@ class WelcomeController extends BaseController
 
     public function store(UpdateRequest $request)
     {
-        // return redirect()->route('assistant.update.permission');
+        return redirect()->route('assistant.update.complete');
+    }
+
+    public function complete()
+    {
+        return $this->makeResponse('update.complete', [
+            // 
+        ]);
+    }
+
+    public function redirect()
+    {
+        return redirect()->route('assistant.update.welcome');
     }
 }
