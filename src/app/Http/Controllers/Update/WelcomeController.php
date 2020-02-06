@@ -4,6 +4,8 @@ namespace Russsiq\Assistant\Http\Controllers\Update;
 
 use Updater;
 
+use Carbon\Carbon;
+
 use Russsiq\Assistant\Http\Controllers\BaseController;
 use Russsiq\Assistant\Http\Requests\Update\UpdateRequest;
 
