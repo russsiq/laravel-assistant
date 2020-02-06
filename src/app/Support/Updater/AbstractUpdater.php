@@ -12,20 +12,36 @@ abstract class AbstractUpdater implements UpdaterContract
      * Получить дату установки приложения.
      *
      * @return mixed
+     *
+     * @throws InvalidArgumentException
      */
     public function installedAt()
     {
-        //
+        if ($time = EnvManager::get('APP_INSTALLED_AT')) {
+            return $time;
+        }
+
+        throw new InvalidArgumentException(
+            'Не указана дата установки приложения.'
+        );
     }
 
     /**
      * Получить номер фактической версии приложения.
      *
      * @return string
+     *
+     * @throws InvalidArgumentException
      */
     public function currentlyVersion(): string
     {
-        //
+        if ($version = EnvManager::get('APP_VERSION')) {
+            return $version;
+        }
+
+        throw new InvalidArgumentException(
+            'Не указана текущая версия приложения.'
+        );
     }
 
     /**
@@ -43,7 +59,11 @@ abstract class AbstractUpdater implements UpdaterContract
      */
     public function isNewVersionAvailable(): bool
     {
-        //
+        return version_compare(
+            $this->currentlyVersion(),
+            $this->availableVersion(),
+            '<'
+        );
     }
 
     /**
