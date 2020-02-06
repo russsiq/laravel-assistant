@@ -253,4 +253,38 @@ class Release
 
         return $this->versionfile->get('version');
     }
+
+    /**
+     * Загрузить информацию о последнем релизе из репозитория.
+     *
+     * @return $this
+     */
+    public function loadInfo()
+    {
+        $response = $this->client->request('GET', $this->endpoint());
+
+        $release = json_decode($response->getBody());
+
+        // Сохраняем оригинальные поля из ответа.
+        $this->fields = (array) $release;
+
+        // Устанавливаем номер доступной версии и
+        // ссылку на загрузку релиза из репозитория.
+        // Обязательно сохраняем в кэш информацию.
+        $this->setVersion($release->{$this->versionKey()})
+            ->setSourceUrl($release->{$this->sourceKey()})
+            ->saveInfo();
+
+        return $this;
+    }
+
+    /**
+     * Сохранить информацию о последнем релизе.
+     *
+     * @return bool
+     */
+    public function saveInfo(): bool
+    {
+        return $this->versionfile->save();
+    }
 }
