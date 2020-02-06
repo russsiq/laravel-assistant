@@ -133,6 +133,16 @@ class GithubDriver extends AbstractUpdater
     }
 
     /**
+     * Получить полный путь к загруженному исходнику релиза.
+     *
+     * @return string
+     */
+    protected function storageFile(): string
+    {
+        return $this->release->storageFile($this->availableVersion());
+    }
+
+    /**
      * Получить номер доступной версии приложения,
      * опубликованного в репозитории.
      *
