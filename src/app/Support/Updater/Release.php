@@ -367,7 +367,22 @@ class Release
         // Полный путь к сохраняемому/загруженному исходнику.
         $storageFile = $this->storageFile($version);
 
-        $this->download($sourceUrl, $storageFile);
+        if (! $this->alreadyFetched($storageFile)) {
+            $this->download($sourceUrl, $storageFile);
+        }
+    }
+
+    /**
+     * Проверить, что исходники уже были подгружены.
+     *
+     * @param  string  $file
+     *
+     * @return bool
+     */
+    protected function alreadyFetched(string $file): bool
+    {
+        return $this->filesystem->isFile($file)
+            && $this->filesystem->mimeType($file) === 'application/zip';
     }
 
     /**
