@@ -2,6 +2,10 @@
 
 namespace Russsiq\Assistant\Support\Updater;
 
+use Exception;
+use InvalidArgumentException;
+use RuntimeException;
+
 use EnvManager;
 
 use Russsiq\Assistant\Contracts\UpdaterContract;
