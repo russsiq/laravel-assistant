@@ -74,8 +74,8 @@ abstract class AbstractUpdater implements UpdaterContract
     abstract protected function excludeDirectories(): array;
 
     /**
-     * Получить массив файлов, расположеных
-     * в корне приложения, которые будут обновлены.
+     * Получить массив файлов, которые расположены
+     * в корне приложения и будут обновлены.
      *
      * @return array
      */
