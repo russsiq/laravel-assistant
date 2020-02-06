@@ -53,4 +53,46 @@ class GithubDriver extends AbstractUpdater
 
         return $this;
     }
+
+    /**
+     * Получить массив папок, игнорируемых во время процесса обновления.
+     *
+     * @return array
+     */
+    protected function excludeDirectories(): array
+    {
+        return $this->params['exclude_directories'];
+    }
+
+    /**
+     * Получить массив файлов, которые расположены
+     * в корне приложения и будут обновлены.
+     *
+     * @return array
+     */
+    protected function allowedFiles(): array
+    {
+        return $this->params['allowed_files'];
+    }
+
+    /**
+     * Корневая директория обновляемого приложения.
+     *
+     * @return string
+     */
+    protected function destinationPath(): string
+    {
+        return $this->params['destination_path'];
+    }
+
+    /**
+     * Получить временную директорию, где расположены
+     * исходники файлов обновляемого приложения.
+     *
+     * @return string
+     */
+    protected function sourcePath(): string
+    {
+        //
+    }
 }
