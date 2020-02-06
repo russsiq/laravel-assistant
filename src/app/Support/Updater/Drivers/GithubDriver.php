@@ -182,6 +182,9 @@ class GithubDriver extends AbstractUpdater
         // Распаковываем исходники релиза из архива.
         $this->release->unzipArchive($storageFile, $sourcePath);
 
+        // Предварительно выполняем проверку файлов на перезапись.
+        $this->assertFilesInDirectoryIsWritable($destinationPath);
+
         // Удаляем принудительно директории, так как
         // метод `exclude` класса Finder непонятно работает.
         $this->deleteExcludeDirectories($sourcePath);
