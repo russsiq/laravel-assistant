@@ -4,6 +4,8 @@ namespace Russsiq\Assistant\Support\Updater;
 
 use Illuminate\Support\Manager;
 
+use Russsiq\Assistant\Support\Updater\Drivers\GithubDriver;
+
 class UpdaterManager extends Manager
 {
     /**
@@ -32,5 +34,19 @@ class UpdaterManager extends Manager
     public function setDefaultDriver(string $name)
     {
         $this->config->set('assistant.updater.driver', $name);
+    }
+
+    /**
+     * Создать экземпляр Мастера обновлений
+     * с использованием драйвера Github.
+     *
+     * @return GithubDriver
+     */
+    protected function createGithubDriver(): GithubDriver
+    {
+        $config = $this->config->get('assistant.updater', []);
+        $config = array_merge($config, $config['github'] ?? []);
+
+        return new GithubDriver($config);
     }
 }
