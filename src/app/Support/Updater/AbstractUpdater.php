@@ -67,6 +67,36 @@ abstract class AbstractUpdater implements UpdaterContract
     }
 
     /**
+     * Получить массив папок, игнорируемых во время процесса обновления.
+     *
+     * @return array
+     */
+    abstract protected function excludeDirectories(): array;
+
+    /**
+     * Получить массив файлов, расположеных
+     * в корне приложения, которые будут обновлены.
+     *
+     * @return array
+     */
+    abstract protected function allowedFiles(): array;
+
+    /**
+     * Корневая директория обновляемого приложения.
+     *
+     * @return string
+     */
+    abstract protected function destinationPath(): string;
+
+    /**
+     * Получить временную директорию, где расположены
+     * исходники файлов обновляемого приложения.
+     *
+     * @return string
+     */
+    abstract protected function sourcePath(): string;
+
+    /**
      * Загрузить архив новой версии приложения
      * из репозитория с помощью НТТР-метода GЕТ.
      *
