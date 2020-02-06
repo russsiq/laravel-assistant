@@ -193,4 +193,64 @@ class Release
     {
         return $this->params['version_format'];
     }
+
+    /**
+     * Задать ссылку на репозиторий для загрузки релиза.
+     *
+     * @param  string  $url
+     *
+     * @return $this
+     */
+    public function setSourceUrl(string $url)
+    {
+        $this->versionfile->set('source_url', $url);
+
+        return $this;
+    }
+
+    /**
+     * Получить ссылку на репозиторий для загрузку релиза.
+     *
+     * @return string
+     *
+     * @throws Exception Не указана ссылка на репозиторий для загрузку релиза.
+     */
+    public function sourceUrl(): string
+    {
+        if ($this->versionfile->doesntExist()) {
+            $this->loadInfo();
+        }
+
+        return $this->versionfile->get('source_url');
+    }
+
+    /**
+     * Задать номер доступной версии релиза, опубликованного в репозитории.
+     *
+     * @param  string  $version
+     *
+     * @return $this
+     */
+    public function setVersion(string $version)
+    {
+        $this->versionfile->set('version', $version);
+
+        return $this;
+    }
+
+    /**
+     * Получить номер доступной версии релиза, опубликованного в репозитории.
+     *
+     * @return string
+     *
+     * @throws Exception Не указана версия релиза.
+     */
+    public function version(): string
+    {
+        if ($this->versionfile->doesntExist()) {
+            $this->loadInfo();
+        }
+
+        return $this->versionfile->get('version');
+    }
 }
