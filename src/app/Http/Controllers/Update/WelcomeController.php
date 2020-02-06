@@ -2,8 +2,6 @@
 
 namespace Russsiq\Assistant\Http\Controllers\Update;
 
-use EnvManager;
-
 use Russsiq\Assistant\Http\Controllers\BaseController;
 use Russsiq\Assistant\Http\Requests\Update\WelcomeRequest;
 
