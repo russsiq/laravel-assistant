@@ -21,4 +21,43 @@ class UpdateRequest extends Request
 
         $this->replace($input);
     }
+
+    /**
+     * Получить правила валидации,
+     * которые будут применены к запросу.
+     *
+     * @return array
+     */
+    public function rules()
+    {
+        return [
+
+        ];
+    }
+
+    /**
+     * Получить пользовательские строки
+     * для формирования сообщений валидатора.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        $trans = trans('assistant::update.forms.validation');
+
+        return is_array($trans) ? $trans : [];
+    }
+
+    /**
+     * Получить пользовательские имена атрибутов
+     * для формирования сообщений валидатора.
+     *
+     * @return array
+     */
+    public function attributes()
+    {
+        $trans = trans('assistant::update.forms.attributes');
+
+        return is_array($trans) ? $trans : [];
+    }
 }
