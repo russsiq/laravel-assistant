@@ -2,6 +2,8 @@
 
 namespace Russsiq\Assistant\Support\Updater;
 
+use Exception;
+
 /**
  * Класс, отвечающий за получения как сведений о релизе,
  * так и за загрузку самого релизе из репозитория.
@@ -69,5 +71,67 @@ class Release
         }
 
         return $this;
+    }
+
+    /**
+     * Получить временную директорию, куда будут загружены
+     * исходники обновляемого приложения. По умолчанию: `storage/tmp`.
+     *
+     * @param  string  $path
+     * @return string
+     *
+     * @throws Exception Не указана директория загрузки исходников обновляемого приложения.
+     */
+    public function downloadPath(string $path = ''): string
+    {
+        return $this->params['download_path'].($path ? DIRECTORY_SEPARATOR.$path : $path);
+    }
+
+    /**
+     * Получить URL-адрес для сбора сведений о последнем релизе.
+     *
+     * @return string
+     *
+     * @throws Exception Не указана ссылка для сбора сведений о последнем релизе.
+     */
+    public function endpoint(): string
+    {
+        return $this->params['endpoint'];
+    }
+
+    /**
+     * Получить ключ, обозначающий имя ссылки на загрузки исходников релиза.
+     *
+     * @return string
+     *
+     * @throws Exception Не указан ключ имени ссылки на загрузки исходников релиза.
+     */
+    public function sourceKey(): string
+    {
+        return $this->params['source_key'];
+    }
+
+    /**
+     * Получить ключ, обозначающий имя номера версии релиза.
+     *
+     * @return string
+     *
+     * @throws Exception Не указан ключ имени номера версии релиза.
+     */
+    public function versionKey(): string
+    {
+        return $this->params['version_key'];
+    }
+
+    /**
+     * Получить формат имени исходника, загружаемого из репозитория.
+     *
+     * @return string
+     *
+     * @throws Exception Не указан формат имени исходника, загружаемого из репозитория.
+     */
+    public function versionFormat(): string
+    {
+        return $this->params['version_format'];
     }
 }
