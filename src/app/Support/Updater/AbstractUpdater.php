@@ -17,7 +17,7 @@ abstract class AbstractUpdater implements UpdaterContract
      *
      * @return mixed
      *
-     * @throws InvalidArgumentException
+     * @throws RuntimeException
      */
     public function installedAt()
     {
@@ -25,7 +25,7 @@ abstract class AbstractUpdater implements UpdaterContract
             return $time;
         }
 
-        throw new InvalidArgumentException(
+        throw new RuntimeException(
             'Не указана дата установки приложения.'
         );
     }
@@ -35,7 +35,7 @@ abstract class AbstractUpdater implements UpdaterContract
      *
      * @return string
      *
-     * @throws InvalidArgumentException
+     * @throws RuntimeException
      */
     public function currentlyVersion(): string
     {
@@ -43,7 +43,7 @@ abstract class AbstractUpdater implements UpdaterContract
             return $version;
         }
 
-        throw new InvalidArgumentException(
+        throw new RuntimeException(
             'Не указана текущая версия приложения.'
         );
     }
