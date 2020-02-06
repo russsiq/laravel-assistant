@@ -13,12 +13,21 @@ use GuzzleHttp\ClientInterface;
 
 use Illuminate\Filesystem\Filesystem;
 
+use Psr\Http\Message\ResponseInterface;
+
 /**
  * Класс, отвечающий за получения как сведений о релизе,
  * так и за загрузку самого релизе из репозитория.
  */
 class Release
 {
+    /**
+     * Код успешного ответа.
+     *
+     * @var int
+     */
+    const HTTP_OK = 200;
+
     /**
      * Экземпляр HTTP клиента.
      *
@@ -270,6 +279,7 @@ class Release
     public function loadInfo()
     {
         $response = $this->client->request('GET', $this->endpoint());
+        $this->assertResponseIsSuccessful($response);
 
         $release = json_decode($response->getBody());
 
@@ -318,5 +328,23 @@ class Release
         };
 
         return $this;
+    }
+
+    /**
+     * Определить, что ответ имеет статус успешного.
+     *
+     * @param  ResponseInterface  $response
+     *
+     * @return void
+     *
+     * @throws Exception
+     */
+    protected function assertResponseIsSuccessful(ResponseInterface $response)
+    {
+        if ($response->getStatusCode() !== self::HTTP_OK) {
+            throw new Exception(
+                'Не удалось получить сведения о релизе. Проверьте доступность репозитория.'
+            );
+        }
     }
 }
