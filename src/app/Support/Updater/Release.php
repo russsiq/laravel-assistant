@@ -231,6 +231,16 @@ class Release
     }
 
     /**
+     * Получить имя исходника, загружаемого из репозитория.
+     *
+     * @return string
+     */
+    public function sourceFilename(): string
+    {
+        return preg_replace('/__VERSION__/', $this->version(), $this->versionFormat());
+    }
+
+    /**
      * Задать ссылку на репозиторий для загрузки релиза.
      *
      * @param  string  $url
