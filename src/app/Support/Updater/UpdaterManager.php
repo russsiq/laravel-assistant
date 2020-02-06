@@ -2,88 +2,17 @@
 
 namespace Russsiq\Assistant\Support\Updater;
 
-use Illuminate\Foundation\Application;
+use Illuminate\Support\Manager;
 
-use Russsiq\Assistant\Contracts\UpdaterContract;
-
-class UpdaterManager implements UpdaterContract
+class UpdaterManager extends Manager
 {
     /**
-     * Экземпляр приложения.
-     *
-     * @var Application
-     */
-    protected $app;
-
-    /**
-     * Создать новый экземпляр Мастера обновлений.
-     *
-     * @param  Application  $app
-     */
-    public function __construct(Application $app)
-    {
-        $this->app = $app;
-    }
-
-    /**
-     * Получить дату установки приложения.
-     *
-     * @return mixed
-     */
-    public function installedAt()
-    {
-        // code...
-    }
-
-    /**
-     * Получить номер фактической версии приложения.
+     * Получить имя драйвера, используемого по умолчанию
      *
      * @return string
      */
-    public function currentlyVersion(): string
+    public function getDefaultDriver(): string
     {
-        // code...
-    }
-
-    /**
-     * Получить номер доступной версии приложения,
-     * опубликованного в репозитории.
-     *
-     * @return string
-     */
-    public function availableVersion(): string
-    {
-        // code...
-    }
-
-    /**
-     * Доступность новой версии приложения в репозитории.
-     *
-     * @return bool
-     */
-    public function isNewVersionAvailable(): bool
-    {
-        // code...
-    }
-
-    /**
-     * Загрузить архив новой версии приложения
-     * из репозитория с помощью НТТР-метода GЕТ.
-     *
-     * @return void
-     */
-    public function fetch()
-    {
-        // code...
-    }
-
-    /**
-     * Запустить процесс обновления приложения до актуальной версии.
-     *
-     * @return bool
-     */
-    public function update(): bool
-    {
-        // code...
+        // 
     }
 }
