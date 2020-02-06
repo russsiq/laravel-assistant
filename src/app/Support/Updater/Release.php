@@ -29,6 +29,13 @@ class Release
     const HTTP_OK = 200;
 
     /**
+     * Расширение файла с архивом.
+     *
+     * @var string
+     */
+    const ZIP_EXTENSION = '.zip';
+
+    /**
      * Экземпляр HTTP клиента.
      *
      * @var ClientInterface
@@ -161,6 +168,18 @@ class Release
     public function downloadPath(string $path = ''): string
     {
         return $this->params['download_path'].($path ? DIRECTORY_SEPARATOR.$path : $path);
+    }
+
+    /**
+     * Получить полный путь к сохраняемому/загруженному исходнику релиза.
+     *
+     * @param  string  $version
+     *
+     * @return string
+     */
+    public function storageFile(string $version): string
+    {
+        return $this->downloadPath($version.self::ZIP_EXTENSION);
     }
 
     /**
@@ -329,6 +348,44 @@ class Release
         };
 
         return $this;
+    }
+
+    /**
+     * Загрузить архив новой версии приложения
+     * из репозитория с помощью НТТР-метода GЕТ.
+     *
+     * @return void
+     */
+    public function fetch()
+    {
+        // Если нет ссылки на загрузку исходника,
+        // то обновится информация о релизе.
+        $sourceUrl = $this->sourceUrl();
+        $version = $this->version();
+
+        $storagePath = $this->downloadPath($version);
+        // Полный путь к сохраняемому/загруженному исходнику.
+        $storageFile = $this->storageFile($version);
+
+        $this->download($sourceUrl, $storageFile);
+    }
+
+    /**
+     * Загрузить файл из указанного источника в указанное место.
+     *
+     * @param  string  $sourceUrl
+     * @param  string  $storageFile
+     *
+     * @return ResponseInterface
+     */
+    protected function download(string $sourceUrl, string $storageFile): ResponseInterface
+    {
+        @ini_set('max_execution_time', 120);
+
+        return $this->client->request('GET', $sourceUrl, [
+            'sink' => $storageFile,
+
+        ]);
     }
 
     /**
