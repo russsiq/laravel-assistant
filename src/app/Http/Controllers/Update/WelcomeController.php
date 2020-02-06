@@ -9,7 +9,9 @@ class WelcomeController extends BaseController
 {
     public function index()
     {
-        return $this->makeResponse('update.welcome');
+        return $this->makeResponse('update.welcome', [
+            //
+        ]);
     }
 
     public function store(UpdateRequest $request)
@@ -20,7 +22,7 @@ class WelcomeController extends BaseController
     public function complete()
     {
         return $this->makeResponse('update.complete', [
-            // 
+            //
         ]);
     }
 
