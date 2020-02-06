@@ -171,6 +171,30 @@ class GithubDriver extends AbstractUpdater
      */
     public function update(): bool
     {
-        // 
+        // Локальные переменные.
+        $sourcePath = $this->sourcePath();
+        $storageFile = $this->storageFile();
+        $destinationPath = $this->destinationPath();
+
+        // // @NOTE Возможно, что данный метод можно было бы просто делегировать.
+        // $this->release->applyAvailableVersion($storageFile, $sourcePath, $destinationPath);
+
+        // Распаковываем исходники релиза из архива.
+        $this->release->unzipArchive($storageFile, $sourcePath);
+
+        // Удаляем принудительно директории, так как
+        // метод `exclude` класса Finder непонятно работает.
+        $this->deleteExcludeDirectories($sourcePath);
+
+        // Перемещаем папки с содержимым из директории исходника.
+        $this->moveSourceDirectories($sourcePath, $destinationPath);
+
+        // Перемещаем корневые файлы из директории исходника.
+        $this->moveSourceRootFiles($sourcePath, $destinationPath);
+
+        // Удаляем временную директорию с исходниками.
+        $this->deleteSourceDirectory($sourcePath);
+
+        return true;
     }
 }
