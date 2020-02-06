@@ -63,6 +63,14 @@ class Release
     ];
 
     /**
+     * Массив зарегистрированных замыканий,
+     * вызываемых по окончании загрузки сведений о релизе.
+     *
+     * @var array
+     */
+    private $afterLoad = [];
+
+    /**
      * Массив оригинальных полей, полученных при загрузке
      * сведений о последнем релизе из репозитория.
      *
@@ -275,6 +283,13 @@ class Release
             ->setSourceUrl($release->{$this->sourceKey()})
             ->saveInfo();
 
+        // Применяем все замыкания, добавленные в драйвере,
+        // в которых можно поменять значение необходимых полей
+        // и пересохранить информацию о релизе в кэше.
+        foreach ($this->afterLoad as $afterLoad) {
+            $afterLoad();
+        }
+
         return $this;
     }
 
@@ -286,5 +301,22 @@ class Release
     public function saveInfo(): bool
     {
         return $this->versionfile->save();
+    }
+
+    /**
+     * Добавить замыкание, которое будет выполняться
+     * каждый раз после загрузки сведений о релизе.
+     *
+     * @param  callable  $callback
+     *
+     * @return $this
+     */
+    public function afterLoad(callable $callback)
+    {
+        $this->afterLoad[] = function () use ($callback) {
+            return call_user_func_array($callback, [$this]);
+        };
+
+        return $this;
     }
 }
