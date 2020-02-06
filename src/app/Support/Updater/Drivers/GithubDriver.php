@@ -39,6 +39,7 @@ class GithubDriver extends AbstractUpdater
         $this->release = $release;
 
         $this->configure($params);
+        $this->addHooksToRelease();
     }
 
     /**
@@ -63,6 +64,30 @@ class GithubDriver extends AbstractUpdater
         $this->params['destination_path'] = base_path('new');
 
         return $this;
+    }
+
+    /**
+     * Добавить хуки к экземпляру релиза.
+     * Данные замыкания будут выполняться каждый раз
+     * при получении сведений из репозитория о релизе.
+     *
+     * @return void
+     */
+    protected function addHooksToRelease()
+    {
+        $this->release->afterLoad(function (Release $release) {
+            // Ищем вложение с именем, совпадающем с именем исходника.
+            $asset = collect($release->fields['assets'])
+                ->firstWhere('name', $release->sourceFilename());
+
+            // Если найдено вложение с именем файла релиза,
+            // то считаем, что это критическое обновление.
+            // Меняем ссылку на загрузку исходника и сохраняем информацию.
+            if ($asset) {
+                $release->setSourceUrl($asset->browser_download_url)
+                    ->saveInfo();
+            }
+        });
     }
 
     /**
