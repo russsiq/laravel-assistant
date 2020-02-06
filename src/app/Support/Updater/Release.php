@@ -420,6 +420,33 @@ class Release
     }
 
     /**
+     * Извлечь архив с исходниками для последующего обновления.
+     *
+     * @param  string  $filename
+     * @param  string  $destination
+     *
+     * @return bool
+     */
+    public function unzipArchive(string $filename, string $destination): bool
+    {
+        @ini_set('max_execution_time', 120);
+
+        try {
+            $opened = $this->ziparchive->open($filename);
+
+            $extracted = $this->ziparchive->extractTo($destination);
+
+            $this->ziparchive->close();
+
+            return true;
+        } catch (Throwable $e) {
+            $this->filesystem->delete($filename);
+
+            throw $e;
+        }
+    }
+
+    /**
      * Определить, что ответ имеет статус успешного.
      *
      * @param  ResponseInterface  $response
