@@ -176,14 +176,14 @@ class GithubDriver extends AbstractUpdater
         $storageFile = $this->storageFile();
         $destinationPath = $this->destinationPath();
 
+        // Предварительно выполняем проверку файлов на перезапись.
+        $this->assertFilesInDirectoryIsWritable($destinationPath);
+
         // // @NOTE Возможно, что данный метод можно было бы просто делегировать.
         // $this->release->applyAvailableVersion($storageFile, $sourcePath, $destinationPath);
 
         // Распаковываем исходники релиза из архива.
         $this->release->unzipArchive($storageFile, $sourcePath);
-
-        // Предварительно выполняем проверку файлов на перезапись.
-        $this->assertFilesInDirectoryIsWritable($destinationPath);
 
         // Удаляем принудительно директории, так как
         // метод `exclude` класса Finder непонятно работает.
