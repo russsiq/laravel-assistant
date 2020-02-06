@@ -433,8 +433,10 @@ class Release
 
         try {
             $opened = $this->ziparchive->open($filename);
+            $this->assertZiparchiveIsOpened($filename, $opened);
 
             $extracted = $this->ziparchive->extractTo($destination);
+            $this->assertZiparchiveIsExtracted($filename, $extracted);
 
             $this->ziparchive->close();
 
@@ -443,6 +445,46 @@ class Release
             $this->filesystem->delete($filename);
 
             throw $e;
+        }
+    }
+
+    /**
+     * Определить, произошла ли ошибка во время открытия архива.
+     *
+     * @param  string  $filename
+     * @param  mixed  $opened
+     *
+     * @return void
+     *
+     * @throws RuntimeException
+     */
+    protected function assertZiparchiveIsOpened(string $filename, $opened)
+    {
+        if ($opened !== true) {
+            throw new RuntimeException(sprintf(
+                "Cannot open zip archive [%s].",
+                $filename
+            ));
+        }
+    }
+
+    /**
+     * Определить, произошла ли ошибка во время извлечения файлов из архива.
+     *
+     * @param  string $filename
+     * @param  mixed  $extracted
+     *
+     * @return void
+     *
+     * @throws RuntimeException
+     */
+    protected function assertZiparchiveIsExtracted(string $filename, $extracted)
+    {
+        if ($extracted !== true) {
+            throw new RuntimeException(sprintf(
+                "Unable to extract zip archive [%s].",
+                $filename
+            ));
         }
     }
 
