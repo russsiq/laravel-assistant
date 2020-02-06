@@ -129,6 +129,6 @@ class GithubDriver extends AbstractUpdater
      */
     protected function sourcePath(): string
     {
-        //
+        return $this->release->downloadPath($this->availableVersion());
     }
 }
