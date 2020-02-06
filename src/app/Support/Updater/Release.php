@@ -282,6 +282,7 @@ class Release
         $this->assertResponseIsSuccessful($response);
 
         $release = json_decode($response->getBody());
+        $this->assertJsonIsValid(json_last_error());
 
         // Сохраняем оригинальные поля из ответа.
         $this->fields = (array) $release;
@@ -345,6 +346,22 @@ class Release
             throw new Exception(
                 'Не удалось получить сведения о релизе. Проверьте доступность репозитория.'
             );
+        }
+    }
+
+    /**
+     * Определить, произошла ли ошибка во время декодирования JSON.
+     *
+     * @param  int  $jsonError
+     *
+     * @return void
+     *
+     * @throws Exception
+     */
+    protected function assertJsonIsValid(int $jsonError)
+    {
+        if ($jsonError !== JSON_ERROR_NONE) {
+            throw new Exception(json_last_error_msg());
         }
     }
 }
