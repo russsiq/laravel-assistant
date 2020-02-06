@@ -4,12 +4,47 @@ namespace Russsiq\Assistant\Support\Updater;
 
 use Exception;
 
+use ZipArchive;
+
+use GuzzleHttp\ClientInterface;
+
+use Illuminate\Filesystem\Filesystem;
+
 /**
  * Класс, отвечающий за получения как сведений о релизе,
  * так и за загрузку самого релизе из репозитория.
  */
 class Release
 {
+    /**
+     * Экземпляр HTTP клиента.
+     *
+     * @var ClientInterface
+     */
+    protected $client;
+
+    /**
+     * Экземпляр класса по работе с файловой системой.
+     *
+     * @var Filesystem
+     */
+    protected $filesystem;
+
+    /**
+     * Экземпляр класса, отвечающего за
+     * хранение информации о доступном релизе.
+     *
+     * @var VersionFile
+     */
+    protected $versionfile;
+
+    /**
+     * Экземляр класса по работе с архивами.
+     *
+     * @var ZipArchive
+     */
+    protected $ziparchive;
+
     /**
      * Массив параметров экземпляра класса.
      *
@@ -27,12 +62,25 @@ class Release
     /**
      * Создать новый экземпляр Релиза.
      *
+     * @param ClientInterface  $client
+     * @param Filesystem  $filesystem
+     * @param VersionFile  $versionfile
+     * @param ZipArchive  $ziparchive
      * @param array  $params
      * @return void
      */
     public function __construct(
+        ClientInterface $client,
+        Filesystem $filesystem,
+        VersionFile $versionfile,
+        ZipArchive $ziparchive,
         array $params = []
     ) {
+        $this->client = $client;
+        $this->filesystem = $filesystem;
+        $this->versionfile = $versionfile;
+        $this->ziparchive = $ziparchive;
+
         $this->configure($params);
     }
 
