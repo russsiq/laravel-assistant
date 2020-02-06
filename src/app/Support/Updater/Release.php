@@ -407,7 +407,7 @@ class Release
     {
         @ini_set('max_execution_time', 120);
 
-        $this->ensureDirectoryExists(dirname($storageFile));
+        $this->ensureDirectoryExists($this->filesystem->dirname($storageFile));
 
         return $this->client->request('GET', $sourceUrl, [
             'sink' => $storageFile,
