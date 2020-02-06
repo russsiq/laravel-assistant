@@ -14,7 +14,11 @@ class WelcomeController extends BaseController
     public function index()
     {
         return $this->makeResponse('update.welcome', [
-            //
+            'available_version' => Updater::availableVersion(),
+            'currently_version' => Updater::currentlyVersion(),
+            'installed_at' => Carbon::parse(Updater::installedAt())
+                ->isoFormat('LLLL'),
+
         ]);
     }
 
