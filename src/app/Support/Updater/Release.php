@@ -3,6 +3,8 @@
 namespace Russsiq\Assistant\Support\Updater;
 
 use Exception;
+use InvalidArgumentException;
+use RuntimeException;
 
 use ZipArchive;
 
