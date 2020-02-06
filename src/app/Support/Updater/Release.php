@@ -397,10 +397,26 @@ class Release
     {
         @ini_set('max_execution_time', 120);
 
+        $this->ensureDirectoryExists(dirname($storageFile));
+
         return $this->client->request('GET', $sourceUrl, [
             'sink' => $storageFile,
 
         ]);
+    }
+
+    /**
+     * Создать директорию, если она отсутствует.
+     *
+     * @param  string  $path
+     *
+     * @return void
+     */
+    protected function ensureDirectoryExists(string $path)
+    {
+        if ($this->filesystem->missing($path)) {
+            $this->filesystem->makeDirectory($path, 0777, true, true);
+        }
     }
 
     /**
