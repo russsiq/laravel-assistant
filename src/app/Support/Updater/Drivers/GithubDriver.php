@@ -163,4 +163,14 @@ class GithubDriver extends AbstractUpdater
     {
         return $this->release->fetch();
     }
+
+    /**
+     * Запустить процесс обновления приложения до актуальной версии.
+     *
+     * @return bool
+     */
+    public function update(): bool
+    {
+        // 
+    }
 }
