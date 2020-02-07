@@ -120,9 +120,9 @@ class CleanerManager implements CleanerContract
      *
      * @return void
      */
-    public function clearCacheByKey(string $key)
+    public function clearCacheByKey(string $key, string $delimiter = '|')
     {
-        foreach (explode('|', $key) as $k) {
+        foreach (explode($delimiter, $key) as $k) {
             cache()->forget($k);
         }
 
