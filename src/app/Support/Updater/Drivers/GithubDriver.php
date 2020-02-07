@@ -2,9 +2,13 @@
 
 namespace Russsiq\Assistant\Support\Updater\Drivers;
 
+// Сторонние зависимости.
 use Russsiq\Assistant\Support\Updater\AbstractUpdater;
 use Russsiq\Assistant\Support\Updater\Release;
 
+/**
+ * Экземпляр Мастера обновлений с использованием драйвера Github.
+ */
 class GithubDriver extends AbstractUpdater
 {
     /**
@@ -34,8 +38,10 @@ class GithubDriver extends AbstractUpdater
      * @param array  $params
      * @return void
      */
-    public function __construct(Release $release, array $params = [])
-    {
+    public function __construct(
+        Release $release,
+        array $params = []
+    ) {
         $this->release = $release;
 
         $this->configure($params);

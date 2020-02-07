@@ -2,18 +2,19 @@
 
 namespace Russsiq\Assistant\Support\Updater;
 
+// Исключения.
 use Exception;
 use InvalidArgumentException;
 use RuntimeException;
 use Throwable;
 
+// Базовые расширения PHP.
+use SplFileInfo;
 use ZipArchive;
 
+// Сторонние зависимости.
 use GuzzleHttp\ClientInterface;
-
-use SplFileInfo;
 use Illuminate\Filesystem\Filesystem;
-
 use Psr\Http\Message\ResponseInterface;
 
 /**
@@ -123,8 +124,7 @@ class Release
     /**
      * Конфигурирование параметров экземпляра класса.
      *
-     * @param  array $params
-     *
+     * @param  array  $params
      * @return $this
      */
     public function configure(array $params = [])
@@ -175,7 +175,6 @@ class Release
      * Получить полный путь к сохраняемому/загруженному исходнику релиза.
      *
      * @param  string  $version
-     *
      * @return string
      */
     public function storageFile(string $version): string
@@ -275,7 +274,6 @@ class Release
      * Задать номер доступной версии релиза, опубликованного в репозитории.
      *
      * @param  string  $version
-     *
      * @return $this
      */
     public function setVersion(string $version)
@@ -349,7 +347,6 @@ class Release
      * каждый раз после загрузки сведений о релизе.
      *
      * @param  callable  $callback
-     *
      * @return $this
      */
     public function afterLoad(callable $callback)
@@ -387,7 +384,6 @@ class Release
      * Проверить, что исходники уже были подгружены.
      *
      * @param  string  $file
-     *
      * @return bool
      */
     protected function alreadyFetched(string $file): bool
@@ -401,7 +397,6 @@ class Release
      *
      * @param  string  $sourceUrl
      * @param  string  $storageFile
-     *
      * @return ResponseInterface
      */
     protected function download(string $sourceUrl, string $storageFile): ResponseInterface
@@ -420,7 +415,6 @@ class Release
      * Создать директорию, если она отсутствует.
      *
      * @param  string  $path
-     *
      * @return void
      */
     protected function ensureDirectoryExists(string $path)
@@ -435,7 +429,6 @@ class Release
      *
      * @param  string  $filename
      * @param  string  $destination
-     *
      * @return bool
      */
     public function unzipArchive(string $filename, string $destination): bool
@@ -467,7 +460,6 @@ class Release
      * т.е. исходники расположены в корневой директории.
      *
      * @param  string  $destination
-     *
      * @return void
      */
     protected function ensureSourceInRootDirectory(string $destination)
@@ -502,7 +494,6 @@ class Release
      *
      * @param  string  $filename
      * @param  mixed  $opened
-     *
      * @return void
      *
      * @throws RuntimeException
@@ -520,9 +511,8 @@ class Release
     /**
      * Определить, произошла ли ошибка во время извлечения файлов из архива.
      *
-     * @param  string $filename
+     * @param  string  $filename
      * @param  mixed  $extracted
-     *
      * @return void
      *
      * @throws RuntimeException
@@ -541,7 +531,6 @@ class Release
      * Определить, что ответ имеет статус успешного.
      *
      * @param  ResponseInterface  $response
-     *
      * @return void
      *
      * @throws Exception
@@ -559,7 +548,6 @@ class Release
      * Определить, произошла ли ошибка во время декодирования JSON.
      *
      * @param  int  $jsonError
-     *
      * @return void
      *
      * @throws Exception

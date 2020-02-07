@@ -2,18 +2,25 @@
 
 namespace Russsiq\Assistant\Support\Updater;
 
+// Исключения.
 use Exception;
 use InvalidArgumentException;
 use RuntimeException;
 
-use EnvManager;
-
-use Russsiq\Assistant\Contracts\UpdaterContract;
-
-use File;
+// Базовые расширения PHP.
 use SplFileInfo;
+
+// Зарегистрированные фасады приложения.
+use EnvManager;
+use File;
+
+// Сторонние зависимости.
+use Russsiq\Assistant\Contracts\UpdaterContract;
 use Symfony\Component\Finder\Finder;
 
+/**
+ * Абстрактная реализация Мастера обновлений.
+ */
 abstract class AbstractUpdater implements UpdaterContract
 {
     /**

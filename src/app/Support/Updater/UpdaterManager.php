@@ -2,17 +2,21 @@
 
 namespace Russsiq\Assistant\Support\Updater;
 
+// Базовые расширения PHP.
 use ZipArchive;
 
+// Сторонние зависимости.
 use GuzzleHttp\Client as HttpClient;
-
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Manager;
-
 use Russsiq\Assistant\Support\Updater\Drivers\GithubDriver;
 use Russsiq\Assistant\Support\Updater\Release;
 use Russsiq\Assistant\Support\Updater\VersionFile;
 
+/**
+ * Менеджер, управляющий созданием Масетра обновлений,
+ * предоставляющий доступ к его методам.
+ */
 class UpdaterManager extends Manager
 {
     /**
