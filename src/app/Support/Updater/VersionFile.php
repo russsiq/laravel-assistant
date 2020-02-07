@@ -278,11 +278,11 @@ class VersionFile
         // Проверка сводится к сравнению массивов
         // отфильтрованных не `NULL` элементов
         // и разрешенных к сохранению полей.
-        $keys = array_keys(array_filter($content, function ($value, $key) {
+        $filtered = collect($content)->filter(function ($value, $key) {
             return ! is_null($value);
-        }, ARRAY_FILTER_USE_BOTH));
+        });
 
-        if (empty(array_diff($this->allowed, $keys))) {
+        if ($filtered->keys()->diff($this->allowed)->isEmpty()) {
             return true;
         }
 
