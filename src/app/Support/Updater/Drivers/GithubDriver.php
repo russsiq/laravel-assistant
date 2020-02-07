@@ -204,6 +204,9 @@ class GithubDriver extends AbstractUpdater
         // Удаляем временную директорию с исходниками.
         $this->deleteSourceDirectory($sourcePath);
 
+        // Обновить информацию о версии приложения.
+        $this->updateCurrentlyVersion();
+
         return true;
     }
 }

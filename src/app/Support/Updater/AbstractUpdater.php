@@ -127,6 +127,17 @@ abstract class AbstractUpdater implements UpdaterContract
     abstract public function update(): bool;
 
     /**
+     * Обновить номер текущей версии приложения.
+     *
+     * @return bool
+     */
+    protected function updateCurrentlyVersion(): bool
+    {
+        return EnvManager::set('APP_VERSION', $this->availableVersion())
+            ->save();
+    }
+
+    /**
      * Рекурсивная проверка файлов по указанному пути на доступность для записи.
      *
      * @param  string  $destinationPath
