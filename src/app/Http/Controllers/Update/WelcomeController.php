@@ -16,6 +16,7 @@ class WelcomeController extends BaseController
         return $this->makeResponse('update.welcome', [
             'available_version' => Updater::availableVersion(),
             'currently_version' => Updater::currentlyVersion(),
+            'is_new_version_available' => Updater::isNewVersionAvailable(),
             'installed_at' => Carbon::parse(Updater::installedAt())
                 ->isoFormat('LLLL'),
 
@@ -24,13 +25,20 @@ class WelcomeController extends BaseController
 
     public function store(UpdateRequest $request)
     {
-        return redirect()->route('assistant.update.complete');
+        if (Updater::isNewVersionAvailable()) {
+            Updater::fetch();
+            Updater::update();
+        }
+
+        return redirect()->route('assistant.update.complete')->with([
+            'status' => 'success'
+        ]);
     }
 
     public function complete()
     {
         return $this->makeResponse('update.complete', [
-            //
+            'currently_version' => Updater::currentlyVersion(),
         ]);
     }
 
