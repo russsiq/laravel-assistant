@@ -47,6 +47,7 @@ class VersionFile
     protected $content = [
         'version' => null,
         'source_url' => null,
+        'is_critical' => false,
 
     ];
 
@@ -58,6 +59,7 @@ class VersionFile
     protected $allowed = [
         'version',
         'source_url',
+        'is_critical' => false,
 
     ];
 
