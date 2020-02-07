@@ -274,9 +274,11 @@ class VersionFile
     protected function assertContentIsValid(array $content): bool
     {
         // Проверка сводится к сравнению массивов
-        // отфильтрованных непустых элементов
+        // отфильтрованных не `NULL` элементов
         // и разрешенных к сохранению полей.
-        $keys = array_keys(array_filter($content));
+        $keys = array_keys(array_filter($content, function ($value, $key) {
+            return ! is_null($value);
+        }, ARRAY_FILTER_USE_BOTH));
 
         if (empty(array_diff($this->allowed, $keys))) {
             return true;
