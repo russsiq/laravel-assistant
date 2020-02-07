@@ -11,6 +11,7 @@ use ZipArchive;
 
 use GuzzleHttp\ClientInterface;
 
+use SplFileInfo;
 use Illuminate\Filesystem\Filesystem;
 
 use Psr\Http\Message\ResponseInterface;
@@ -450,11 +451,49 @@ class Release
 
             $this->ziparchive->close();
 
+            $this->ensureSourceInRootDirectory($destination);
+
             return true;
         } catch (Throwable $e) {
             $this->filesystem->delete($filename);
 
             throw $e;
+        }
+    }
+
+    /**
+     * Убедиться, что извлеченные файлы не имеют
+     * посторонней вложенной директории,
+     * т.е. исходники расположены в корневой директории.
+     *
+     * @param  string  $destination
+     *
+     * @return void
+     */
+    protected function ensureSourceInRootDirectory(string $destination)
+    {
+        $directories = $this->filesystem->directories($destination);
+
+        if (1 === count($directories)) {
+            $root = $directories[0];
+
+            collect($this->filesystem->directories($root))
+                ->each(function (string $directory) use ($destination) {
+                    $this->filesystem->moveDirectory(
+                        $directory,
+                        $destination.DIRECTORY_SEPARATOR.$this->filesystem->name($directory)
+                    );
+                });
+
+            collect($this->filesystem->files($root, true))
+                ->each(function (SplFileInfo $file) use ($destination) {
+                    $this->filesystem->move(
+                        $file->getRealPath(),
+                        $destination.DIRECTORY_SEPARATOR.$file->getFilename()
+                    );
+                });
+
+            $this->filesystem->deleteDirectory($root);
         }
     }
 
