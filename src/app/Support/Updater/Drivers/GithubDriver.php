@@ -91,6 +91,7 @@ class GithubDriver extends AbstractUpdater
             // Меняем ссылку на загрузку исходника и сохраняем информацию.
             if ($asset) {
                 $release->setSourceUrl($asset->browser_download_url)
+                    ->setIsCritical(true)
                     ->saveInfo();
             }
         });

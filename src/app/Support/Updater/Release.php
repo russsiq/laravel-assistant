@@ -300,6 +300,35 @@ class Release
     }
 
     /**
+     * Задать характеристику кретичности релиза.
+     *
+     * @param  bool  $isCritical
+     * @return $this
+     */
+    public function setIsCritical(bool $isCritical)
+    {
+        $this->versionfile->set('is_critical', $isCritical);
+
+        return $this;
+    }
+
+    /**
+     * Получить характеристику кретичности релиза.
+     *
+     * @return bool
+     *
+     * @throws Exception Не указана характеристика кретичности релиза.
+     */
+    public function isCritical(): bool
+    {
+        if ($this->versionfile->doesntExist()) {
+            $this->loadInfo();
+        }
+
+        return $this->versionfile->get('is_critical');
+    }
+
+    /**
      * Загрузить информацию о последнем релизе из репозитория.
      *
      * @return $this
