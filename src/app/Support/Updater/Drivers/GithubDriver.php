@@ -104,6 +104,17 @@ class GithubDriver extends AbstractUpdater
      */
     protected function excludeDirectories(): array
     {
+        // Если это критическое обновление,
+        // то необходимо удалить директорию `vendor`
+        // из списка исключаемых директорий.
+        if ($this->release->isCritical()) {
+            $finded = array_search('vendor', $this->params['exclude_directories']);
+
+            if($finded !== false) {
+                unset($this->params['exclude_directories'][$finded]);
+            }
+        }
+
         return $this->params['exclude_directories'];
     }
 
