@@ -67,7 +67,7 @@ class GithubDriver extends AbstractUpdater
         }
 
         // Задать корневую директорию обновляемого приложения.
-        $this->params['destination_path'] = base_path('new');
+        $this->params['destination_path'] = base_path();
 
         return $this;
     }
