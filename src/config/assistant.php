@@ -58,7 +58,7 @@ return [
             'config',
             'config/settings',
             'storage/app/backups',
-            'storage/app/uploads',
+            'storage/app/public',
 
         ],
 
