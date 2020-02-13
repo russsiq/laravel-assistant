@@ -43,6 +43,9 @@
                         </div>
 
                         <div class="form__footer">
+                            @if ($routename = config('assistant.exit_route'))
+                                <a href="{{ route($routename) }}" class="btn">@lang('assistant::assistant.buttons.exit')</a>
+                            @endif
                             <button type="submit" class="btn ml-auto">@lang('assistant::assistant.buttons.'.($onFinishStage ? 'finish' : 'next'))</button>
                         </div>
                     </form>

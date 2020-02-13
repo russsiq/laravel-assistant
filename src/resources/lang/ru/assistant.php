@@ -12,6 +12,7 @@ return [
     ],
 
     'buttons' => [
+        'exit' => 'Выйти',
         'next' => 'Далее &raquo;',
         'finish' => 'Завершить',
 
