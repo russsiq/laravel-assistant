@@ -1,5 +1,7 @@
 <?php
 
+use Russsiq\Assistant\Services\BeforeInstalled;
+
 return [
     // Логирование событий.
     'log_events' => env('ASSISTANT_LOG_EVENTS', false),
@@ -80,7 +82,7 @@ return [
 
         ],
 
-        'before-installed' => '\\Russsiq\\Assistant\\Services\\BeforeInstalled',
+        'before-installed' => BeforeInstalled::class,
 
     ],
 
