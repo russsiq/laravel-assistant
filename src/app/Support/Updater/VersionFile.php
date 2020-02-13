@@ -59,7 +59,7 @@ class VersionFile
     protected $allowed = [
         'version',
         'source_url',
-        'is_critical' => false,
+        'is_critical',
 
     ];
 
@@ -276,7 +276,7 @@ class VersionFile
     protected function assertContentIsValid(array $content): bool
     {
         // Проверка сводится к сравнению массивов
-        // отфильтрованных не `NULL` элементов
+        // отфильтрованных элементов со значением не `NULL`
         // и разрешенных к сохранению полей.
         $filtered = collect($content)->filter(function ($value, $key) {
             return ! is_null($value);
