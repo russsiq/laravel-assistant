@@ -6,7 +6,7 @@ return [
     'sections' => [
         'install' => 'Установка',
         'update' => 'Обновление',
-        'archive' => 'Архивация',
+        // 'archive' => 'Архивация',
         'clean' => 'Очистка',
 
     ],
