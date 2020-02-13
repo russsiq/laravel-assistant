@@ -14,13 +14,17 @@
 	@endif
 
 	<fieldset>
-		<legend>@lang('assistant::install.forms.legends.organization')</legend>
-		<div class="form-group row{{ $errors->has('APP_NAME') ? ' has-error' : '' }}">
-			<label class="col-sm-3 col-form-label">@lang('assistant::install.forms.labels.APP_NAME')</label>
+		<legend>@lang('assistant::install.forms.legends.enviroments')</legend>
+		<div class="form-group row{{ $errors->has('APP_ENV') ? ' has-error' : '' }}">
+			<label class="col-sm-3 col-form-label">APP_ENV</label>
 			<div class="col-sm-9">
-				<input type="text" name="APP_NAME" value="{{ old('APP_NAME', '') }}" placeholder="@lang('assistant::install.forms.placeholders.APP_NAME')" class="form-control"  />
-				@if ($errors->has('APP_NAME'))
-					<div class="invalid-feedback d-block">{{ $errors->first('APP_NAME') }}</div>
+				<select class="form-control" name="APP_ENV">
+					@foreach (['production', 'local', 'dev'] as $env)
+						<option value="{{ $env }}">{{ $env }}</option>
+					@endforeach
+				</select>
+				@if ($errors->has('APP_ENV'))
+					<div class="invalid-feedback d-block">{{ $errors->first('APP_ENV') }}</div>
 				@endif
 			</div>
 		</div>

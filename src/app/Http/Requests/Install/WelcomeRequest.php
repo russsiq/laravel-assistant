@@ -7,6 +7,33 @@ use Russsiq\Assistant\Http\Requests\Request;
 class WelcomeRequest extends Request
 {
     /**
+     * Get data to be validated from the request.
+     *
+     * @return array
+     */
+    public function validationData()
+    {
+        $input = $this->only([
+            'APP_DEBUG',
+            'APP_NAME',
+            'APP_URL',
+            'licence',
+
+        ]);
+
+        return $this->replace($input)
+            ->merge([
+                // Режим отладки приложения.
+                'APP_DEBUG' => $input['APP_DEBUG'] ?? false,
+
+                // Ссылка на главную страницу сайта.
+                'APP_URL' => $input['APP_URL'] ?? url('/'),
+
+            ])
+            ->all();
+    }
+
+    /**
      * Get the validation rules that apply to the request.
      *
      * @return array
@@ -14,6 +41,27 @@ class WelcomeRequest extends Request
     public function rules()
     {
         return [
+            // Режим отладки приложения.
+            'APP_DEBUG' => [
+                'required',
+                'boolean',
+
+            ],
+
+            // Название сайта.
+            'APP_NAME' => [
+                'required',
+                'string',
+
+            ],
+
+            // Ссылка на главную страницу сайта.
+            'APP_URL' => [
+                'required',
+                'url',
+
+            ],
+
             'licence' => [
                 'accepted'
             ],

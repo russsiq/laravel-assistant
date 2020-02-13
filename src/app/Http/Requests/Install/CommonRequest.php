@@ -23,11 +23,6 @@ class CommonRequest extends Request
 
         return $this->replace($input)
             ->merge([
-                // Режим отладки приложения.
-                'APP_DEBUG' => $input['APP_DEBUG'] ?? false,
-
-                // Ссылка на главную страницу сайта.
-                'APP_URL' => $input['APP_URL'] ?? url('/'),
 
             ])
             ->all();
@@ -41,26 +36,7 @@ class CommonRequest extends Request
     public function rules()
     {
         return [
-            // Режим отладки приложения.
-            'APP_DEBUG' => [
-                'required',
-                'boolean',
 
-            ],
-
-            // Название сайта.
-            'APP_NAME' => [
-                'required',
-                'string',
-
-            ],
-
-            // Ссылка на главную страницу сайта.
-            'APP_URL' => [
-                'required',
-                'url',
-
-            ],
         ];
     }
 

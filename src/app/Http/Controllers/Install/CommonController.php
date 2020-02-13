@@ -56,17 +56,8 @@ class CommonController extends BaseController
 
         // Finaly set to `.env` variables
         EnvManager::setMany(array_merge($data, [
-                // Режим отладки приложения.
-                'APP_DEBUG' => $data['APP_DEBUG'],
-
                 // Теперь система будет считаться установленной.
                 'APP_INSTALLED_AT' => date('Y-m-d H:i:s'),
-
-                // Название сайта.
-                'APP_NAME' => $data['APP_NAME'],
-
-                // Ссылка на главную страницу сайта.
-                'APP_URL' => $data['APP_URL'],
 
             ]))
             ->save();

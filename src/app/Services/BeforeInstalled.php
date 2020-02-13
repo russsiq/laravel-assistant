@@ -75,12 +75,14 @@ class BeforeInstalled extends AbstractBeforeInstalled
     protected function rules(): array
     {
         return [
-            // // Пример возвращаемых данных.
-            // 'SOME_VAR' => [
-            //     'required',
-            //     'string',
-            //
-            // ],
+            // Пример возвращаемых данных.
+            // Application Environment
+            'APP_ENV' => [
+                'required',
+                'string',
+                'in:production,local,dev',
+
+            ],
 
         ];
     }
