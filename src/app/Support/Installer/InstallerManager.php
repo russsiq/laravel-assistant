@@ -7,6 +7,7 @@ use DB;
 use EnvManager;
 use SplFileInfo;
 
+use Illuminate\Contracts\Config\Repository as ConfigRepository;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
@@ -35,6 +36,13 @@ class InstallerManager implements InstallerContract
     protected $app;
 
     /**
+     * Экземпляр репозитория конфигураций.
+     *
+     * @var ConfigRepository
+     */
+    protected $config;
+
+    /**
      * Экземпляр класса по работе с файловой системой.
      *
      * @var Filesystem
@@ -49,6 +57,7 @@ class InstallerManager implements InstallerContract
     public function __construct(Application $app)
     {
         $this->app = $app;
+        $this->config = $app->make('config');
         $this->filesystem = $app->make('files');
     }
 
@@ -76,7 +85,7 @@ class InstallerManager implements InstallerContract
         $exit_code = Artisan::call('view:clear');
 
         // Для запуска приложения необходимо задать минимальные параметры.
-        config([
+        $this->config->set([
             'app.key' => EnvManager::get('APP_KEY')
         ]);
     }
@@ -162,9 +171,9 @@ class InstallerManager implements InstallerContract
     public function checkConnection(array $params, string $connection = 'mysql')
     {
         // Set temporary DB connection
-        $config = config("database.connections.$connection");
+        $config = $this->config->get("database.connections.$connection");
 
-        config([
+        $this->config->set([
             "database.connections.$connection" => array_merge($config, [
                 'host' =>  $params['DB_HOST'],
                 'database' => $params['DB_DATABASE'],
@@ -264,7 +273,7 @@ class InstallerManager implements InstallerContract
     public function beforeInstalled(Request $request): RedirectResponse
     {
         $provider = $this->createBeforeInstalled(
-            config('assistant.installer.before-installed', self::DEFAULT_BEFORE_INSTALLED)
+            $this->config->get('assistant.installer.before-installed', self::DEFAULT_BEFORE_INSTALLED)
         );
 
         return $provider->handle($request);
@@ -277,7 +286,7 @@ class InstallerManager implements InstallerContract
 
     public function copyDirectories()
     {
-        $directories = config('assistant.installer.directories');
+        $directories = $this->config->get('assistant.installer.directories');
 
         if (is_array($directories) and count($directories)) {
             foreach ($directories as $fromDir => $toDir) {
@@ -308,7 +317,7 @@ class InstallerManager implements InstallerContract
     // Artisan::call('storage:link');
     public function createSymbolicLinks()
     {
-        $symlinks = config('assistant.installer.symlinks');
+        $symlinks = $this->config->get('assistant.installer.symlinks');
 
         if (is_array($symlinks) and count($symlinks)) {
             foreach ($symlinks as $target => $link) {
