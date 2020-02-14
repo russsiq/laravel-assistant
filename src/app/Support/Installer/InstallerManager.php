@@ -312,12 +312,17 @@ class InstallerManager implements InstallerContract
 
         if (is_array($symlinks) and count($symlinks)) {
             foreach ($symlinks as $target => $link) {
-                clearstatcache(true, $link);
-
-                if (! $this->filesystem->exists($link)) {
-                    $this->filesystem->link($target, $link);
-                }
+                $this->createSymbolicLink($target, $link);
             }
+        }
+    }
+
+    public function createSymbolicLink(string $target, string $link)
+    {
+        clearstatcache(true, $link);
+
+        if (! $this->filesystem->exists($link)) {
+            $filesystem->link($target, $link);
         }
     }
 
