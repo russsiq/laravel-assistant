@@ -2,6 +2,8 @@
 
 namespace Russsiq\Assistant\Contracts;
 
+use Illuminate\Http\RedirectResponse;
+
 interface InstallerContract
 {
     /**
