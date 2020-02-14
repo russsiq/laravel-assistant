@@ -7,6 +7,7 @@ use DB;
 use EnvManager;
 use SplFileInfo;
 
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -34,6 +35,13 @@ class InstallerManager implements InstallerContract
     protected $app;
 
     /**
+     * Экземпляр класса по работе с файловой системой.
+     *
+     * @var Filesystem
+     */
+    protected $filesystem;
+
+    /**
      * Создать новый экземпляр Установщика приложения.
      *
      * @param  Application  $app
@@ -41,6 +49,7 @@ class InstallerManager implements InstallerContract
     public function __construct(Application $app)
     {
         $this->app = $app;
+        $this->filesystem = $app->make('files');
     }
 
     /**
@@ -271,29 +280,25 @@ class InstallerManager implements InstallerContract
         $directories = config('assistant.installer.directories');
 
         if (is_array($directories) and count($directories)) {
-            $filesystem = $this->app->make('files');
-
             foreach ($directories as $fromDir => $toDir) {
-                $this->copyDirectory($fromDir, $toDir, $filesystem);
+                $this->copyDirectory($fromDir, $toDir);
             }
         }
     }
 
-    public function copyDirectory(string $fromDir, string $toDir, $filesystem = null)
+    public function copyDirectory(string $fromDir, string $toDir)
     {
-        $filesystem = $filesystem ?: $this->app->make('files');
-
         collect(Finder::create()->directories()->in($fromDir)->sortByName())
-            ->each(function (SplFileInfo $directory) use ($toDir, $filesystem) {
-                $filesystem->copyDirectory(
+            ->each(function (SplFileInfo $directory) use ($toDir) {
+                $this->filesystem->copyDirectory(
                     $directory->getRealPath(),
                     $toDir.DS.$directory->getRelativePath().DS.$directory->getBasename()
                 );
             });
 
         collect(Finder::create()->files()->in($fromDir)->depth(0)->ignoreDotFiles(true)->sortByName())
-            ->each(function (SplFileInfo $file) use ($toDir, $filesystem) {
-                $filesystem->copy(
+            ->each(function (SplFileInfo $file) use ($toDir) {
+                $this->filesystem->copy(
                     $file->getRealPath(),
                     $toDir.DS.$file->getFilename()
                 );
@@ -306,13 +311,11 @@ class InstallerManager implements InstallerContract
         $symlinks = config('assistant.installer.symlinks');
 
         if (is_array($symlinks) and count($symlinks)) {
-            $filesystem = $this->app->make('files');
-
             foreach ($symlinks as $target => $link) {
                 clearstatcache(true, $link);
 
-                if (! $filesystem->exists($link)) {
-                    $filesystem->link($target, $link);
+                if (! $this->filesystem->exists($link)) {
+                    $this->filesystem->link($target, $link);
                 }
             }
         }
