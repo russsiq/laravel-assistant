@@ -7,7 +7,7 @@ use DB;
 use EnvManager;
 use SplFileInfo;
 
-use Illuminate\Contracts\Config\Repository as ConfigRepository;
+use Illuminate\Contracts\Config\Repository as ConfigRepositoryContract;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
@@ -38,7 +38,7 @@ class InstallerManager implements InstallerContract
     /**
      * Экземпляр репозитория конфигураций.
      *
-     * @var ConfigRepository
+     * @var ConfigRepositoryContract
      */
     protected $config;
 
