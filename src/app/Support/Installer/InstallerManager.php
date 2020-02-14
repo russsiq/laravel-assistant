@@ -2,12 +2,19 @@
 
 namespace Russsiq\Assistant\Support\Installer;
 
+// Исключения.
+use Russsiq\Assistant\Exceptions\InstallerFailed;
+
+// Базовые расширения PHP.
+use SplFileInfo;
+
+// Зарегистрированные фасады приложения.
 use Artisan;
+use Cleaner;
 use DB;
 use EnvManager;
-use SplFileInfo;
-use Cleaner;
 
+// Сторонние зависимости.
 use Illuminate\Contracts\Config\Repository as ConfigRepositoryContract;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Foundation\Application;
@@ -15,48 +22,46 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 use Russsiq\Assistant\Contracts\InstallerContract;
-use Russsiq\Assistant\Exceptions\InstallerFailed;
 use Russsiq\Assistant\Services\Abstracts\AbstractBeforeInstalled;
 
 use Symfony\Component\Finder\Finder;
 
+/**
+ * Установщик.
+ */
 class InstallerManager implements InstallerContract
 {
     /**
      * Расположение класса финальной стадии Установщика.
-     *
      * @var string
      */
     const DEFAULT_BEFORE_INSTALLED = '\Russsiq\Assistant\Services\BeforeInstalled';
 
     /**
      * Экземпляр приложения.
-     *
      * @var Application
      */
     protected $app;
 
     /**
      * Экземпляр репозитория конфигураций.
-     *
      * @var ConfigRepositoryContract
      */
     protected $config;
 
     /**
      * Экземпляр класса по работе с файловой системой.
-     *
      * @var Filesystem
      */
     protected $filesystem;
 
     /**
      * Создать новый экземпляр Установщика приложения.
-     *
      * @param  Application  $app
      */
-    public function __construct(Application $app)
-    {
+    public function __construct(
+        Application $app
+    ) {
         $this->app = $app;
         $this->config = $app->make('config');
         $this->filesystem = $app->make('files');
@@ -64,7 +69,6 @@ class InstallerManager implements InstallerContract
 
     /**
      * Инициировать начальный этап установки.
-     *
      * @return void
      */
     public function initiate()
@@ -96,7 +100,6 @@ class InstallerManager implements InstallerContract
     /**
      * Маркер того, что была выполнена
      * первоначальная инициализация установки.
-     *
      * @return boolean
      */
     public function alreadyInitiated(): bool
@@ -106,7 +109,6 @@ class InstallerManager implements InstallerContract
 
     /**
      * Маркер, что приложение установлено.
-     *
      * @return boolean
      */
     public function alreadyInstalled(): bool
@@ -116,7 +118,6 @@ class InstallerManager implements InstallerContract
 
     /**
      * Получить дату установки приложения.
-     *
      * @return mixed
      */
     public function installedAt()
@@ -126,7 +127,6 @@ class InstallerManager implements InstallerContract
 
     /**
      * Получить массив с набором минимальных системных требований к серверу.
-     *
      * @return array
      */
     public static function requirements(): array
@@ -136,7 +136,6 @@ class InstallerManager implements InstallerContract
 
     /**
      * Получить массив "зловредных" глобальных переменных.
-     *
      * @return array
      */
     public static function antiGlobals(): array
@@ -146,7 +145,6 @@ class InstallerManager implements InstallerContract
 
     /**
      * Получить массив прав на доступ к директориям.
-     *
      * @return array
      */
     public static function filePermissions(): array
@@ -156,7 +154,6 @@ class InstallerManager implements InstallerContract
 
     /**
      * Получить массив доступных при установке тем.
-     *
      * @return array
      */
     public static function themes(): array
@@ -166,14 +163,13 @@ class InstallerManager implements InstallerContract
 
     /**
      * Выполнить проверку подключения к БД с переданными параметрами.
-     *
      * @return void
      *
      * @throws InstallerFailed
      */
     public function checkConnection(array $params, string $connection = 'mysql')
     {
-        // Set temporary DB connection
+        // Устанавливаем временное подключение к БД.
         $config = $this->config->get("database.connections.$connection");
 
         $this->config->set([
@@ -186,7 +182,7 @@ class InstallerManager implements InstallerContract
             ]),
         ]);
 
-        // Check DB connection and exists table
+        // Проверяем подключение к БД.
         DB::purge($connection);
         DB::reconnect($connection);
         DB::setTablePrefix($params['DB_PREFIX']);
@@ -199,8 +195,7 @@ class InstallerManager implements InstallerContract
 
     /**
      * Выполнить миграции БД.
-     *
-     * @return string   Сообщение о выполненной операции.
+     * @return string  Сообщение о выполненной операции.
      */
     public function migrate(): string
     {
@@ -232,10 +227,8 @@ class InstallerManager implements InstallerContract
 
     /**
      * Заполнить БД данными.
-     *
-     * @param  string $class Класс заполнителя.
-     *
-     * @return string        Сообщение о выполненной операции.
+     * @param  string  $class Класс заполнителя.
+     * @return string  Сообщение о выполненной операции.
      */
     public function seed(string $class): string
     {
@@ -267,10 +260,9 @@ class InstallerManager implements InstallerContract
     }
 
     /**
-     * [beforeInstalled description]
-     *
+     * Посредник, выполняющий заданные операции
+     * на завершающей стадии установки приложения.
      * @param  Request  $request
-     *
      * @return RedirectResponse
      */
     public function beforeInstalled(Request $request): RedirectResponse
@@ -282,11 +274,20 @@ class InstallerManager implements InstallerContract
         return $provider->handle($request);
     }
 
+    /**
+     * Создание посредника завершающей стадии.
+     * @param  string  $class
+     * @return AbstractBeforeInstalled
+     */
     protected function createBeforeInstalled(string $class): AbstractBeforeInstalled
     {
         return new $class($this->app);
     }
 
+    /**
+     * Копирование директорий, заданных в массиве конфигурации.
+     * @return void
+     */
     public function copyDirectories()
     {
         $directories = $this->config->get('assistant.installer.directories');
@@ -298,6 +299,12 @@ class InstallerManager implements InstallerContract
         }
     }
 
+    /**
+     * Копирование директории со всеми файлами.
+     * @param  string $fromDir
+     * @param  string $toDir
+     * @return void
+     */
     public function copyDirectory(string $fromDir, string $toDir)
     {
         collect(Finder::create()->directories()->in($fromDir)->sortByName())
@@ -317,7 +324,10 @@ class InstallerManager implements InstallerContract
             });
     }
 
-    // Artisan::call('storage:link');
+    /**
+     * Создание ссылок, заданных в массиве конфигурации.
+     * @return void
+     */
     public function createSymbolicLinks()
     {
         $symlinks = $this->config->get('assistant.installer.symlinks');
@@ -329,6 +339,12 @@ class InstallerManager implements InstallerContract
         }
     }
 
+    /**
+     * Создание ссылки.
+     * @param  string $target
+     * @param  string $link
+     * @return void
+     */
     public function createSymbolicLink(string $target, string $link)
     {
         clearstatcache(true, $link);
@@ -340,10 +356,8 @@ class InstallerManager implements InstallerContract
 
     /**
      * Применить замыкание, если переданное условие `$condition` правдиво.
-     *
      * @param  bool  $condition
      * @param  callable  $callback
-     *
      * @return self
      */
     public function when(bool $condition, callable $callback): InstallerContract
