@@ -6,6 +6,7 @@ use Artisan;
 use DB;
 use EnvManager;
 use SplFileInfo;
+use Cleaner;
 
 use Illuminate\Contracts\Config\Repository as ConfigRepositoryContract;
 use Illuminate\Filesystem\Filesystem;
@@ -79,10 +80,12 @@ class InstallerManager implements InstallerContract
             ->save();
 
         // Очищаем ненужный хлам.
-        $exit_code = Artisan::call('cache:clear');
-        $exit_code = Artisan::call('config:clear');
-        $exit_code = Artisan::call('route:clear');
-        $exit_code = Artisan::call('view:clear');
+        Cleaner::process([
+            'clear_cache',
+            'clear_config',
+            'clear_route',
+            'clear_view',
+        ]);
 
         // Для запуска приложения необходимо задать минимальные параметры.
         $this->config->set([
