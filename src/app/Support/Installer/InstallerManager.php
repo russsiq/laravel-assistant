@@ -350,7 +350,7 @@ class InstallerManager implements InstallerContract
         clearstatcache(true, $link);
 
         if (! $this->filesystem->exists($link)) {
-            $filesystem->link($target, $link);
+            $this->filesystem->link($target, $link);
         }
     }
 
