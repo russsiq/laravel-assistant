@@ -2,16 +2,18 @@
 
 namespace Russsiq\Assistant\Http\Controllers\Install;
 
+// Исключения.
+use Throwable;
+use Illuminate\Validation\ValidationException;
+
+// Зарегистрированные фасады приложения.
 use Artisan;
 use EnvManager;
 use Installer;
 
-use Throwable;
-
+// Сторонние зависимости.
 use Russsiq\Assistant\Http\Controllers\BaseController;
 use Russsiq\Assistant\Http\Requests\Install\CommonRequest;
-
-use Illuminate\Validation\ValidationException;
 
 class CommonController extends BaseController
 {
@@ -34,12 +36,13 @@ class CommonController extends BaseController
         $data = $request->all();
 
         try {
-            // Выполняем копирование необходимх директорий.
+            // Выполняем копирование необходимых директорий.
             Installer::copyDirectories();
 
             // Создаем ссылки на необходимые директории.
             Installer::createSymbolicLinks();
 
+            // Получаем ответ от посредника.
             $response = Installer::beforeInstalled($request);
 
         } catch (ValidationException $ex) {
@@ -54,7 +57,7 @@ class CommonController extends BaseController
                 ]);
         }
 
-        // Finaly set to `.env` variables
+        // Устанавливаем оставшиеся переменные в файл `.env`.
         EnvManager::setMany(array_merge($data, [
                 // Теперь система будет считаться установленной.
                 'APP_INSTALLED_AT' => date('Y-m-d H:i:s'),
