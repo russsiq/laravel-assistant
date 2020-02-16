@@ -7,7 +7,7 @@ use Throwable;
 use Illuminate\Validation\ValidationException;
 
 // Зарегистрированные фасады приложения.
-use Artisan;
+use Cleaner;
 use EnvManager;
 use Installer;
 
@@ -66,10 +66,12 @@ class CommonController extends BaseController
             ->save();
 
         // Очищаем ненужный хлам.
-        $exit_code = Artisan::call('cache:clear');
-        $exit_code = Artisan::call('config:clear');
-        $exit_code = Artisan::call('route:clear');
-        $exit_code = Artisan::call('view:clear');
+        Cleaner::process([
+            'clear_cache',
+            'clear_config',
+            'clear_route',
+            'clear_view',
+        ]);
 
         return $response;
     }
