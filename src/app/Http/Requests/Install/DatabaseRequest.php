@@ -7,31 +7,31 @@ use Russsiq\Assistant\Http\Requests\Request;
 class DatabaseRequest extends Request
 {
     /**
-     * Get data to be validated from the request.
-     *
-     * @return array
+     * Подготовить данные для валидации.
+     * @return void
      */
-    public function validationData()
+    protected function prepareForValidation()
     {
         $input = $this->except([
             '_token',
             '_method',
             'submit',
+
         ]);
 
-        return $this->replace($input)
+        $this->replace($input)
             ->merge([
                 'DB_CONNECTION' => 'mysql',
                 'DB_HOST' => $this->input('DB_HOST', '127.0.0.1'),
                 'DB_PORT' => $this->input('DB_PORT', '3306'),
                 'test_seed' => $this->input('test_seed', false),
-            ])
-            ->all();
+
+            ]);
     }
 
     /**
-     * Get the validation rules that apply to the request.
-     *
+     * Получить массив правил валидации,
+     * которые будут применены к запросу.
      * @return array
      */
     public function rules()
@@ -42,55 +42,63 @@ class DatabaseRequest extends Request
                 'required',
                 'string',
                 'in:mysql',
+
             ],
 
             'DB_HOST' => [
                 'bail',
                 'required',
                 'string',
+
             ],
 
             'DB_PORT' => [
                 'bail',
                 'required',
                 'integer',
+
             ],
 
             'DB_DATABASE' => [
                 'bail',
                 'required',
                 'string',
+
             ],
 
             'DB_PREFIX' => [
                 'bail',
                 'required',
                 'string',
+
             ],
 
             'DB_USERNAME' => [
                 'bail',
                 'required',
                 'string',
+
             ],
 
             'DB_PASSWORD' => [
                 'bail',
                 'nullable',
                 'string',
+
             ],
 
             'test_seed' => [
                 'sometimes',
                 'boolean',
+
             ],
 
         ];
     }
 
     /**
-     * Get custom messages for validator errors.
-     *
+     * Получить массив пользовательских строк
+     * для формирования сообщений валидатора.
      * @return array
      */
     public function messages()
@@ -101,8 +109,8 @@ class DatabaseRequest extends Request
     }
 
     /**
-     * Get custom attributes for validator errors.
-     *
+     * Получить пользовательские имена атрибутов
+     * для формирования сообщений валидатора.
      * @return array
      */
     public function attributes()

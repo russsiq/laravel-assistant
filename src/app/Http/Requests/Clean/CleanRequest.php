@@ -10,7 +10,6 @@ class CleanRequest extends Request
 {
     /**
      * Подготовить данные для валидации.
-     *
      * @return void
      */
     protected function prepareForValidation()
@@ -21,13 +20,15 @@ class CleanRequest extends Request
             'submit',
         ]);
 
-        $this->replace($input);
+        $this->replace($input)
+            ->merge([
+
+            ]);
     }
 
     /**
-     * Получить правила валидации,
+     * Получить массив правил валидации,
      * которые будут применены к запросу.
-     *
      * @return array
      */
     public function rules()
@@ -48,9 +49,8 @@ class CleanRequest extends Request
     }
 
     /**
-     * Получить пользовательские строки
+     * Получить массив пользовательских строк
      * для формирования сообщений валидатора.
-     *
      * @return array
      */
     public function messages()
@@ -63,7 +63,6 @@ class CleanRequest extends Request
     /**
      * Получить пользовательские имена атрибутов
      * для формирования сообщений валидатора.
-     *
      * @return array
      */
     public function attributes()
@@ -75,9 +74,7 @@ class CleanRequest extends Request
 
     /**
      * Надстройка экземпляра валидатора.
-     *
      * @param  Validator  $validator
-     *
      * @return void
      */
     public function withValidator($validator)

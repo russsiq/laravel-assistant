@@ -7,11 +7,10 @@ use Russsiq\Assistant\Http\Requests\Request;
 class WelcomeRequest extends Request
 {
     /**
-     * Get data to be validated from the request.
-     *
-     * @return array
+     * Подготовить данные для валидации.
+     * @return void
      */
-    public function validationData()
+    protected function prepareForValidation()
     {
         $input = $this->only([
             'APP_DEBUG',
@@ -21,7 +20,7 @@ class WelcomeRequest extends Request
 
         ]);
 
-        return $this->replace($input)
+        $this->replace($input)
             ->merge([
                 // Режим отладки приложения.
                 'APP_DEBUG' => $input['APP_DEBUG'] ?? false,
@@ -29,13 +28,12 @@ class WelcomeRequest extends Request
                 // Ссылка на главную страницу сайта.
                 'APP_URL' => $input['APP_URL'] ?? url('/'),
 
-            ])
-            ->all();
+            ]);
     }
 
     /**
-     * Get the validation rules that apply to the request.
-     *
+     * Получить массив правил валидации,
+     * которые будут применены к запросу.
      * @return array
      */
     public function rules()
@@ -62,16 +60,18 @@ class WelcomeRequest extends Request
 
             ],
 
+            // Принятие лицензионного соглашения.
             'licence' => [
-                'accepted'
+                'accepted',
+
             ],
 
         ];
     }
 
     /**
-     * Get custom messages for validator errors.
-     *
+     * Получить массив пользовательских строк
+     * для формирования сообщений валидатора.
      * @return array
      */
     public function messages()
@@ -82,8 +82,8 @@ class WelcomeRequest extends Request
     }
 
     /**
-     * Get custom attributes for validator errors.
-     *
+     * Получить пользовательские имена атрибутов
+     * для формирования сообщений валидатора.
      * @return array
      */
     public function attributes()

@@ -7,11 +7,10 @@ use Russsiq\Assistant\Http\Requests\Request;
 class CommonRequest extends Request
 {
     /**
-     * Get data to be validated from the request.
-     *
-     * @return array
+     * Подготовить данные для валидации.
+     * @return void
      */
-    public function validationData()
+    protected function prepareForValidation()
     {
         $input = $this->except([
             '_token',
@@ -21,16 +20,15 @@ class CommonRequest extends Request
 
         ]);
 
-        return $this->replace($input)
+        $this->replace($input)
             ->merge([
 
-            ])
-            ->all();
+            ]);
     }
 
     /**
-     * Get the validation rules that apply to the request.
-     *
+     * Получить массив правил валидации,
+     * которые будут применены к запросу.
      * @return array
      */
     public function rules()
@@ -41,8 +39,8 @@ class CommonRequest extends Request
     }
 
     /**
-     * Get custom messages for validator errors.
-     *
+     * Получить массив пользовательских строк
+     * для формирования сообщений валидатора.
      * @return array
      */
     public function messages()
@@ -53,8 +51,8 @@ class CommonRequest extends Request
     }
 
     /**
-     * Get custom attributes for validator errors.
-     *
+     * Получить пользовательские имена атрибутов
+     * для формирования сообщений валидатора.
      * @return array
      */
     public function attributes()

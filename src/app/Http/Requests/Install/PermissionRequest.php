@@ -7,38 +7,38 @@ use Russsiq\Assistant\Http\Requests\Request;
 class PermissionRequest extends Request
 {
     /**
-     * Get the validation rules that apply to the request.
-     *
+     * Получить массив правил валидации,
+     * которые будут применены к запросу.
      * @return array
      */
     public function rules()
     {
         return [
-            //
+
         ];
     }
 
     /**
-     * Get custom messages for validator errors.
-     *
+     * Получить массив пользовательских строк
+     * для формирования сообщений валидатора.
      * @return array
      */
     public function messages()
     {
         return [
-            //
+
         ];
     }
 
     /**
-     * Get custom attributes for validator errors.
-     *
+     * Получить пользовательские имена атрибутов
+     * для формирования сообщений валидатора.
      * @return array
      */
     public function attributes()
     {
         return [
-            //
+
         ];
     }
 }
