@@ -33,8 +33,6 @@ class CommonController extends BaseController
 
     public function store(CommonRequest $request)
     {
-        $data = $request->all();
-
         try {
             // Выполняем копирование необходимых директорий.
             Installer::copyDirectories();
@@ -58,7 +56,7 @@ class CommonController extends BaseController
         }
 
         // Устанавливаем оставшиеся переменные в файл `.env`.
-        EnvManager::setMany(array_merge($data, [
+        EnvManager::setMany(array_merge($request->all(), [
                 // Теперь система будет считаться установленной.
                 'APP_INSTALLED_AT' => date('Y-m-d H:i:s'),
 
