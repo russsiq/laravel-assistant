@@ -61,8 +61,12 @@ class CleanerManager implements CleanerContract
      * @param MessageBag  $messages
      * @param BufferedOutput  $outputBuffer
      */
-    public function __construct(Application $app, ConsoleKernelContract $artisan, MessageBag $messages, BufferedOutput $outputBuffer)
-    {
+    public function __construct(
+        Application $app,
+        ConsoleKernelContract $artisan,
+        MessageBag $messages,
+        BufferedOutput $outputBuffer
+    ) {
         $this->app = $app;
         $this->artisan = $artisan;
         $this->messages = $messages;
