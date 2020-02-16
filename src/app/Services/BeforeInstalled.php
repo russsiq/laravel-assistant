@@ -28,6 +28,7 @@ class BeforeInstalled extends AbstractBeforeInstalled
     /**
      * Создать новый экземпляр класса.
      * @param  Container  $container
+     * @return void
      */
     public function __construct(
         Container $container
@@ -37,9 +38,7 @@ class BeforeInstalled extends AbstractBeforeInstalled
 
     /**
      * Обработка входящего запроса.
-     *
-     * @param  Request $request
-     *
+     * @param  Request  $request
      * @return RedirectResponse
      */
     public function handle(Request $request): RedirectResponse
@@ -55,9 +54,7 @@ class BeforeInstalled extends AbstractBeforeInstalled
 
     /**
      * Получить валидатор для проверки входящих данных запроса.
-     *
      * @param  array  $data
-     *
      * @return ValidatorContract
      */
     protected function validator(array $data): ValidatorContract
@@ -68,7 +65,6 @@ class BeforeInstalled extends AbstractBeforeInstalled
     /**
      * Получить правила валидации,
      * применяемые к входящим данным запроса.
-     *
      * @return array
      */
     protected function rules(): array

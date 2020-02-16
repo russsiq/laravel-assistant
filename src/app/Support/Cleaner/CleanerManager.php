@@ -2,17 +2,22 @@
 
 namespace Russsiq\Assistant\Support\Cleaner;
 
-use Artisan;
+// Исключения.
+use InvalidArgumentException;
+
+// Базовые расширения PHP.
 use SplFileInfo;
 
+// Зарегистрированные фасады приложения.
+use Artisan;
+
+// Сторонние зависимости.
 // use Illuminate\Console\Events\CommandFinished;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Console\Kernel as ConsoleKernelContract;
 use Illuminate\Support\MessageBag;
 use Illuminate\Support\Str;
-
 use Russsiq\Assistant\Contracts\CleanerContract;
-
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\NullOutput;
 
@@ -20,46 +25,41 @@ class CleanerManager implements CleanerContract
 {
     /**
      * Ключ кэша сообщений.
-     *
      * @var string
      */
     const MESSAGES_KEY_CACHE = 'laravel-cleaner:messages';
 
     /**
      * Экземпляр контейнера приложения.
-     *
      * @var Container
      */
     protected $container;
 
     /**
      * Экземпляр Ядра консоли.
-     *
      * @var ConsoleKernelContract
      */
     protected $artisan;
 
     /**
      * Экземпляр Коллекционера сообщений.
-     *
      * @var MessageBag
      */
     protected $messages;
 
     /**
      * Экземпляр Буфера вывода сообщений консоли.
-     *
      * @var BufferedOutput
      */
     protected $outputBuffer;
 
     /**
      * Создать новый экземпляр Оптимизатора.
-     * 
      * @param  Container  $container
      * @param  ConsoleKernelContract  $artisan
      * @param  MessageBag  $messages
      * @param  BufferedOutput  $outputBuffer
+     * @return void
      */
     public function __construct(
         Container $container,
@@ -75,7 +75,6 @@ class CleanerManager implements CleanerContract
 
     /**
      * Получить Ключ кэша сообщений.
-     *
      * @return string
      */
     public static function getMessagesCacheKey(): string
@@ -85,7 +84,6 @@ class CleanerManager implements CleanerContract
 
     /**
      * Получить все сообщения по каждому ключу.
-     *
      * @return array
      */
     public function getMessages(): array
@@ -95,10 +93,8 @@ class CleanerManager implements CleanerContract
 
     /**
      * Добавить сообщение в Коллекционер.
-     *
      * @param  string  $key
      * @param  string  $message
-     *
      * @return void
      */
     public function addMessage(string $key, string $message)
@@ -111,7 +107,6 @@ class CleanerManager implements CleanerContract
 
     /**
      * Очистка кэша приложения.
-     *
      * @return void
      */
     public function clearCache()
@@ -121,7 +116,6 @@ class CleanerManager implements CleanerContract
 
     /**
      * Очистка кэша по ключу.
-     *
      * @return void
      */
     public function clearCacheByKey(string $key, string $delimiter = '|')
@@ -139,7 +133,6 @@ class CleanerManager implements CleanerContract
 
     /**
      * Очистка кэша конфигураций приложения.
-     *
      * @return void
      */
     public function clearCompiled()
@@ -149,7 +142,6 @@ class CleanerManager implements CleanerContract
 
     /**
      * Очистка кэша конфигураций приложения.
-     *
      * @return void
      */
     public function cacheConfig()
@@ -159,7 +151,6 @@ class CleanerManager implements CleanerContract
 
     /**
      * Очистка кэша конфигураций приложения.
-     *
      * @return void
      */
     public function clearConfig()
@@ -169,7 +160,6 @@ class CleanerManager implements CleanerContract
 
     /**
      * Очистка кэша маршрутов приложения.
-     *
      * @return void
      */
     public function cacheRoute()
@@ -179,7 +169,6 @@ class CleanerManager implements CleanerContract
 
     /**
      * Очистка кэша маршрутов приложения.
-     *
      * @return void
      */
     public function clearRoute()
@@ -189,7 +178,6 @@ class CleanerManager implements CleanerContract
 
     /**
      * Очистка скомпилированных шаблонов приложения.
-     *
      * @return string
      */
     public function clearView()
@@ -238,7 +226,6 @@ class CleanerManager implements CleanerContract
 
     /**
      * Комплексная очистка и последующее кэширование.
-     *
      * @return void
      */
     public function complexOptimize()
@@ -261,10 +248,8 @@ class CleanerManager implements CleanerContract
 
     /**
      * Запустить команду консоли Artisan.
-     *
-     * @param  string $name
+     * @param  string  $name
      * @param  array  $options
-     *
      * @return int
      */
     protected function artisanCall(string $name, array $options = []): int
@@ -283,9 +268,7 @@ class CleanerManager implements CleanerContract
 
     /**
      * Запустить внутренние методы очистки, кэширования, оптимизации.
-     *
-     * @param  array  $methods Массив методов.
-     *
+     * @param  array  $methods  Массив методов.
      * @return void
      */
     public function process(array $methods)
@@ -297,13 +280,11 @@ class CleanerManager implements CleanerContract
 
     /**
      * Dynamically call the default driver instance.
-     *
      * @param  string  $method
      * @param  array  $parameters
-     *
      * @return mixed
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function __call(string $method, array $parameters)
     {
@@ -313,7 +294,7 @@ class CleanerManager implements CleanerContract
             return $this->{$dinamic}(...$parameters);
         }
 
-        throw new \InvalidArgumentException(
+        throw new InvalidArgumentException(
             "Method [{$method}] missing from ".get_class($this)
         );
     }

@@ -14,7 +14,7 @@ use Russsiq\Assistant\Support\Updater\Release;
 use Russsiq\Assistant\Support\Updater\VersionFile;
 
 /**
- * Менеджер, управляющий созданием Масетра обновлений,
+ * Менеджер, управляющий созданием Мастера обновлений,
  * предоставляющий доступ к его методам.
  */
 class UpdaterManager extends Manager

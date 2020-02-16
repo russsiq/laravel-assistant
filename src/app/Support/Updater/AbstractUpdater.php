@@ -25,7 +25,6 @@ abstract class AbstractUpdater implements UpdaterContract
 {
     /**
      * Получить дату установки приложения.
-     *
      * @return mixed
      *
      * @throws RuntimeException
@@ -43,7 +42,6 @@ abstract class AbstractUpdater implements UpdaterContract
 
     /**
      * Получить номер фактической версии приложения.
-     *
      * @return string
      *
      * @throws RuntimeException
@@ -62,14 +60,12 @@ abstract class AbstractUpdater implements UpdaterContract
     /**
      * Получить номер доступной версии приложения,
      * опубликованного в репозитории.
-     *
      * @return string
      */
     abstract public function availableVersion(): string;
 
     /**
      * Доступность новой версии приложения в репозитории.
-     *
      * @return bool
      */
     public function isNewVersionAvailable(): bool
@@ -83,7 +79,6 @@ abstract class AbstractUpdater implements UpdaterContract
 
     /**
      * Получить массив папок, игнорируемых во время процесса обновления.
-     *
      * @return array
      */
     abstract protected function excludeDirectories(): array;
@@ -91,14 +86,12 @@ abstract class AbstractUpdater implements UpdaterContract
     /**
      * Получить массив файлов, которые расположены
      * в корне приложения и будут обновлены.
-     *
      * @return array
      */
     abstract protected function allowedFiles(): array;
 
     /**
      * Корневая директория обновляемого приложения.
-     *
      * @return string
      */
     abstract protected function destinationPath(): string;
@@ -106,7 +99,6 @@ abstract class AbstractUpdater implements UpdaterContract
     /**
      * Получить временную директорию, где расположены
      * исходники файлов обновляемого приложения.
-     *
      * @return string
      */
     abstract protected function sourcePath(): string;
@@ -114,21 +106,18 @@ abstract class AbstractUpdater implements UpdaterContract
     /**
      * Загрузить архив новой версии приложения
      * из репозитория с помощью НТТР-метода GЕТ.
-     *
      * @return void
      */
     abstract public function fetch();
 
     /**
      * Запустить процесс обновления приложения до актуальной версии.
-     *
      * @return bool
      */
     abstract public function update(): bool;
 
     /**
      * Обновить номер текущей версии приложения.
-     *
      * @return bool
      */
     protected function updateCurrentlyVersion(): bool
@@ -139,7 +128,6 @@ abstract class AbstractUpdater implements UpdaterContract
 
     /**
      * Рекурсивная проверка файлов по указанному пути на доступность для записи.
-     *
      * @param  string  $destinationPath
      * @return bool
      *
@@ -167,7 +155,6 @@ abstract class AbstractUpdater implements UpdaterContract
     /**
      * Рекурсивное удаление директорий из директории исходника,
      * исключаемых из процесса обновления согласно конфигурации.
-     *
      * @param  string  $sourcePath
      * @return void
      */
@@ -184,7 +171,6 @@ abstract class AbstractUpdater implements UpdaterContract
     /**
      * Рекурсивное перемещение директорий с содержимым
      * из директории исходника в корневую директорию приложения.
-     *
      * @param  string  $sourcePath
      * @param  string  $destinationPath
      * @return void
@@ -207,7 +193,6 @@ abstract class AbstractUpdater implements UpdaterContract
     /**
      * Рекурсивное перемещение корневых файлов из директории исходника
      * в корневую директорию приложения согласно конфигурации.
-     *
      * @param  string  $sourcePath
      * @param  string  $destinationPath
      * @return void
@@ -228,7 +213,6 @@ abstract class AbstractUpdater implements UpdaterContract
 
     /**
      * Удаление временной директории с исходниками.
-     *
      * @param  string  $sourcePath
      * @return bool
      */

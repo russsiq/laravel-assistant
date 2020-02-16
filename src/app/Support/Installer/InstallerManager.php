@@ -20,10 +20,8 @@ use Illuminate\Contracts\Config\Repository as ConfigRepositoryContract;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-
 use Russsiq\Assistant\Contracts\InstallerContract;
 use Russsiq\Assistant\Services\Abstracts\AbstractBeforeInstalled;
-
 use Symfony\Component\Finder\Finder;
 
 /**
@@ -58,6 +56,7 @@ class InstallerManager implements InstallerContract
     /**
      * Создать новый экземпляр Установщика приложения.
      * @param  Container  $container
+     * @return void
      */
     public function __construct(
         Container $container
@@ -301,8 +300,8 @@ class InstallerManager implements InstallerContract
 
     /**
      * Копирование директории со всеми файлами.
-     * @param  string $fromDir
-     * @param  string $toDir
+     * @param  string  $fromDir
+     * @param  string  $toDir
      * @return void
      */
     public function copyDirectory(string $fromDir, string $toDir)
@@ -341,8 +340,8 @@ class InstallerManager implements InstallerContract
 
     /**
      * Создание ссылки.
-     * @param  string $target
-     * @param  string $link
+     * @param  string  $target
+     * @param  string  $link
      * @return void
      */
     public function createSymbolicLink(string $target, string $link)

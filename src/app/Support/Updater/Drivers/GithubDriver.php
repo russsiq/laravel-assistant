@@ -13,14 +13,12 @@ class GithubDriver extends AbstractUpdater
 {
     /**
      * Экземпляр релиза.
-     *
      * @var Release
      */
     protected $release;
 
     /**
      * Массив параметров экземпляра класса.
-     *
      * @var array
      */
     private $params = [
@@ -33,7 +31,6 @@ class GithubDriver extends AbstractUpdater
     /**
      * Создать новый экземпляр Мастера обновлений
      * с использованием драйвера Github.
-     *
      * @param Release  $release
      * @param array  $params
      * @return void
@@ -50,7 +47,6 @@ class GithubDriver extends AbstractUpdater
 
     /**
      * Конфигурирование параметров экземпляра класса.
-     *
      * @param  array  $params
      * @return $this
      */
@@ -76,7 +72,6 @@ class GithubDriver extends AbstractUpdater
      * Добавить хуки к экземпляру релиза.
      * Данные замыкания будут выполняться каждый раз
      * при получении сведений из репозитория о релизе.
-     *
      * @return void
      */
     protected function addHooksToRelease()
@@ -99,7 +94,6 @@ class GithubDriver extends AbstractUpdater
 
     /**
      * Получить массив папок, игнорируемых во время процесса обновления.
-     *
      * @return array
      */
     protected function excludeDirectories(): array
@@ -121,7 +115,6 @@ class GithubDriver extends AbstractUpdater
     /**
      * Получить массив файлов, которые расположены
      * в корне приложения и будут обновлены.
-     *
      * @return array
      */
     protected function allowedFiles(): array
@@ -131,7 +124,6 @@ class GithubDriver extends AbstractUpdater
 
     /**
      * Корневая директория обновляемого приложения.
-     *
      * @return string
      */
     protected function destinationPath(): string
@@ -142,7 +134,6 @@ class GithubDriver extends AbstractUpdater
     /**
      * Получить временную директорию, где расположены
      * исходники файлов обновляемого приложения.
-     *
      * @return string
      */
     protected function sourcePath(): string
@@ -152,7 +143,6 @@ class GithubDriver extends AbstractUpdater
 
     /**
      * Получить полный путь к загруженному исходнику релиза.
-     *
      * @return string
      */
     protected function storageFile(): string
@@ -163,7 +153,6 @@ class GithubDriver extends AbstractUpdater
     /**
      * Получить номер доступной версии приложения,
      * опубликованного в репозитории.
-     *
      * @return string
      */
     public function availableVersion(): string
@@ -174,7 +163,6 @@ class GithubDriver extends AbstractUpdater
     /**
      * Загрузить архив новой версии приложения
      * из репозитория с помощью НТТР-метода GЕТ.
-     *
      * @return void
      */
     public function fetch()
@@ -184,7 +172,6 @@ class GithubDriver extends AbstractUpdater
 
     /**
      * Запустить процесс обновления приложения до актуальной версии.
-     *
      * @return bool
      */
     public function update(): bool
