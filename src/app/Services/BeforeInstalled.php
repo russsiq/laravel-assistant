@@ -4,8 +4,8 @@ namespace Russsiq\Assistant\Services;
 
 use Russsiq\Assistant\Services\Abstracts\AbstractBeforeInstalled;
 
+use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Validation\Validator as ValidatorContract;
-use Illuminate\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
@@ -20,20 +20,19 @@ use Illuminate\Http\Request;
 class BeforeInstalled extends AbstractBeforeInstalled
 {
     /**
-     * Экземпляр приложения.
-     *
-     * @var Application
+     * Экземпляр контейнера приложения.
+     * @var Container
      */
-    protected $app;
+    protected $container;
 
     /**
      * Создать новый экземпляр класса.
-     *
-     * @param  Application  $app
+     * @param  Container  $container
      */
-    public function __construct(Application $app)
-    {
-        $this->app = $app;
+    public function __construct(
+        Container $container
+    ) {
+        $this->container = $container;
     }
 
     /**

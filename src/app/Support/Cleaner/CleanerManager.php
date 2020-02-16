@@ -6,8 +6,8 @@ use Artisan;
 use SplFileInfo;
 
 // use Illuminate\Console\Events\CommandFinished;
+use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Console\Kernel as ConsoleKernelContract;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\MessageBag;
 use Illuminate\Support\Str;
 
@@ -26,11 +26,11 @@ class CleanerManager implements CleanerContract
     const MESSAGES_KEY_CACHE = 'laravel-cleaner:messages';
 
     /**
-     * Экземпляр приложения.
+     * Экземпляр контейнера приложения.
      *
-     * @var Application
+     * @var Container
      */
-    protected $app;
+    protected $container;
 
     /**
      * Экземпляр Ядра консоли.
@@ -55,19 +55,19 @@ class CleanerManager implements CleanerContract
 
     /**
      * Создать новый экземпляр Оптимизатора.
-     *
-     * @param Application  $app
-     * @param ConsoleKernelContract  $artisan
-     * @param MessageBag  $messages
-     * @param BufferedOutput  $outputBuffer
+     * 
+     * @param  Container  $container
+     * @param  ConsoleKernelContract  $artisan
+     * @param  MessageBag  $messages
+     * @param  BufferedOutput  $outputBuffer
      */
     public function __construct(
-        Application $app,
+        Container $container,
         ConsoleKernelContract $artisan,
         MessageBag $messages,
         BufferedOutput $outputBuffer
     ) {
-        $this->app = $app;
+        $this->container = $container;
         $this->artisan = $artisan;
         $this->messages = $messages;
         $this->outputBuffer = $outputBuffer;
@@ -219,12 +219,12 @@ class CleanerManager implements CleanerContract
     {
         if (function_exists('opcache_invalidate')) {
             collect(
-                $this->app->make('files')
+                $this->container->make('files')
                     ->allFiles([
-                        $this->app->basePath('app'),
-                        $this->app->basePath('bootstrap'),
-                        $this->app->basePath('resources'),
-                        $this->app->basePath('storage/framework/views'),
+                        $this->container->basePath('app'),
+                        $this->container->basePath('bootstrap'),
+                        $this->container->basePath('resources'),
+                        $this->container->basePath('storage/framework/views'),
                     ])
             )->filter(function (SplFileInfo $file) {
                 return 'php' === $file->getExtension();

@@ -15,9 +15,9 @@ use DB;
 use EnvManager;
 
 // Сторонние зависимости.
+use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Config\Repository as ConfigRepositoryContract;
 use Illuminate\Filesystem\Filesystem;
-use Illuminate\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
@@ -38,10 +38,10 @@ class InstallerManager implements InstallerContract
     const DEFAULT_BEFORE_INSTALLED = '\Russsiq\Assistant\Services\BeforeInstalled';
 
     /**
-     * Экземпляр приложения.
-     * @var Application
+     * Экземпляр контейнера приложения.
+     * @var Container
      */
-    protected $app;
+    protected $container;
 
     /**
      * Экземпляр репозитория конфигураций.
@@ -57,14 +57,14 @@ class InstallerManager implements InstallerContract
 
     /**
      * Создать новый экземпляр Установщика приложения.
-     * @param  Application  $app
+     * @param  Container  $container
      */
     public function __construct(
-        Application $app
+        Container $container
     ) {
-        $this->app = $app;
-        $this->config = $app->make('config');
-        $this->filesystem = $app->make('files');
+        $this->container = $container;
+        $this->config = $container->make('config');
+        $this->filesystem = $container->make('files');
     }
 
     /**
@@ -281,7 +281,7 @@ class InstallerManager implements InstallerContract
      */
     protected function createBeforeInstalled(string $class): AbstractBeforeInstalled
     {
-        return new $class($this->app);
+        return new $class($this->container);
     }
 
     /**
