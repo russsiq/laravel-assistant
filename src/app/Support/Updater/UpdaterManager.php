@@ -21,14 +21,12 @@ class UpdaterManager extends Manager
 {
     /**
      * Драйвер репозитория, используемый по умолчанию.
-     *
      * @var string
      */
     protected $defaultRepository = 'github';
 
     /**
      * Получить имя драйвера, используемого по умолчанию
-     *
      * @return string
      */
     public function getDefaultDriver(): string
@@ -37,8 +35,7 @@ class UpdaterManager extends Manager
     }
 
     /**
-     * Задать имя драйвера репозитория, используемого по умолчанию
-     *
+     * Задать имя драйвера репозитория, используемого по умолчанию.
      * @param  string  $name
      * @return void
      */
@@ -50,7 +47,6 @@ class UpdaterManager extends Manager
     /**
      * Создать экземпляр Мастера обновлений
      * с использованием драйвера Github.
-     *
      * @return GithubDriver
      */
     protected function createGithubDriver(): GithubDriver
@@ -66,7 +62,6 @@ class UpdaterManager extends Manager
 
     /**
      * Получить экземпляр Релиза.
-     *
      * @param  array  $config
      * @return Release
      */
@@ -83,7 +78,6 @@ class UpdaterManager extends Manager
 
     /**
      * Получить экземпляр HTTP клиента.
-     *
      * @param  array  $config
      * @return HttpClient
      */
@@ -96,7 +90,6 @@ class UpdaterManager extends Manager
 
     /**
      * Получить экземпляр класса по работе с файловой системой.
-     *
      * @param  array  $config
      * @return Filesystem
      */
@@ -107,7 +100,6 @@ class UpdaterManager extends Manager
 
     /**
      * Получить экземпляр класса файла версионирования.
-     *
      * @param  array  $config
      * @return VersionFile
      */
@@ -120,7 +112,6 @@ class UpdaterManager extends Manager
 
     /**
      * Получить экземпляр класса по работе с архивами.
-     *
      * @param  array  $config
      * @return ZipArchive
      */

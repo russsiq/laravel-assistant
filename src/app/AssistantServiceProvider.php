@@ -2,6 +2,11 @@
 
 namespace Russsiq\Assistant;
 
+// Зарегистрированные фасады приложения.
+use Route;
+
+// Сторонние зависимости.
+use Illuminate\Support\ServiceProvider;
 use Russsiq\Assistant\Commands\BeforeInstalledMakeCommand;
 use Russsiq\Assistant\Http\Middleware\AlreadyInstalled;
 use Russsiq\Assistant\Http\Middleware\CheckEnvFileExists;
@@ -10,15 +15,10 @@ use Russsiq\Assistant\Support\Cleaner\CleanerManager as Cleaner;
 use Russsiq\Assistant\Support\Installer\InstallerManager as Installer;
 use Russsiq\Assistant\Support\Updater\UpdaterManager as Updater;
 
-use Illuminate\Contracts\Support\DeferrableProvider;
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\Route;
-
-class AssistantServiceProvider extends ServiceProvider // implements DeferrableProvider
+class AssistantServiceProvider extends ServiceProvider
 {
     /**
      * Путь до директории с исходниками.
-     *
      * @var string
      */
     const SOURCE_DIR = __DIR__.'/../';
@@ -26,7 +26,6 @@ class AssistantServiceProvider extends ServiceProvider // implements DeferrableP
     /**
      * Все синглтоны (одиночки) контейнера,
      * которые должны быть зарегистрированы.
-     *
      * @var array
      */
     public $singletons = [
@@ -38,7 +37,6 @@ class AssistantServiceProvider extends ServiceProvider // implements DeferrableP
 
     /**
      * Bootstrap the application events.
-     *
      * @return void
      */
     public function boot()
@@ -59,7 +57,6 @@ class AssistantServiceProvider extends ServiceProvider // implements DeferrableP
 
     /**
      * Регистрация Ассистента как поставщика служб.
-     *
      * @return void
      */
     public function register()
@@ -69,19 +66,17 @@ class AssistantServiceProvider extends ServiceProvider // implements DeferrableP
 
     /**
      * Получить службы, предоставляемые Ассистентом.
-     *
      * @return array
      */
     public function provides()
     {
         return [
-            //
+
         ];
     }
 
     /**
      * Установка посредников группы `web`.
-     *
      * @return void
      */
     protected function setAssistantMiddlewareGroup()
@@ -89,13 +84,13 @@ class AssistantServiceProvider extends ServiceProvider // implements DeferrableP
         Route::prependMiddlewareToGroup('web', CheckEnvFileExists::class);
 
         Route::middlewareGroup('already-installed', [
-            AlreadyInstalled::class
+            AlreadyInstalled::class,
+
         ]);
     }
 
     /**
      * Загрузка файлов Ассистента.
-     *
      * @return void
      */
     protected function loadAssistantFiles()
@@ -108,7 +103,6 @@ class AssistantServiceProvider extends ServiceProvider // implements DeferrableP
     /**
      * Публикация файлов Ассистента.
      * `php artisan vendor:publish --provider="Russsiq\Assistant\AssistantServiceProvider"`
-     *
      * @return void
      */
     protected function publishAssistantFiles()
@@ -131,7 +125,6 @@ class AssistantServiceProvider extends ServiceProvider // implements DeferrableP
 
     /**
      * Регистрация команд консоли Artisan.
-     *
      * @return void
      */
     protected function registerAssistantCommands()

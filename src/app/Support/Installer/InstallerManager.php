@@ -4,6 +4,7 @@ namespace Russsiq\Assistant\Support\Installer;
 
 // Исключения.
 use Russsiq\Assistant\Exceptions\InstallerFailed;
+use Throwable;
 
 // Базовые расширения PHP.
 use SplFileInfo;
@@ -99,7 +100,7 @@ class InstallerManager implements InstallerContract
     /**
      * Маркер того, что была выполнена
      * первоначальная инициализация установки.
-     * @return boolean
+     * @return bool
      */
     public function alreadyInitiated(): bool
     {
@@ -108,7 +109,7 @@ class InstallerManager implements InstallerContract
 
     /**
      * Маркер, что приложение установлено.
-     * @return boolean
+     * @return bool
      */
     public function alreadyInstalled(): bool
     {
@@ -149,15 +150,6 @@ class InstallerManager implements InstallerContract
     public static function filePermissions(): array
     {
         return file_permissions();
-    }
-
-    /**
-     * Получить массив доступных при установке тем.
-     * @return array
-     */
-    public static function themes(): array
-    {
-        // code...
     }
 
     /**
@@ -210,7 +202,7 @@ class InstallerManager implements InstallerContract
 
             // После коммита текущая транзакция минусуется.
             DB::commit();
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
 
             throw $e;
         } finally {
@@ -226,7 +218,7 @@ class InstallerManager implements InstallerContract
 
     /**
      * Заполнить БД данными.
-     * @param  string  $class Класс заполнителя.
+     * @param  string  $class  Класс заполнителя.
      * @return string  Сообщение о выполненной операции.
      */
     public function seed(string $class): string
@@ -244,7 +236,7 @@ class InstallerManager implements InstallerContract
 
             // После коммита текущая транзакция минусуется.
             DB::commit();
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
 
             throw $e;
         } finally {

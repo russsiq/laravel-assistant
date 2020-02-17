@@ -20,14 +20,12 @@ class VersionFile
     /**
      * Менеджер кеша.
      * @NB: Помечен здесь как репозиторий для подсказок в редакторе.
-     *
      * @var Repository
      */
     protected $cache;
 
     /**
      * Настройки файла версионирования по умолчанию.
-     *
      * @var array
      */
     protected $params = [
@@ -41,7 +39,6 @@ class VersionFile
 
     /**
      * Динамическое содержимое файла версионирования.
-     *
      * @var array
      */
     protected $content = [
@@ -53,7 +50,6 @@ class VersionFile
 
     /**
      * Разрешенные поля, которые должны содержаться в файле версионирования.
-     *
      * @var array
      */
     protected $allowed = [
@@ -65,14 +61,12 @@ class VersionFile
 
     /**
      * Содержимое файла уже было подгружено.
-     *
      * @var bool
      */
     protected $isLoaded = false;
 
     /**
      * Создать новый экземпляр класса версионирования.
-     *
      * @param  CacheFactoryContract  $cache
      * @param  array  $params
      * @return void
@@ -88,7 +82,6 @@ class VersionFile
 
     /**
      * Конфигурирование параметров экземпляра класса.
-     *
      * @param  array  $params
      * @return $this
      */
@@ -107,7 +100,6 @@ class VersionFile
 
     /**
      * Получить Имя файла версионирования.
-     *
      * @return string
      */
     public function filename(): string
@@ -117,7 +109,6 @@ class VersionFile
 
     /**
      * Получить Время хранения файла версионирования.
-     *
      * @return int
      */
     public function storeTime(): int
@@ -127,7 +118,6 @@ class VersionFile
 
     /**
      * Проверить существование файла версионирования.
-     *
      * @return bool
      */
     public function exists(): bool
@@ -137,7 +127,6 @@ class VersionFile
 
     /**
      * Проверить отсутствие файла версионирования.
-     *
      * @return bool
      */
     public function doesntExist(): bool
@@ -147,7 +136,6 @@ class VersionFile
 
     /**
      * Установить значение для указанного поля.
-     *
      * @param  string  $key
      * @param  string  $value
      * @return $this
@@ -163,7 +151,6 @@ class VersionFile
 
     /**
      * Получить информацию о поле.
-     *
      * @param  string  $key
      * @return string  Возвращаемое значение всегда должно быть строкой.
      *
@@ -181,7 +168,6 @@ class VersionFile
     /**
      * Попытаться загрузить файл со сведениями,
      * если он еще не был загружен.
-     *
      * @return bool
      */
     protected function attemptLoad(): bool
@@ -191,7 +177,6 @@ class VersionFile
 
     /**
      * Загрузить содержимое файла со сведениями.
-     *
      * @return bool
      */
     protected function load(): bool
@@ -212,7 +197,6 @@ class VersionFile
     /**
      * Установить значение маркера, информирующее о том,
      * было ли подгружено содержимое файла.
-     *
      * @param  bool  $loaded
      * @return $this
      */
@@ -225,7 +209,6 @@ class VersionFile
 
     /**
      * Сохранить информацию о полях в файл версионирования.
-     *
      * @return bool
      */
     public function save(): bool
@@ -237,7 +220,6 @@ class VersionFile
 
     /**
      * Удалить файл версионирования.
-     *
      * @return bool
      */
     public function forget(): bool
@@ -247,7 +229,6 @@ class VersionFile
 
     /**
      * Определить, что поле находится в списке разрешенных.
-     *
      * @param  string  $key
      * @return bool
      *
@@ -267,7 +248,6 @@ class VersionFile
 
     /**
      * Определить, что содержимое валидно.
-     *
      * @param  array  $content
      * @return bool
      *

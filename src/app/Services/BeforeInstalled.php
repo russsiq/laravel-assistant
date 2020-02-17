@@ -2,12 +2,12 @@
 
 namespace Russsiq\Assistant\Services;
 
-use Russsiq\Assistant\Services\Abstracts\AbstractBeforeInstalled;
-
+// Сторонние зависимости.
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Validation\Validator as ValidatorContract;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Russsiq\Assistant\Services\Abstracts\AbstractBeforeInstalled;
 
 /**
  * Класс, который выполняется на финальной стадии,

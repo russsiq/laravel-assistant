@@ -2,6 +2,7 @@
 
 namespace Russsiq\Assistant\Contracts;
 
+// Сторонние зависимости.
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 
@@ -16,13 +17,13 @@ interface InstallerContract
     /**
      * Маркер того, что была выполнена
      * первоначальная инициализация установки.
-     * @return boolean
+     * @return bool
      */
     public function alreadyInitiated(): bool;
 
     /**
      * Маркер, что приложение установлено.
-     * @return boolean
+     * @return bool
      */
     public function alreadyInstalled(): bool;
 
@@ -49,12 +50,6 @@ interface InstallerContract
      * @return array
      */
     public static function filePermissions(): array;
-
-    /**
-     * Получить массив доступных при установке тем.
-     * @return array
-     */
-    public static function themes(): array;
 
     /**
      * Выполнить проверку подключения к БД с переданными параметрами.

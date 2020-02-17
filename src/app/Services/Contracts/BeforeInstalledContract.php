@@ -2,6 +2,7 @@
 
 namespace Russsiq\Assistant\Services\Contracts;
 
+// Сторонние зависимости.
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
@@ -9,9 +10,7 @@ interface BeforeInstalledContract
 {
     /**
      * Обработка входящего запроса.
-     *
-     * @param  Request $request
-     *
+     * @param  Request  $request
      * @return RedirectResponse
      */
     public function handle(Request $request): RedirectResponse;
