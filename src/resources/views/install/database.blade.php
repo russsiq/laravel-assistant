@@ -64,7 +64,8 @@
 			<div class="col-sm-6"></div>
 			<div class="col-sm-6">
 				<label class="control-label">
-					<input type="checkbox" name="test_seed" value="1" /> @lang('assistant::install.forms.labels.test_seed')
+					<input type="checkbox" name="test_seed" value="1" {{ old('test_seed') ? 'checked' : '' }} />
+					@lang('assistant::install.forms.labels.test_seed')
 				</label>
 				@if ($errors->has('test_seed'))
 					<div class="invalid-feedback d-block">{{ $errors->first('test_seed') }}</div>
