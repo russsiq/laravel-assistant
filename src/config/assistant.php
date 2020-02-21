@@ -143,12 +143,12 @@ return [
             'endpoint' => 'https://api.github.com/repos/<vendor>/<name>/releases/latest',
             'version_key' => 'tag_name',
             'source_key' => 'zipball_url',
+            'access_token' => env('ASSISTANT_GITHUB_ACCESS_TOKEN'),
 
             // Настройки HTTP клиента.
             'guzzle' => [
                 // 'base_url' => 'https://api.github.com',
                 'headers' => [
-                    // 'Authorization' => 'Bearer '.env('ASSISTANT_GITHUB_ACCESS_TOKEN'),
 
                 ],
 

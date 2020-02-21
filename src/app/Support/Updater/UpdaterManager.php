@@ -85,6 +85,13 @@ class UpdaterManager extends Manager
     {
         $params = $config['guzzle'] ?? [];
 
+        if ($config['access_token']) {
+            $params['headers'] = [
+                'Authorization' => 'Bearer '.$config['access_token'],
+
+            ];
+        }
+
         return new HttpClient($params);
     }
 
