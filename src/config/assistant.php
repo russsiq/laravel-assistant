@@ -148,7 +148,7 @@ return [
             'guzzle' => [
                 // 'base_url' => 'https://api.github.com',
                 'headers' => [
-                    'Authorization' => 'Bearer '.env('ASSISTANT_GITHUB_ACCESS_TOKEN'),
+                    // 'Authorization' => 'Bearer '.env('ASSISTANT_GITHUB_ACCESS_TOKEN'),
 
                 ],
 
