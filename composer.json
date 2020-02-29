@@ -1,10 +1,11 @@
 {
     "name": "russsiq/laravel-assistant",
     "description": "Ассистент приложения на Laravel 6.x.",
+    "keywords": ["laravel", "laravel-assistant", "laravel-app-manager", "laravel-installer", "laravel-updater"],
     "homepage": "https://github.com/russsiq/laravel-assistant",
     "type": "library",
+
     "license": "MIT",
-    "keywords": ["laravel", "laravel-assistant", "laravel-app-manager", "laravel-installer", "laravel-updater"],
     "authors": [{
         "name": "Рустам Гимранов",
         "email": "rustam_gimranov@mail.ru",
@@ -18,7 +19,7 @@
     "require": {
         "php": ">=7.2.0",
         "ext-zip": "*",
-        "guzzlehttp/guzzle": "6.*",
+        "guzzlehttp/guzzle": "^6.3",
         "illuminate/support": "6.*",
         "russsiq/laravel-env-manager": "dev-master"
     },
