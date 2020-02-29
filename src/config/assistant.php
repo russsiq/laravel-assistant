@@ -147,7 +147,7 @@ return [
 
             // Настройки HTTP клиента.
             'guzzle' => [
-                // 'base_url' => 'https://api.github.com',
+                // 'base_uri' => 'https://api.github.com',
                 'headers' => [
 
                 ],
