@@ -19,7 +19,7 @@
 
  - **2** Для подключения в уже созданный проект воспользуйтесь командной строкой:
 
-    ```bash
+    ```console
     composer require russsiq/laravel-assistant:dev-master
     ```
 
@@ -41,21 +41,21 @@
 
 Публикация (копирование) всех доступных файлов для переопределения и тонкой настройки пакета осуществляется через интерфейс командной строки Artisan:
 
-```bash
+```console
 php artisan vendor:publish --provider="Russsiq\Assistant\AssistantServiceProvider"
 ```
 
 Помимо этого, доступна групповая публикация файлов по отдельным меткам `config`, `lang`, `views`:
 
-```bash
+```console
 php artisan vendor:publish --provider="Russsiq\Assistant\AssistantServiceProvider" --tag=config --force
 ```
 
-```bash
+```console
 php artisan vendor:publish --provider="Russsiq\Assistant\AssistantServiceProvider" --tag=lang --force
 ```
 
-```bash
+```console
 php artisan vendor:publish --provider="Russsiq\Assistant\AssistantServiceProvider" --tag=views --force
 ```
 
@@ -154,7 +154,7 @@ public function boot()
 
     Поля ввода, имена которых не соответствуют этому правилу **не будут записаны** в файл `.env` и могут использоваться вами для построения бизнес-логики в классе финальной стадии Установщика. Данный класс необходимо предварительно сгенерировать с помощью команды:
 
-    ```bash
+    ```console
     php artisan make:before_installed BeforeInstalled --force
     ```
 
@@ -236,7 +236,7 @@ use Assistant;
 
 ### Удаление пакета из вашего проекта на Laravel
 
-```bash
+```console
 composer remove russsiq/laravel-assistant
 ```
 
