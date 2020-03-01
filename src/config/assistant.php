@@ -138,17 +138,20 @@ return [
         'driver' => 'github',
 
         // Настройки драйверов.
-        'github' => [
-            'driver' => 'github',
-            'endpoint' => 'https://api.github.com/repos/<vendor>/<name>/releases/latest',
-            'version_key' => 'tag_name',
-            'source_key' => 'zipball_url',
-            'access_token' => env('ASSISTANT_GITHUB_ACCESS_TOKEN'),
+        'drivers' => [
+            'github' => [
+                'driver' => 'github',
+                'endpoint' => 'https://api.github.com/repos/<vendor>/<name>/releases/latest',
+                'version_key' => 'tag_name',
+                'source_key' => 'zipball_url',
+                'access_token' => env('ASSISTANT_GITHUB_ACCESS_TOKEN'),
 
-            // Настройки HTTP клиента.
-            'guzzle' => [
-                // 'base_uri' => 'https://api.github.com',
-                'headers' => [
+                // Настройки HTTP клиента.
+                'guzzle' => [
+                    // 'base_uri' => 'https://api.github.com',
+                    'headers' => [
+
+                    ],
 
                 ],
 

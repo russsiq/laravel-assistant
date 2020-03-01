@@ -51,13 +51,32 @@ class UpdaterManager extends Manager
      */
     protected function createGithubDriver(): GithubDriver
     {
-        $config = $this->config->get('assistant.updater', []);
-        $config = array_merge($config, $config['github'] ?? []);
+        $config = $this->getMasterConfig('github');
 
         return new GithubDriver(
             $this->release($config),
             $config
         );
+    }
+
+    /**
+     * Получить конфигурацию Мастера обновлений
+     * в соответствии с выбранным драйвером.
+     * @param  string  $driver
+     * @return array
+     */
+    protected function getMasterConfig(string $driver): array
+    {
+        // Получаем массив всех настроек Мастера обновлений.
+        $config = $this->config->get('assistant.updater', []);
+
+        // Пробрасываем уровнем выше настройки выбранного драйвера.
+        $config = array_merge($config, $config['drivers'][$driver] ?? []);
+
+        // Удаляем массив со списком всех драйверов.
+        unset($config['drivers']);
+
+        return $config;
     }
 
     /**
