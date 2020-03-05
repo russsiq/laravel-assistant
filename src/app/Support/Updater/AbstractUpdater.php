@@ -127,32 +127,6 @@ abstract class AbstractUpdater implements UpdaterContract
     }
 
     /**
-     * Рекурсивная проверка файлов по указанному пути на доступность для записи.
-     * @param  string  $destinationPath
-     * @return bool
-     *
-     * @throws RuntimeException
-     */
-    protected function assertFilesInDirectoryIsWritable(string $destinationPath): bool
-    {
-        $files = Finder::create()->in($destinationPath)->files()
-            ->exclude($this->excludeDirectories());
-
-        $firstLockedFile = collect($files)->first(function (SplFileInfo $file, $key) {
-            return ! $file->isWritable();
-        }, null);
-
-        if (is_null($firstLockedFile)) {
-            return true;
-        }
-
-        throw new RuntimeException(sprintf(
-            'Файл [%s] не доступен для записи.',
-            $firstLockedFile->getRelativePath().DIRECTORY_SEPARATOR.$firstLockedFile->getFilename()
-        ));
-    }
-
-    /**
      * Рекурсивное удаление директорий из директории исходника,
      * исключаемых из процесса обновления согласно конфигурации.
      * @param  string  $sourcePath
@@ -222,5 +196,33 @@ abstract class AbstractUpdater implements UpdaterContract
 
         // 5. Удаляем временную директорию с исходниками.
         File::deleteDirectory($sourcePath);
+    }
+
+    /**
+     * Рекурсивная проверка файлов по указанному пути на доступность для записи.
+     * @param  string  $destinationPath
+     * @return bool
+     *
+     * @throws RuntimeException
+     *
+     * @NB Не проверяет скрытые директории и `.git`.
+     */
+    protected function assertFilesInDirectoryIsWritable(string $destinationPath): bool
+    {
+        $files = Finder::create()->in($destinationPath)->files()
+            ->exclude($this->excludeDirectories());
+
+        $firstLockedFile = collect($files)->first(function (SplFileInfo $file, $key) {
+            return ! $file->isWritable();
+        }, null);
+
+        if (is_null($firstLockedFile)) {
+            return true;
+        }
+
+        throw new RuntimeException(sprintf(
+            'Файл [%s] не доступен для записи.',
+            $firstLockedFile->getRelativePath().DIRECTORY_SEPARATOR.$firstLockedFile->getFilename()
+        ));
     }
 }
