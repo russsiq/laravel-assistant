@@ -169,55 +169,58 @@ abstract class AbstractUpdater implements UpdaterContract
     }
 
     /**
-     * Рекурсивное перемещение директорий с содержимым
-     * из директории исходника в корневую директорию приложения.
+     * Рекурсивное копирование содержимого директории исходников.
      * @param  string  $sourcePath
      * @param  string  $destinationPath
      * @return void
+     *
+     * @NB Нельзя разбивать данный метод на несколько, так как
+     * после обновления директорий данный будет перезаписан
+     * и может быть выброшено исключение об отсутствии какого-либо метода,
+     * например по копированию корневых файлов:
+     * `Call to undefined function`.
+     *
+     * @NB Остаётся нерешенной проблема, когда вендор-пакеты содержат
+     * скрытые директории `.git`. `Finder` и в этом случае
+     * ведет себя не понятно, так как он должен их игнорировать.
      */
-    protected function moveSourceDirectories(string $sourcePath, string $destinationPath)
+    protected function copySourceDirectory(string $sourcePath, string $destinationPath): void
     {
+        // // 1. Предварительно выполняем проверку файлов на перезапись.
+        // $this->assertFilesInDirectoryIsReadable($sourcePath);
+
+        // 2. Удаляем принудительно директории, так как
+        //    метод `exclude` класса Finder непонятно работает.
+        $this->deleteExcludeDirectories($sourcePath);
+
+        // 3. Рекурсивное копирование директорий с содержимым
+        //    из директории исходника в корневую директорию приложения.
         $directories = Finder::create()->in($sourcePath)->directories()
             ->sortByName();
 
         collect($directories)->each(function (SplFileInfo $directory) use ($destinationPath) {
             $destinationPath .= DIRECTORY_SEPARATOR.$directory->getRelativePath();
 
-            File::moveDirectory(
+            File::copyDirectory(
                 $directory->getRealPath(),
                 $destinationPath.DIRECTORY_SEPARATOR.$directory->getBasename()
             );
         });
-    }
 
-    /**
-     * Рекурсивное перемещение корневых файлов из директории исходника
-     * в корневую директорию приложения согласно конфигурации.
-     * @param  string  $sourcePath
-     * @param  string  $destinationPath
-     * @return void
-     */
-    protected function moveSourceRootFiles(string $sourcePath, string $destinationPath)
-    {
+        // 4. Рекурсивное копирование корневых файлов из директории исходника
+        //    в корневую директорию приложения согласно конфигурации.
         $files = Finder::create()->in($sourcePath)->files()
             ->depth(0)->ignoreDotFiles(true)
             ->name($this->allowedFiles())->sortByName();
 
         collect($files)->each(function (SplFileInfo $file) use ($destinationPath) {
-            File::move(
+            File::copy(
                 $file->getRealPath(),
                 $destinationPath.DIRECTORY_SEPARATOR.$file->getFilename()
             );
         });
-    }
 
-    /**
-     * Удаление временной директории с исходниками.
-     * @param  string  $sourcePath
-     * @return bool
-     */
-    protected function deleteSourceDirectory(string $sourcePath): bool
-    {
-        return File::deleteDirectory($sourcePath);
+        // 5. Удаляем временную директорию с исходниками.
+        File::deleteDirectory($sourcePath);
     }
 }

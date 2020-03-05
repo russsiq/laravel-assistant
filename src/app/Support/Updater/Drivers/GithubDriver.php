@@ -190,18 +190,8 @@ class GithubDriver extends AbstractUpdater
         // Распаковываем исходники релиза из архива.
         $this->release->unzipArchive($storageFile, $sourcePath);
 
-        // Удаляем принудительно директории, так как
-        // метод `exclude` класса Finder непонятно работает.
-        $this->deleteExcludeDirectories($sourcePath);
-
-        // Перемещаем папки с содержимым из директории исходника.
-        $this->moveSourceDirectories($sourcePath, $destinationPath);
-
-        // Перемещаем корневые файлы из директории исходника.
-        $this->moveSourceRootFiles($sourcePath, $destinationPath);
-
-        // Удаляем временную директорию с исходниками.
-        $this->deleteSourceDirectory($sourcePath);
+        // Копируем содержимое директории исходников в конечную директорию приложения.
+        $this->copySourceDirectory($sourcePath, $destinationPath);
 
         // Обновить информацию о версии приложения.
         $this->updateCurrentlyVersion();
