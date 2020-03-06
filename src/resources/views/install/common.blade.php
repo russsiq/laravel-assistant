@@ -15,7 +15,7 @@
 
 	<fieldset>
 		<legend>@lang('assistant::install.forms.legends.enviroments')</legend>
-		<div class="form-group row{{ $errors->has('APP_ENV') ? ' has-error' : '' }}">
+		<div class="form-group row @error('APP_ENV') is-invalid @enderror">
 			<label class="col-sm-3 col-form-label">APP_ENV</label>
 			<div class="col-sm-9">
 				<select class="form-control" name="APP_ENV">
@@ -23,9 +23,9 @@
 						<option value="{{ $env }}">{{ $env }}</option>
 					@endforeach
 				</select>
-				@if ($errors->has('APP_ENV'))
-					<div class="invalid-feedback d-block">{{ $errors->first('APP_ENV') }}</div>
-				@endif
+				@error ('APP_ENV')
+					<div class="invalid-feedback d-block">{{ $message }}</div>
+				@enderror
 			</div>
 		</div>
 	</fieldset>

@@ -842,9 +842,9 @@
         line-height: 1.6;
     }
 
-    .has-error .form-control,
-    .has-error input[type=radio],
-    .has-error input[type=checkbox] {
+    .is-invalid .form-control,
+    .is-invalid input[type=radio],
+    .is-invalid input[type=checkbox] {
         /* color: var(--danger); */
         border-color: var(--danger);
     }

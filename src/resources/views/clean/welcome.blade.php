@@ -15,66 +15,66 @@
 
 	<fieldset>
 		<legend>@lang('assistant::clean.forms.legends.clear')</legend>
-		<div class="form-group{{ $errors->has('clear_cache') ? ' has-error' : '' }}">
+		<div class="form-group @error('clear_cache') is-invalid @enderror">
 			<label><input type="checkbox" name="clear_cache" value="1" /> @lang('assistant::clean.forms.attributes.clear_cache')</label>
-            @if ($errors->has('clear_cache'))
-				<div class="invalid-feedback d-block">{{ $errors->first('clear_cache') }}</div>
-			@endif
+			@error ('clear_cache')
+				<div class="invalid-feedback d-block">{{ $message }}</div>
+			@enderror
 		</div>
 
-		<div class="form-group{{ $errors->has('clear_config') ? ' has-error' : '' }}">
+		<div class="form-group @error('clear_config') is-invalid @enderror">
 			<label><input type="checkbox" name="clear_config" value="1" /> @lang('assistant::clean.forms.attributes.clear_config')</label>
-            @if ($errors->has('clear_config'))
-				<div class="invalid-feedback d-block">{{ $errors->first('clear_config') }}</div>
-			@endif
+			@error ('clear_config')
+				<div class="invalid-feedback d-block">{{ $message }}</div>
+			@enderror
 		</div>
 
-		<div class="form-group{{ $errors->has('clear_route') ? ' has-error' : '' }}">
+		<div class="form-group @error('clear_route') is-invalid @enderror">
 			<label><input type="checkbox" name="clear_route" value="1" /> @lang('assistant::clean.forms.attributes.clear_route')</label>
-            @if ($errors->has('clear_route'))
-				<div class="invalid-feedback d-block">{{ $errors->first('clear_route') }}</div>
-			@endif
+			@error ('clear_route')
+				<div class="invalid-feedback d-block">{{ $message }}</div>
+			@enderror
 		</div>
 
-		<div class="form-group{{ $errors->has('clear_view') ? ' has-error' : '' }}">
+		<div class="form-group @error('clear_view') is-invalid @enderror">
 			<label><input type="checkbox" name="clear_view" value="1" /> @lang('assistant::clean.forms.attributes.clear_view')</label>
-            @if ($errors->has('clear_view'))
-				<div class="invalid-feedback d-block">{{ $errors->first('clear_view') }}</div>
-			@endif
+			@error ('clear_view')
+				<div class="invalid-feedback d-block">{{ $message }}</div>
+			@enderror
 		</div>
 
-		<div class="form-group{{ $errors->has('clear_compiled') ? ' has-error' : '' }}">
+		<div class="form-group @error('clear_compiled') is-invalid @enderror">
 			<label><input type="checkbox" name="clear_compiled" value="1" /> @lang('assistant::clean.forms.attributes.clear_compiled')</label>
-            @if ($errors->has('clear_compiled'))
-				<div class="invalid-feedback d-block">{{ $errors->first('clear_compiled') }}</div>
-			@endif
+			@error ('clear_compiled')
+				<div class="invalid-feedback d-block">{{ $message }}</div>
+			@enderror
 		</div>
 	</fieldset>
 
 	<fieldset>
 		<legend>@lang('assistant::clean.forms.legends.cache')</legend>
-		<div class="form-group{{ $errors->has('cache_config') ? ' has-error' : '' }}">
+		<div class="form-group @error('cache_config') is-invalid @enderror">
 			<label><input type="checkbox" name="cache_config" value="1" /> @lang('assistant::clean.forms.attributes.cache_config')</label>
-            @if ($errors->has('cache_config'))
-				<div class="invalid-feedback d-block">{{ $errors->first('cache_config') }}</div>
-			@endif
+			@error ('cache_config')
+				<div class="invalid-feedback d-block">{{ $message }}</div>
+			@enderror
 		</div>
 
-		<div class="form-group{{ $errors->has('cache_route') ? ' has-error' : '' }}">
+		<div class="form-group @error('cache_route') is-invalid @enderror">
 			<label><input type="checkbox" name="cache_route" value="1" /> @lang('assistant::clean.forms.attributes.cache_route')</label>
-            @if ($errors->has('cache_route'))
-				<div class="invalid-feedback d-block">{{ $errors->first('cache_route') }}</div>
-			@endif
+			@error ('cache_route')
+				<div class="invalid-feedback d-block">{{ $message }}</div>
+			@enderror
 		</div>
 	</fieldset>
 
 	<fieldset>
 		<legend>@lang('assistant::clean.forms.legends.optimize')</legend>
-		<div class="form-group{{ $errors->has('complex_optimize') ? ' has-error' : '' }}">
+		<div class="form-group @error('complex_optimize') is-invalid @enderror">
 			<label><input type="checkbox" name="complex_optimize" value="1" /> @lang('assistant::clean.forms.labels.complex_optimize')</label>
-            @if ($errors->has('complex_optimize'))
-				<div class="invalid-feedback d-block">{{ $errors->first('complex_optimize') }}</div>
-			@endif
+			@error ('complex_optimize')
+				<div class="invalid-feedback d-block">{{ $message }}</div>
+			@enderror
 		</div>
 	</fieldset>
 @endsection
