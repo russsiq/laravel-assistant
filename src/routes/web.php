@@ -21,6 +21,10 @@ Route::prefix('assistant')
                 // 1. Welcome
                 Route::get('/', 'WelcomeController@index')->name('assistant.archive.welcome');
                 Route::post('/', 'WelcomeController@store')->name('assistant.archive.welcome.store');
+
+                // 2. Сomplete
+                Route::get('/complete', 'WelcomeController@complete')->name('assistant.archive.complete');
+                Route::post('/complete', 'WelcomeController@redirect')->name('assistant.archive.redirect');
             });
 
         Route::prefix('clean')
