@@ -9,25 +9,25 @@ namespace Russsiq\Assistant\Support\Archivist;
 // Зарегистрированные фасады приложения.
 
 // Сторонние зависимости.
-use Illuminate\Foundation\Application;
+use Illuminate\Contracts\Container\Container;
 use Russsiq\Assistant\Contracts\ArchivistContract;
 
 class ArchivistManager implements ArchivistContract
 {
     /**
-     * Экземпляр приложения.
-     * @var Application
+     * Экземпляр контейнера приложения.
+     * @var Container
      */
-    protected $app;
+    protected $container;
 
     /**
      * Создать новый экземпляр Архивариуса приложения.
-     * @param  Application  $app
+     * @param  Container  $container
      */
     public function __construct(
-        Application $app
+        Container $container
     ) {
-        $this->app = $app;
+        $this->container = $container;
     }
 
     /**
