@@ -19,10 +19,17 @@ return [
 
     'forms' => [
         'legends' => [
+            'backup' => 'Архивация',
+            'restore' => 'Восстановление',
 
         ],
 
         'attributes' => [
+            'backup_complex' => 'Создать комплексный архив',
+            'backup_database' => 'Дамп базы данных',
+            'backup_system' => 'Системные файлы',
+            'backup_theme' => 'Активная тема',
+            'backup_uploads' => 'Вложенные файлы',
 
         ],
 
@@ -41,6 +48,7 @@ return [
 
     'messages' => [
         'errors' => [
+            'isset_options' => 'Необходимо выбрать хотя бы одну опцию.',
 
         ],
 
