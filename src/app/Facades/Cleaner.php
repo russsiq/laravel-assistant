@@ -2,6 +2,7 @@
 
 namespace Russsiq\Assistant\Facades;
 
+// Сторонние зависимости.
 use Illuminate\Support\Facades\Facade;
 
 /**
@@ -10,6 +11,10 @@ use Illuminate\Support\Facades\Facade;
  */
 class Cleaner extends Facade
 {
+    /**
+     * Получить зарегистрированное имя компонента.
+     * @return string
+     */
     protected static function getFacadeAccessor()
     {
         return 'laravel-cleaner';
