@@ -2,6 +2,10 @@
 
 namespace Russsiq\Assistant\Contracts;
 
+/**
+ * Контракт публичных методов Архивариуса.
+ * @var interface
+ */
 interface ArchivistContract
 {
     /**
@@ -9,6 +13,12 @@ interface ArchivistContract
      * @return void
      */
     public function backup();
+
+    /**
+     * Получить коллекцию файлов с архивами.
+     * @return array
+     */
+    public function backups();
 
     /**
      * Восстановить резервную копию.
