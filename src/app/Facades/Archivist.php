@@ -10,6 +10,12 @@ use Illuminate\Support\Facades\Facade;
  */
 class Archivist extends Facade
 {
+    /**
+     * Имя ключа оператора операций.
+     * @const string
+     */
+    const KEY_NAME_OPERATOR = 'operator';
+
     protected static function getFacadeAccessor()
     {
         return 'laravel-archivist';
