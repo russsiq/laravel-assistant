@@ -51,7 +51,7 @@ class UpdaterManager extends Manager
      */
     protected function createGithubDriver(): GithubDriver
     {
-        $config = $this->getDriverConfig('github');
+        $config = $this->getDriverConfiguration('github');
 
         return new GithubDriver(
             $this->release($config),
@@ -65,7 +65,7 @@ class UpdaterManager extends Manager
      * @param  string  $driver
      * @return array
      */
-    protected function getDriverConfig(string $driver): array
+    protected function getDriverConfiguration(string $driver): array
     {
         // Получаем массив всех настроек Мастера обновлений.
         $config = $this->config->get('assistant.updater', []);
