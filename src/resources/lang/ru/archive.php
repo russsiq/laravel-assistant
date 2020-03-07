@@ -31,6 +31,12 @@ return [
             'backup_theme' => 'Активная тема',
             'backup_uploads' => 'Вложенные файлы',
 
+            'restore_complex' => 'Восстановление из комплексного архива',
+            'restore_database' => 'Дамп базы данных',
+            'restore_system' => 'Системные файлы',
+            'restore_theme' => 'Активная тема',
+            'restore_uploads' => 'Вложенные файлы',
+
         ],
 
         'labels' => [
