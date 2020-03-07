@@ -31,7 +31,8 @@ class WelcomeController extends BaseController
         }
 
         return redirect()->route('assistant.update.complete')->with([
-            'status' => 'success'
+            'status' => 'success',
+
         ]);
     }
 
