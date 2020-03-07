@@ -31,7 +31,7 @@ Route::prefix('assistant')
             ->group(function () {
                 // 1. Welcome
                 Route::get('/', 'WelcomeController@index')->name('assistant.clean.welcome');
-                Route::post('/', 'WelcomeController@store')->name('assistant.clean.store');
+                Route::post('/', 'WelcomeController@store')->name('assistant.clean.welcome.store');
 
                 // 2. Сomplete
                 Route::get('/complete', 'WelcomeController@complete')->name('assistant.clean.complete');
