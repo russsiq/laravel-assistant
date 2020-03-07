@@ -16,18 +16,17 @@ class ArchivistManager implements ArchivistContract
 {
     /**
      * Экземпляр приложения.
-     *
      * @var Application
      */
     protected $app;
 
     /**
      * Создать новый экземпляр Архивариуса приложения.
-     *
      * @param  Application  $app
      */
-    public function __construct(Application $app)
-    {
+    public function __construct(
+        Application $app
+    ) {
         $this->app = $app;
     }
 
