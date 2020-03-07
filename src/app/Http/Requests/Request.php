@@ -2,8 +2,13 @@
 
 namespace Russsiq\Assistant\Http\Requests;
 
+// Сторонние зависимости.
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * Абстрактынй класс обработки запросов пользовательских форм.
+ * @var class
+ */
 abstract class Request extends FormRequest
 {
     /**
@@ -22,10 +27,5 @@ abstract class Request extends FormRequest
     protected function allowedForInRule(string $key): string
     {
         return implode(',', $this->allowedForInRule[$key]);
-    }
-
-    public function authorize()
-    {
-        return true;
     }
 }
