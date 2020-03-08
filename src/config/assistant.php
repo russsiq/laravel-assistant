@@ -109,11 +109,13 @@ return [
         // А другие файлы (например, `webpack.mix.js`)
         // будут исключены из списка обновляемых.
         'allowed_files' => [
+            '.env.example',
             'artisan',
             'composer.json',
             'LICENSE',
             'package.json',
             'readme.md',
+            'server.php',
             // 'webpack.mix.js',
 
         ],
