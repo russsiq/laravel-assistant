@@ -9,11 +9,17 @@ namespace Russsiq\Assistant\Contracts;
 interface ArchivistContract
 {
     /**
-     * Создать резервную копию в соответствии с выбранными опциями.
+     * Установить массив параметров.
      * @param  array  $options
-     * @return void
+     * @return mixed
      */
-    public function backup(array $options = []);
+    public function setOptions(array $options);
+
+    /**
+     * Запустить архивирование / восстановление.
+     * @return mixed
+     */
+    public function execute();
 
     /**
      * Получить коллекцию файлов резервных копий,
@@ -21,14 +27,6 @@ interface ArchivistContract
      * @return array
      */
     public function backups();
-
-    /**
-     * Восстановить резервную копию в соответствии с выбранными опциями.
-     * @param  string  $filename
-     * @param  array  $options
-     * @return void
-     */
-    public function restore(string $filename, array $options = []);
 
     /**
      * Удалить файл резервной копии.

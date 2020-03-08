@@ -2,6 +2,9 @@
 
 namespace Russsiq\Assistant\Http\Requests\Archive;
 
+// Зарегистрированные фасады приложения.
+use Archivist;
+
 // Сторонние зависимости.
 use Illuminate\Contracts\Validation\Validator as ValidatorContract;
 use Russsiq\Assistant\Http\Requests\Request;
@@ -13,17 +16,13 @@ class ArchiveRequest extends Request
      * @var array
      */
     protected $allowedForInRule = [
-        'backup' => [
-            'complex',
-            'database',
-            'system',
-            'theme',
-            'uploads',
+        Archivist::KEY_NAME_OPERATOR => [
+            'backup',
+            'restore',
 
         ],
 
-        'restore' => [
-            'complex',
+        'options' => [
             'database',
             'system',
             'theme',
@@ -45,6 +44,18 @@ class ArchiveRequest extends Request
             'submit',
 
         ]);
+
+        if ('backup' === $input[Archivist::KEY_NAME_OPERATOR]) {
+            unset($input['restore']);
+            unset($input['filename']);
+        }
+        elseif ('restore' === $input['operator']) {
+            unset($input['backup']);
+        }
+
+        // TODO: Предварительная валидация файла
+        //       на его физическое присутствие
+        //       и доступность для чтения.
 
         $this->replace($input)
             ->merge([
@@ -85,36 +96,37 @@ class ArchiveRequest extends Request
     {
         return [
             'backup' => [
-                'sometimes',
+                'array',
+
+            ],
+
+            'backup.*' => [
+                'required',
                 'string',
-                'in:'.$this->allowedForInRule('backup'),
+                'in:'.$this->allowedForInRule('options'),
 
             ],
 
             'restore' => [
-                'sometimes',
+                'array',
+                'required_without:backup'
+
+            ],
+
+            'restore.*' => [
+                'required',
                 'string',
-                'in:'.$this->allowedForInRule('restore'),
+                'in:'.$this->allowedForInRule('options'),
+
+            ],
+
+            'filename' => [
+                'string',
+                "required_if:{Archivist::KEY_NAME_OPERATOR},restore",
+                // 'in:'
 
             ],
 
         ];
-    }
-
-    /**
-     * Надстройка экземпляра валидатора.
-     * @param  ValidatorContract  $validator
-     * @return void
-     */
-    public function withValidator(ValidatorContract $validator): void
-    {
-        $validator->after(function (ValidatorContract $validator) {
-            if (empty($this->keys())) {
-                $validator->errors()->add(
-                    'isset_options',
-                    trans('assistant::archive.messages.errors.isset_options')
-                );
-            }
-        });
     }
 }
