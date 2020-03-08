@@ -19,19 +19,18 @@ return [
 
     'forms' => [
         'legends' => [
-            'backup' => 'Архивация',
-            'restore' => 'Восстановление',
+            'backup' => 'Создать резервную копию',
+            'restore' => 'Восстановление из архива',
 
         ],
 
         'attributes' => [
-            'backup_complex' => 'Создать комплексный архив',
+            'filename' => 'Файл резервной копии',
             'backup_database' => 'Дамп базы данных',
             'backup_system' => 'Системные файлы',
             'backup_theme' => 'Активная тема',
             'backup_uploads' => 'Вложенные файлы',
 
-            'restore_complex' => 'Восстановление из комплексного архива',
             'restore_database' => 'Дамп базы данных',
             'restore_system' => 'Системные файлы',
             'restore_theme' => 'Активная тема',
@@ -40,6 +39,16 @@ return [
         ],
 
         'labels' => [
+            'filename' => 'Список файлов резервных копий',
+            'backup_database' => 'Дамп базы данных',
+            'backup_system' => 'Системные файлы',
+            'backup_theme' => 'Активная тема',
+            'backup_uploads' => 'Вложенные файлы',
+
+            'restore_database' => 'Дамп базы данных',
+            'restore_system' => 'Системные файлы',
+            'restore_theme' => 'Активная тема',
+            'restore_uploads' => 'Вложенные файлы',
 
         ],
 
@@ -48,13 +57,12 @@ return [
         ],
 
         'validation' => [
-
+            'restore.required_without' => 'Необходимо выбрать хотя бы одну опцию.'
         ],
     ],
 
     'messages' => [
         'errors' => [
-            'isset_options' => 'Необходимо выбрать хотя бы одну опцию.',
 
         ],
 
