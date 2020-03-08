@@ -18,6 +18,12 @@ class Archivist extends Facade
     const KEY_NAME_OPERATOR = 'operator';
 
     /**
+     * Расширение файла резервной копии.
+     * @const string
+     */
+    const FILE_EXTENSION_BACKUP = '.zip';
+
+    /**
      * Получить зарегистрированное имя компонента.
      * @return string
      */
