@@ -65,6 +65,7 @@
 			@enderror
 		</div>
 
+		{{--
 		<div class="form-group @error('restore_system') is-invalid @enderror">
 			<label><input type="checkbox" name="restore[]" value="system" />
 				@lang('assistant::archive.forms.labels.restore_system')</label>
@@ -72,6 +73,7 @@
 			<div class="invalid-feedback d-block">{{ $message }}</div>
 			@enderror
 		</div>
+		--}}
 
 		<div class="form-group @error('restore_theme') is-invalid @enderror">
 			<label><input type="checkbox" name="restore[]" value="theme" />
