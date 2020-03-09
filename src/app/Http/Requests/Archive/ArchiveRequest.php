@@ -3,7 +3,7 @@
 namespace Russsiq\Assistant\Http\Requests\Archive;
 
 // Зарегистрированные фасады приложения.
-use Archivist;
+use Russsiq\Assistant\Facades\Archivist;
 
 // Сторонние зависимости.
 use Illuminate\Contracts\Validation\Validator as ValidatorContract;
@@ -56,6 +56,10 @@ class ArchiveRequest extends Request
         // TODO: Предварительная валидация файла
         //       на его физическое присутствие
         //       и доступность для чтения.
+
+        // if ($this->filled('filename')) {
+        //     dd('filename');
+        // }
 
         $this->replace($input)
             ->merge([
@@ -116,7 +120,10 @@ class ArchiveRequest extends Request
             'restore.*' => [
                 'required',
                 'string',
-                'in:'.$this->allowedForInRule('options'),
+                'in:'.$this->allowedForInRule('options', [
+                    'system',
+
+                ]),
 
             ],
 
