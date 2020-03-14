@@ -35,7 +35,7 @@ class Release
      *
      * @var string
      */
-    const ZIP_EXTENSION = '.zip';
+    const ZIP_EXTENSION = 'zip';
 
     /**
      * Экземпляр HTTP клиента.
@@ -60,7 +60,7 @@ class Release
     protected $versionfile;
 
     /**
-     * Экземляр класса по работе с архивами.
+     * Экземпляр класса по работе с архивами.
      *
      * @var ZipArchive
      */
@@ -179,7 +179,7 @@ class Release
      */
     public function storageFile(string $version): string
     {
-        return $this->downloadPath($version.self::ZIP_EXTENSION);
+        return $this->downloadPath($version.'.'.self::ZIP_EXTENSION);
     }
 
     /**
