@@ -22,6 +22,7 @@ use Illuminate\Support\Manager;
 use Illuminate\Support\Traits\ForwardsCalls;
 use Russsiq\Assistant\Contracts\ArchivistContract;
 use Russsiq\Assistant\Contracts\Archivist\Factory as FactoryContract;
+use Russsiq\Assistant\Services\Zipper;
 
 use Russsiq\Assistant\Support\Archivist\Extractor;
 use Russsiq\Assistant\Support\Archivist\Packager;
@@ -49,8 +50,8 @@ class ArchivistManager implements FactoryContract
     protected $filesystem;
 
     /**
-     * Экземляр класса по работе с архивами.
-     * @var ZipArchive
+     * Экземпляр класса по работе с архивами.
+     * @var Zipper
      */
     protected $ziparchive;
 
@@ -59,6 +60,12 @@ class ArchivistManager implements FactoryContract
      * @var array
      */
     protected $operators = [];
+
+    /**
+     * Текущий выбранный оператор операций.
+     * @var string
+     */
+    protected $currentOperator;
 
     /**
      * Коллекция файлов архивов.
@@ -90,6 +97,7 @@ class ArchivistManager implements FactoryContract
      */
     public function operator(string $name = null): ArchivistContract
     {
+        // $name = $name ?: $this->currentOperator();
         $name = $name ?: $this->getDefaultDriver();
 
         if (is_null($name)) {
@@ -97,6 +105,8 @@ class ArchivistManager implements FactoryContract
                 'Unable to resolve NULL operator for [%s].', static::class
             ));
         }
+
+        $this->setCurrentOperator($name);
 
         return $this->operators[$name]
             ?? $this->operators[$name] = $this->createOperator($name);
@@ -109,6 +119,24 @@ class ArchivistManager implements FactoryContract
     public function getDefaultDriver(): string
     {
         return 'backup';
+    }
+
+    /**
+     * Получить Текущий выбранный оператор операций.
+     * @return string
+     */
+    protected function currentOperator()
+    {
+        return $this->currentOperator;
+    }
+
+    /**
+     * Установить Текущий выбранный оператор операций.
+     * @return string
+     */
+    protected function setCurrentOperator(string $name)
+    {
+        return $this->currentOperator = $name;
     }
 
     /**
@@ -181,11 +209,14 @@ class ArchivistManager implements FactoryContract
     /**
      * Получить экземпляр класса по работе с архивами.
      * @param  array  $config
-     * @return ZipArchive
+     * @return Zipper
      */
-    protected function ziparchive(array $config): ZipArchive
+    protected function ziparchive(array $config): Zipper
     {
-        return new ZipArchive();
+        return new Zipper(
+            $this->filesystem($config),
+            new ZipArchive
+        );
     }
 
     /**
@@ -204,5 +235,8 @@ class ArchivistManager implements FactoryContract
         }
 
         return $this->forwardCallTo($this->operator($operator), $method, $parameters);
+
+
+        return $this->operator()->$method(...$parameters);
     }
 }

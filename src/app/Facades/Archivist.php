@@ -21,7 +21,7 @@ class Archivist extends Facade
      * Расширение файла резервной копии.
      * @const string
      */
-    const FILE_EXTENSION_BACKUP = '.zip';
+    const FILE_EXTENSION_BACKUP = 'zip';
 
     /**
      * Получить зарегистрированное имя компонента.

@@ -5,7 +5,9 @@
 		@lang('assistant::archive.descriptions.complete')
 		<div class="alert alert-info">
 			<ul class="alert-list">
-				<li>@lang('assistant::archive.strings.currently_version', compact('currently_version'))</li>
+				@foreach (session('messages') as $message)
+					<li>{{ $message }}</li>
+				@endforeach
 			</ul>
 		</div>
 	@else

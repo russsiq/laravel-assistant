@@ -11,9 +11,23 @@ interface ArchivistContract
     /**
      * Установить массив параметров.
      * @param  array  $options
-     * @return mixed
+     * @return self
      */
-    public function setOptions(array $options);
+    public function setOptions(array $options): self;
+
+    /**
+     * Установить операции, которые должны будут выполнены.
+     * @param  mixed  $options
+     * @return self
+     */
+    public function with($options): self;
+
+    /**
+     * Убрать операции из списка запланированных.
+     * @param  mixed  $options
+     * @return self
+     */
+    public function without($options): self;
 
     /**
      * Запустить архивирование / восстановление.
@@ -24,20 +38,20 @@ interface ArchivistContract
     /**
      * Получить коллекцию файлов резервных копий,
      * включая их свойства: имя, размер, дата создания.
-     * @return array
+     * @return object
      */
-    public function backups();
+    public function backups(): object;
 
     /**
      * Удалить файл резервной копии.
      * @param  string  $filename
      * @return bool
      */
-    public function deleteBackup(string $filename);
+    public function deleteBackup(string $filename): bool;
 
     /**
      * Удалить все файлы резервных копий.
      * @return bool
      */
-    public function deleteAllBackups();
+    public function deleteAllBackups(): bool;
 }

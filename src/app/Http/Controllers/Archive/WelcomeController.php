@@ -27,7 +27,7 @@ class WelcomeController extends BaseController
         return redirect()->route('assistant.archive.complete')->with([
             'status' => 'success',
             // 'result' => Archivist::process($request->all()),
-            'result' => Archivist::operator($action)
+            'messages' => Archivist::operator($action)
                 ->setOptions($request->all())
                 ->execute(),
 
