@@ -224,5 +224,6 @@ abstract class AbstractUpdater implements UpdaterContract
             'Файл [%s] не доступен для записи.',
             $firstLockedFile->getRelativePath().DIRECTORY_SEPARATOR.$firstLockedFile->getFilename()
         ));
+        // $firstLockedFile->getRelativePathname()
     }
 }

@@ -302,15 +302,19 @@ class InstallerManager implements InstallerContract
             ->each(function (SplFileInfo $directory) use ($toDir) {
                 $this->filesystem->copyDirectory(
                     $directory->getRealPath(),
-                    $toDir.DS.$directory->getRelativePath().DS.$directory->getBasename()
+                    $toDir.DIRECTORY_SEPARATOR.$directory->getRelativePath().DIRECTORY_SEPARATOR.$directory->getBasename()
                 );
+                // $this->filesystem->copyDirectory(
+                //     $directory->getRealPath(),
+                //     $toDir.DIRECTORY_SEPARATOR.$directory->getRelativePathname()
+                // );
             });
 
         collect(Finder::create()->files()->in($fromDir)->depth(0)->ignoreDotFiles(true)->sortByName())
             ->each(function (SplFileInfo $file) use ($toDir) {
                 $this->filesystem->copy(
                     $file->getRealPath(),
-                    $toDir.DS.$file->getFilename()
+                    $toDir.DIRECTORY_SEPARATOR.$file->getFilename()
                 );
             });
     }
