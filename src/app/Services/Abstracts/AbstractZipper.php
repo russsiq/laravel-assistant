@@ -3,6 +3,7 @@
 namespace Russsiq\Assistant\Services\Abstracts;
 
 // Базовые расширения PHP.
+use Countable;
 use SplFileInfo;
 use ZipArchive;
 
@@ -13,7 +14,7 @@ use Russsiq\Assistant\Services\Contracts\ZipperContract;
 /**
  * Абстрактный класс-обертка для архиватора.
  */
-abstract class AbstractZipper implements ZipperContract
+abstract class AbstractZipper implements ZipperContract, Countable
 {
     /**
      * Экземпляр класса по работе с файловой системой.
@@ -39,6 +40,12 @@ abstract class AbstractZipper implements ZipperContract
         $this->filesystem = $filesystem;
         $this->ziparchive = $ziparchive;
     }
+
+    /**
+     * Получить количество файлов в архиве.
+     * @return int
+     */
+    abstract public function count(): int;
 
     /**
      * Получить полный путь, включая имя, текущего рабочего архива.

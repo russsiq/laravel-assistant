@@ -18,6 +18,15 @@ use Illuminate\Support\Str;
 class Zipper extends AbstractZipper
 {
     /**
+     * Получить количество файлов в архиве.
+     * @return int
+     */
+    public function count(): int
+    {
+        return $this->ziparchive->numFiles;
+    }
+
+    /**
      * Получить полный путь, включая имя, текущего рабочего архива.
      * @return string|null
      */
