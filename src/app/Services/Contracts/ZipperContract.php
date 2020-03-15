@@ -17,13 +17,7 @@ interface ZipperContract
      * Получить полный путь, включая имя, текущего рабочего архива.
      * @return string|null
      */
-    public function path(): ?string;
-
-    /**
-     * Получить имя текущего рабочего архива без информации о пути к нему.
-     * @return string
-     */
-    public function name(): ?string;
+    public function filename(): ?string;
 
     /**
      * Открыть архив для последующей работы с ним

@@ -28,12 +28,6 @@ abstract class AbstractZipper implements ZipperContract
     protected $ziparchive;
 
     /**
-     * Полный путь, включая имя, текущего рабочего архива.
-     * @var string
-     */
-    protected $filename;
-
-    /**
      * Создать новый экземпляр класса.
      * @param  Filesystem  $filesystem
      * @param  ZipArchive  $ziparchive
@@ -50,13 +44,7 @@ abstract class AbstractZipper implements ZipperContract
      * Получить полный путь, включая имя, текущего рабочего архива.
      * @return string|null
      */
-    abstract public function path(): ?string;
-
-    /**
-     * Получить имя текущего рабочего архива без информации о пути к нему.
-     * @return string
-     */
-    abstract public function name(): ?string;
+    abstract public function filename(): ?string;
 
     /**
      * Открыть архив для последующей работы с ним

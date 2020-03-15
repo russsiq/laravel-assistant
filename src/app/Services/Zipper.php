@@ -21,18 +21,9 @@ class Zipper extends AbstractZipper
      * Получить полный путь, включая имя, текущего рабочего архива.
      * @return string|null
      */
-    public function path(): ?string
+    public function filename(): ?string
     {
-        return $this->filename;
-    }
-
-    /**
-     * Получить имя текущего рабочего архива без информации о пути к нему.
-     * @return string
-     */
-    public function name(): ?string
-    {
-        return pathinfo($this->path(), PATHINFO_FILENAME);
+        return $this->ziparchive->filename ?: null;
     }
 
     /**
@@ -44,8 +35,6 @@ class Zipper extends AbstractZipper
      */
     public function open(string $filename, $flags = null): ZipperContract
     {
-        $this->filename = $filename;
-
         $this->ziparchive->open($filename);
 
         return $this;
@@ -60,8 +49,6 @@ class Zipper extends AbstractZipper
      */
     public function create(string $filename, $flags = null): ZipperContract
     {
-        $this->filename = $filename;
-
         $this->ziparchive->open($filename, ZipArchive::CREATE);
 
         return $this;
@@ -174,8 +161,6 @@ class Zipper extends AbstractZipper
      */
     public function close(): bool
     {
-        $this->filename = null;
-
         return $this->ziparchive->close();
     }
 }
