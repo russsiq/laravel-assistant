@@ -154,13 +154,23 @@ class Zipper extends AbstractZipper
     {
         // Архиватор обрабатывает директории, которые оканчиваются на `/`.
         $dirname = rtrim($dirname, '/\\');
+        $dirname = str_replace('\\', '/', $dirname);
         $dirname = $dirname . '/';
 
-        $result = $this->ziparchive->deleteName($dirname);
+        if ($this->ziparchive->deleteName($dirname)) {
+            return true;
+        }
 
-        // dd($result);
+        // Архиватор не позволяет удалять непустые директории.
+        for ($i = 0; $i < $this->count(); $i++) {
+            $filename = $this->ziparchive->getNameIndex($i);
 
-        return $result;
+            if (substr($filename, 0, strlen($dirname)) === $dirname) {
+                $this->ziparchive->deleteName($filename);
+            }
+        }
+
+        return $this->ziparchive->deleteName($dirname);
     }
 
     /**
