@@ -76,9 +76,8 @@ class Zipper extends AbstractZipper
 
     /**
      * Добавить в архив файл по указанному пути.
-     * $this->ziparchive->addFile($abs_path, $relative_path);
-     * @param  string  $filename
-     * @param  string|null  $localname
+     * @param  string  $filename  Абсолютный путь добавляемого файла.
+     * @param  string|null  $localname  Относительный путь к файлу в архиве, включая его имя.
      * @return bool
      */
     public function addFile(string $filename, string $localname = null) : bool
@@ -95,17 +94,19 @@ class Zipper extends AbstractZipper
      */
     public function addDirectory(string $realPath, string $relativePath): bool
     {
-        // $files = $this->filesystem->allFiles($realPath, true);
+        $finder = $this->createFinder($realPath)
+            ->ignoreDotFiles(false)
+            ->ignoreVCS(false);
 
-        $finder = (new Finder)->ignoreDotFiles(false)->ignoreVCS(false)->in($realPath);
-
+        // Исключаем файлы из списка архивируемых,
+        // доступ к которым возможен через ссылки.
         $exluded = [];
 
-        // Исключаем ссылки из списка архивированных
         foreach ($finder->getIterator() as $file) {
             // На Windows 7 некорректная работа со считыванием информации о ссылках.
             if ($file->isLink() or (! in_array($file->getType(), ['file', 'dir']))) {
                 // А вот и причина ошибки, из-за которой метод `exclude` неверно отрабатывал.
+                // https://github.com/symfony/finder/blob/008b6cc6da7141baf1766d72d2731b0e6f78b45b/Iterator/ExcludeDirectoryFilterIterator.php#L37
                 // https://github.com/russsiq/laravel-assistant/blob/7b36b4a1a56c4364b470db3188c06eb1871ed8f7/src/app/Support/Updater/AbstractUpdater.php#L166
                 $exluded[] = str_replace('\\', '/', $file->getRelativePathname());
             }
@@ -114,8 +115,6 @@ class Zipper extends AbstractZipper
         $files = $finder->exclude($exluded)->files();
 
         foreach ($files as $file) {
-            // Get real and relative path for current file.
-            // Add current file to archive.
             $this->addFile(
                 $file->getRealPath(),
                 $relativePath.DIRECTORY_SEPARATOR.$file->getRelativePathname()
@@ -171,5 +170,15 @@ class Zipper extends AbstractZipper
     public function close(): bool
     {
         return $this->ziparchive->close();
+    }
+
+    /**
+     * Создать экземпляр Поисковика.
+     * @param  mixed  $directories
+     * @return Finder
+     */
+    protected function createFinder($directories): Finder
+    {
+        return Finder::create()->in((array) $directories);
     }
 }
