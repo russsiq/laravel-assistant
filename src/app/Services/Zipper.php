@@ -36,31 +36,31 @@ class Zipper extends AbstractZipper
     }
 
     /**
-     * Открыть архив для последующей работы с ним
-     * (для чтения, записи или изменения).
+     * Открыть архив для последующей работы с ним (для чтения, записи или изменения).
      * @param  string  $filename
      * @param  mixed  $flags
      * @return self
      */
     public function open(string $filename, $flags = null): ZipperContract
     {
-        $this->ziparchive->open($filename);
+        // Возвращает TRUE при успешном завершении или код ошибки.
+        $status = $this->ziparchive->open($filename, ZipArchive::CHECKCONS);
 
-        return $this;
+        return $this->assertArchiveIsOpened($filename, $status) ?: $this;
     }
 
     /**
-     * Создать архив для последующей работы с ним
-     * (для чтения, записи или изменения).
+     * Создать архив для последующей работы с ним (для чтения, записи или изменения).
      * @param  string  $filename
      * @param  mixed  $flags
      * @return self
      */
     public function create(string $filename, $flags = null): ZipperContract
     {
-        $this->ziparchive->open($filename, ZipArchive::CREATE);
+        // Возвращает TRUE при успешном завершении или код ошибки.
+        $status = $this->ziparchive->open($filename, ZipArchive::CREATE);
 
-        return $this;
+        return $this->assertArchiveIsCreated($filename, $status) ?: $this;
     }
 
     /**
@@ -71,7 +71,11 @@ class Zipper extends AbstractZipper
      */
     public function extractTo(string $destination, array $entries = null): bool
     {
-        return $this->ziparchive->extractTo($destination);
+        // Возвращает TRUE в случае успешного завершения
+        // или FALSE в случае возникновения ошибки.
+        $status = $this->ziparchive->extractTo($destination, $entries);
+
+        return $this->assertArchiveIsExtracted($this->filename(), $status) ?: $status;
     }
 
     /**
@@ -82,7 +86,16 @@ class Zipper extends AbstractZipper
      */
     public function addFile(string $filename, string $localname = null) : bool
     {
-        return $this->ziparchive->addFile($filename, $localname);
+        $filename = $this->normalizePath($filename);
+
+        // Определяет существование файла и доступен ли он для чтения.
+        // $this->filesystem->isReadable($filename);
+
+        // Возвращает TRUE в случае успешного завершения
+        // или FALSE в случае возникновения ошибки.
+        $status = $this->ziparchive->addFile($filename, $localname);
+
+        return $this->assertFileIsAdded($this->filename(), $filename, $status) ?: $status;
     }
 
     /**
@@ -108,7 +121,7 @@ class Zipper extends AbstractZipper
                 // А вот и причина ошибки, из-за которой метод `exclude` неверно отрабатывал.
                 // https://github.com/symfony/finder/blob/008b6cc6da7141baf1766d72d2731b0e6f78b45b/Iterator/ExcludeDirectoryFilterIterator.php#L37
                 // https://github.com/russsiq/laravel-assistant/blob/7b36b4a1a56c4364b470db3188c06eb1871ed8f7/src/app/Support/Updater/AbstractUpdater.php#L166
-                $exluded[] = str_replace('\\', '/', $file->getRelativePathname());
+                $exluded[] = $this->normalizePath($file->getRelativePathname());
             }
         }
 
@@ -132,21 +145,29 @@ class Zipper extends AbstractZipper
      */
     public function addEmptyDirectory(string $dirname): bool
     {
-        return $this->ziparchive->addEmptyDir($dirname);
+        // Возвращает TRUE в случае успешного завершения
+        // или FALSE в случае возникновения ошибки.
+        $status = $this->ziparchive->addEmptyDir($dirname);
+
+        return $this->assertEmptyDirectoryIsAdded($this->filename(), $dirname, $status) ?: $status;
     }
 
     /**
-     * Удалить элемент (файл) в архиве, используя его имя.
+     * Удалить элемент (файл) из архива, используя его имя.
      * @param  string  $filename
      * @return bool
      */
     public function deleteFile(string $filename): bool
     {
-        return $this->ziparchive->deleteName($filename);
+        // Возвращает TRUE в случае успешного завершения
+        // или FALSE в случае возникновения ошибки.
+        $status = $this->ziparchive->deleteName($filename);
+
+        return $this->assertFileIsDeleted($this->filename(), $filename, $status) ?: $status;
     }
 
     /**
-     * Удалить элемент (каталог) в архиве, используя его имя.
+     * Удалить элемент (каталог) из архива, используя его имя.
      * @param  string  $dirname
      * @return bool
      */
@@ -154,23 +175,32 @@ class Zipper extends AbstractZipper
     {
         // Архиватор обрабатывает директории, которые оканчиваются на `/`.
         $dirname = rtrim($dirname, '/\\');
-        $dirname = str_replace('\\', '/', $dirname);
+        $dirname = $this->normalizePath($dirname);
         $dirname = $dirname . '/';
 
+        // Попытаемся напрямую удалить директорию.
         if ($this->ziparchive->deleteName($dirname)) {
             return true;
         }
 
+        // Если напрямую не получилось, то это значит, что директория непустая.
         // Архиватор не позволяет удалять непустые директории.
         for ($i = 0; $i < $this->count(); $i++) {
-            $filename = $this->ziparchive->getNameIndex($i);
+            $nameByIndex = $this->ziparchive->getNameIndex($i);
+            $filename = $this->normalizePath($nameByIndex);
 
-            if (substr($filename, 0, strlen($dirname)) === $dirname) {
-                $this->ziparchive->deleteName($filename);
+            // Пропускаем искомую директорию и элементы,
+            // которые не расположены в искомой директории.
+            if ($filename !== $dirname
+                && substr($filename, 0, strlen($dirname)) === $dirname) {
+                $this->deleteFile($nameByIndex);
             }
         }
 
-        return $this->ziparchive->deleteName($dirname);
+        // Пока оставим как есть.
+        $this->ziparchive->deleteName($dirname);
+
+        return true;
     }
 
     /**
@@ -179,7 +209,11 @@ class Zipper extends AbstractZipper
      */
     public function close(): bool
     {
-        return $this->ziparchive->close();
+        // Возвращает TRUE в случае успешного завершения
+        // или FALSE в случае возникновения ошибки.
+        $status = $this->ziparchive->close();
+
+        return $this->assertArchiveIsClosed($this->filename(), $status) ?: $status;
     }
 
     /**
@@ -190,5 +224,17 @@ class Zipper extends AbstractZipper
     protected function createFinder($directories): Finder
     {
         return Finder::create()->in((array) $directories);
+    }
+
+    /**
+     * Нормализовать путь. Для максимальной переносимости,
+     * рекомендуется всегда использовать прямые слеши `/`
+     * в качестве разделителя директорий в именах файлов.
+     * @param  string  $path
+     * @return string
+     */
+    protected function normalizePath(string $path): string
+    {
+        return str_replace('\\', '/', $path);
     }
 }

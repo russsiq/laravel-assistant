@@ -2,6 +2,12 @@
 
 namespace Russsiq\Assistant\Services\Abstracts;
 
+// Исключения.
+// use Exception;
+// use InvalidArgumentException;
+use RuntimeException;
+// use Throwable;
+
 // Базовые расширения PHP.
 use Countable;
 use SplFileInfo;
@@ -161,39 +167,173 @@ abstract class AbstractZipper implements ZipperContract, Countable
 
     /**
      * Определить, произошла ли ошибка во время открытия архива.
-     *
-     * @param  string  $filename
-     * @param  mixed  $opened
+     * @param  string  $zipname
+     * @param  mixed  $status
      * @return void
      *
      * @throws RuntimeException
      */
-    protected function assertZiparchiveIsOpened(string $filename, $opened)
+    protected function assertArchiveIsOpened(string $zipname, $status): void
     {
-        if ($opened !== true) {
+        if ($status !== true) {
             throw new RuntimeException(sprintf(
-                "Cannot open zip archive [%s].",
-                $filename
+                "Can't open zip archive [%s]. Reason: %s",
+                $zipname,
+                $this->getErrorFromStatus($status)
+            ));
+        }
+    }
+
+    /**
+     * Определить, произошла ли ошибка во время создания архива.
+     * @param  string  $zipname
+     * @param  mixed  $status
+     * @return void
+     *
+     * @throws RuntimeException
+     */
+    protected function assertArchiveIsCreated(string $zipname, $status): void
+    {
+        if ($status !== true) {
+            throw new RuntimeException(sprintf(
+                "Can't create zip archive [%s]. Reason: %s",
+                $zipname,
+                $this->getErrorFromStatus($status)
             ));
         }
     }
 
     /**
      * Определить, произошла ли ошибка во время извлечения файлов из архива.
-     *
-     * @param  string  $filename
-     * @param  mixed  $extracted
+     * @param  string  $zipname
+     * @param  mixed  $status
      * @return void
      *
      * @throws RuntimeException
      */
-    protected function assertZiparchiveIsExtracted(string $filename, $extracted)
+    protected function assertArchiveIsExtracted(string $zipname, $status): void
     {
-        if ($extracted !== true) {
+        if ($status !== true) {
             throw new RuntimeException(sprintf(
-                "Unable to extract zip archive [%s].",
-                $filename
+                "Unable to extract zip archive [%s]. Reason: %s",
+                $zipname,
+                $this->ziparchive->getStatusString()
             ));
         }
+    }
+
+    /**
+     * Определить, произошла ли ошибка при добавлении файла в архив.
+     * @param  string  $zipname
+     * @param  string  $filename
+     * @param  mixed  $status
+     * @return void
+     *
+     * @throws RuntimeException
+     */
+    protected function assertFileIsAdded(string $zipname, string $filename, $status): void
+    {
+        if ($status !== true) {
+            throw new RuntimeException(sprintf(
+                "Can't add file [%s] to zip archive [%s]. Reason: %s",
+                $filename,
+                $zipname,
+                $this->ziparchive->getStatusString()
+            ));
+        }
+    }
+
+    /**
+     * Определить, произошла ли ошибка при добавлении пустой директории в архив.
+     * @param  string  $zipname
+     * @param  string  $dirname
+     * @param  mixed  $status
+     * @return void
+     *
+     * @throws RuntimeException
+     */
+    protected function assertEmptyDirectoryIsAdded(string $zipname, string $dirname, $status): void
+    {
+        if ($status !== true) {
+            throw new RuntimeException(sprintf(
+                "Can't add empty directory [%s] to zip archive [%s]. Reason: %s",
+                $dirname,
+                $zipname,
+                $this->ziparchive->getStatusString()
+            ));
+        }
+    }
+
+    /**
+     * Определить, произошла ли ошибка при удалении файла из архива.
+     * @param  string  $zipname
+     * @param  string  $filename
+     * @param  mixed  $status
+     * @return void
+     *
+     * @throws RuntimeException
+     */
+    protected function assertFileIsDeleted(string $zipname, string $filename, $status): void
+    {
+        if ($status !== true) {
+            throw new RuntimeException(sprintf(
+                "Can't delete element [%s] from zip archive [%s]. Reason: %s",
+                $filename,
+                $zipname,
+                $this->ziparchive->getStatusString()
+            ));
+        }
+    }
+
+    /**
+     * Определить, произошла ли ошибка во время закрытия архива.
+     * @param  string|null  $zipname
+     * @param  mixed  $status
+     * @return void
+     *
+     * @throws RuntimeException
+     */
+    protected function assertArchiveIsClosed(?string $zipname, $status): void
+    {
+        if ($status !== true) {
+            throw new RuntimeException(sprintf(
+                "Can't close zip archive [%s]. Reason: %s",
+                $zipname,
+                $this->ziparchive->getStatusString()
+            ));
+        }
+    }
+
+    public function getErrorFromStatus(int $status)
+    {
+        $errors = [
+            ZipArchive::ER_OK => 'No error.',
+            ZipArchive::ER_MULTIDISK => 'Multi-disk zip archives not supported.',
+            ZipArchive::ER_RENAME => 'Renaming temporary file failed.',
+            ZipArchive::ER_CLOSE => 'Closing zip archive failed.',
+            ZipArchive::ER_SEEK => 'Seek error.',
+            ZipArchive::ER_READ => 'Read error.',
+            ZipArchive::ER_WRITE => 'Write error.',
+            ZipArchive::ER_CRC => 'CRC error.',
+            ZipArchive::ER_ZIPCLOSED => 'Containing zip archive was closed.',
+            ZipArchive::ER_NOENT => 'No such file.',
+            ZipArchive::ER_EXISTS => 'File already exists.',
+            ZipArchive::ER_OPEN => 'Can\'t open file.',
+            ZipArchive::ER_TMPOPEN => 'Failure to create temporary file.',
+            ZipArchive::ER_ZLIB => 'Zlib error.',
+            ZipArchive::ER_MEMORY => 'Memory allocation failure.',
+            ZipArchive::ER_CHANGED => 'Entry has been changed.',
+            ZipArchive::ER_COMPNOTSUPP => 'Compression method not supported.',
+            ZipArchive::ER_EOF => 'Premature EOF.',
+            ZipArchive::ER_INVAL => 'Invalid argument.',
+            ZipArchive::ER_NOZIP => 'Not a zip archive.',
+            ZipArchive::ER_INTERNAL => 'Internal error.',
+            ZipArchive::ER_INCONS => 'Zip archive inconsistent.',
+            ZipArchive::ER_REMOVE => 'Can\'t remove file.',
+            ZipArchive::ER_DELETED => 'Entry has been deleted.',
+
+        ];
+
+        return $errors[$status] ?? sprintf('Unknown status: %s', $status);
     }
 }
