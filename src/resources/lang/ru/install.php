@@ -23,7 +23,7 @@ return [
         'requirements' => 'Требования скрипта',
         'globals' => 'Глобальные переменные',
         'files' => 'Доступы к файлам и папкам',
-        'php' => 'PHP >= 7.2.0',
+        'php' => 'PHP >= 7.2.5',
         'bcmath' => 'BCMath',
         'ctype' => 'Ctype',
         'curl' => 'cURL',
