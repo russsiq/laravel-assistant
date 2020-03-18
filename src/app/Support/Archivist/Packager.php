@@ -9,6 +9,7 @@ use InvalidArgumentException;
 use Russsiq\Assistant\Facades\Archivist;
 
 // Сторонние зависимости.
+use Illuminate\Support\Str;
 use Russsiq\Assistant\Contracts\ArchivistContract;
 use Russsiq\Assistant\Contracts\Archivist\CanBackup;
 use Russsiq\Assistant\Services\Zipper;
@@ -154,7 +155,7 @@ class Packager extends AbstractArchivist implements CanBackup
     {
         return date('Y_m_d_His')
             .'_backup_'
-            .str_slug(config('app.name'))
+            .Str::slug(config('app.name'))
             .'.'
             .Archivist::FILE_EXTENSION_BACKUP;
     }
