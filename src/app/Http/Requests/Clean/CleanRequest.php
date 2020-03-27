@@ -42,6 +42,7 @@ class CleanRequest extends Request
 
             'cache_config' => 'boolean',
             'cache_route' => 'boolean',
+            'cache_view' => 'boolean',
 
             'complex_optimize' => 'boolean',
 

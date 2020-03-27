@@ -177,6 +177,16 @@ class CleanerManager implements CleanerContract
     }
 
     /**
+     * Предварительная компиляция всех шаблонов,
+     * используемых приложением.
+     * @return string
+     */
+    public function cacheView()
+    {
+        return $this->artisanCall('view:cache');
+    }
+
+    /**
      * Очистка скомпилированных шаблонов приложения.
      * @return string
      */
@@ -242,6 +252,7 @@ class CleanerManager implements CleanerContract
 
             'cache_config',
             'cache_route',
+            'cache_view',
 
         ]);
     }

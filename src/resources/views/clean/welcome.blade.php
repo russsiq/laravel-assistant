@@ -66,6 +66,13 @@
 				<div class="invalid-feedback d-block">{{ $message }}</div>
 			@enderror
 		</div>
+
+		<div class="form-group @error('cache_view') is-invalid @enderror">
+			<label><input type="checkbox" name="cache_view" value="1" /> @lang('assistant::clean.forms.attributes.cache_view')</label>
+			@error ('cache_view')
+				<div class="invalid-feedback d-block">{{ $message }}</div>
+			@enderror
+		</div>
 	</fieldset>
 
 	<fieldset>
