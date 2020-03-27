@@ -10,7 +10,7 @@
 		<div class="alert alert-info">
 			<ul class="alert-list">
 				@foreach ($messages as $message)
-					<li>{{ $message }}</li>
+					<li>@lang("assistant::clean.messages.{$message}")</li>
 				@endforeach
 			</ul>
 		</div>

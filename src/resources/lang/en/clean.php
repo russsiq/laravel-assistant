@@ -65,6 +65,16 @@ return [
 
         ],
 
+        'Application cache cleared!' => 'Кэш приложения очищен!',
+        'Compiled views cleared!' => 'Скомпилированные шаблоны удалены!',
+        'Compiled services and packages files removed!' => 'Скомпилированные службы и пакеты удалены!',
+        'File status cache cleared!' => 'Статус системных файлов очищен!',
+        'Configuration cache cleared!' => 'Кэш конфигурационных файлов очищен!',
+        'Configuration cached successfully!' => 'Кэш конфигурационных файлов успешно создан!',
+        'Route cache cleared!' => 'Кэш маршрутов очищен!',
+        'Routes cached successfully!' => 'Кэш маршрутов успешно создан!',
+        'Blade templates cached successfully!' => 'Предварительная компиляция шаблонов успешно выполнена!',
+
     ],
 
 ];
