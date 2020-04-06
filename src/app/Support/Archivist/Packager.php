@@ -4,9 +4,11 @@ namespace Russsiq\Assistant\Support\Archivist;
 
 // Исключения.
 use InvalidArgumentException;
+use stdClass;
 
 // Зарегистрированные фасады приложения.
 use Russsiq\Assistant\Facades\Archivist;
+use Illuminate\Support\Facades\Schema;
 
 // Сторонние зависимости.
 use Illuminate\Support\Str;
@@ -89,7 +91,7 @@ class Packager extends AbstractArchivist implements CanBackup
 
         if (in_array('database', $this->options)) {
             // Создание дампа Базы Данных.
-            //
+            $this->backupDatabase();
 
             // Добавление дампа БД в архив.
             //
@@ -111,6 +113,33 @@ class Packager extends AbstractArchivist implements CanBackup
 
         // Возвращение массива текстовых сообщений о выполненных операциях.
         return $messages;
+    }
+
+    protected function backupDatabase(array $tables = null)
+    {
+        // Получаем список таблиц.
+        if (is_null($tables)) {
+            $connection = Schema::getConnection();
+            $grammar = $connection->getQueryGrammar();
+            $tablePrefix = $connection->getTablePrefix();
+
+            $tables = collect(Schema::getAllTables())
+                ->map(function (stdClass $row) use ($grammar, $tablePrefix) {
+                    return $grammar->wrapTable(
+                        head(array_reverse(
+                            explode($tablePrefix, head((array) $row), 2)
+                        ))
+                    );
+                });
+
+            $queries = $tables->map(function (string $table) use ($connection) {
+                return last($connection->selectOne(
+                    "SHOW CREATE TABLE {$table}"
+                ));
+            });
+
+            dd($queries);
+        }
     }
 
     protected function backupDirectories(Zipper $ziparchive, array $options = [])
