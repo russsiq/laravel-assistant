@@ -8,10 +8,16 @@ use stdClass;
 
 // Зарегистрированные фасады приложения.
 use Russsiq\Assistant\Facades\Archivist;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+
+use Illuminate\Database\Schema\Builder;
 
 // Сторонние зависимости.
 use Illuminate\Support\Str;
+use Illuminate\Support\Collection;
+use Russsiq\Assistant\Commands\BackupDatabase;
 use Russsiq\Assistant\Contracts\ArchivistContract;
 use Russsiq\Assistant\Contracts\Archivist\CanBackup;
 use Russsiq\Assistant\Services\Zipper;
@@ -23,13 +29,7 @@ use Russsiq\Assistant\Support\Archivist\AbstractArchivist;
 class Packager extends AbstractArchivist implements CanBackup
 {
     /**
-     * Путь к рабочей папке, содержащей архивы приложения.
-     * @var string
-     */
-    protected $storePath;
-
-    /**
-     * Полный путь к файлу резервной копии.
+     * Полный путь к сохраняемому файлу резервной копии.
      * @var string
      */
     protected $filename;
@@ -91,10 +91,10 @@ class Packager extends AbstractArchivist implements CanBackup
 
         if (in_array('database', $this->options)) {
             // Создание дампа Базы Данных.
-            $this->backupDatabase();
+            $contents = $this->backupDatabase();
 
             // Добавление дампа БД в архив.
-            //
+            $ziparchive->addFromString('database_backup', $contents);
 
             // Удаление опции БД из списка запланированных.
             $this->without('database');
@@ -115,7 +115,7 @@ class Packager extends AbstractArchivist implements CanBackup
         return $messages;
     }
 
-    protected function backupDatabase(array $tables = null)
+    protected function backupDatabase(Collection $tables = null)
     {
         // Получаем список таблиц.
         if (is_null($tables)) {
@@ -125,21 +125,81 @@ class Packager extends AbstractArchivist implements CanBackup
 
             $tables = collect(Schema::getAllTables())
                 ->map(function (stdClass $row) use ($grammar, $tablePrefix) {
-                    return $grammar->wrapTable(
-                        head(array_reverse(
+                    return head(array_reverse(
                             explode($tablePrefix, head((array) $row), 2)
-                        ))
-                    );
+                        ));
                 });
-
-            $queries = $tables->map(function (string $table) use ($connection) {
-                return last($connection->selectOne(
-                    "SHOW CREATE TABLE {$table}"
-                ));
-            });
-
-            dd($queries);
         }
+
+        $tables = $tables->reject(function ($table, $key) {
+            return in_array($table, [
+
+            ], true);
+        });
+
+        $headers = '';
+
+        // Комментарий.
+        $comment = '// ';
+
+        // Разделитель строк.
+        $separator = $comment.str_repeat('=', 60).PHP_EOL;
+
+        // `Пустая` строка.
+        $empty = $comment.PHP_EOL;
+
+        // Создаем заголовок.
+        $headers .= PHP_EOL.PHP_EOL;
+        $headers .= $separator;
+        $headers .= $comment."Backup file for `".\EnvManager::get('APP_NAME')."`".PHP_EOL;
+        $headers .= $separator;
+
+        $headers .= $empty;
+        $headers .= $comment."DATE: ".gmdate("Y-m-d H:i:s", time())." GMT".PHP_EOL;
+        $headers .= $comment."VERSION: ".\EnvManager::get('APP_VERSION').PHP_EOL;
+        $headers .= $empty;
+
+        $headers .= $comment."List of tables for backup: ".$tables->implode(', ').PHP_EOL;
+        $headers .= PHP_EOL;
+
+        $contents = $this->exportDatabaseToArrayFile($tables);
+
+        return "<?php {$headers} return {$contents};";
+    }
+
+    protected function exportDatabaseToArrayFile(Collection $tables): string
+    {
+        $contents = [];
+
+        foreach ($tables as $table) {
+            $offset = 0;
+            $limit = 1000;
+
+            $contents[$table] = [
+                'columns' => Schema::getColumnListing($table),
+                'values' => [],
+
+            ];
+
+            do {
+                $results = \DB::table($table)
+                    ->offset($offset)
+                    ->limit($limit)
+                    ->get();
+
+                $countResults = $results->count();
+
+                foreach ($results as $row) {
+                    $contents[$table]['values'][] = array_values((array) $row);
+                }
+
+                unset($results);
+
+                $offset += $limit;
+            } while ($countResults === $limit);
+        }
+
+        return var_export($contents, true);
     }
 
     protected function backupDirectories(Zipper $ziparchive, array $options = [])

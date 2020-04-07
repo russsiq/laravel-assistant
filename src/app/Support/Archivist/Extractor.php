@@ -22,13 +22,7 @@ use Russsiq\Assistant\Support\Archivist\AbstractArchivist;
 class Extractor extends AbstractArchivist implements CanRestore
 {
     /**
-     * Путь к рабочей папке, содержащей архивы приложения.
-     * @var string
-     */
-    protected $storePath;
-
-    /**
-     * Полный путь к файлу резервной копии.
+     * Полный путь к выбранному файлу резервной копии.
      * @var string
      */
     protected $filename;
@@ -82,15 +76,50 @@ class Extractor extends AbstractArchivist implements CanRestore
      */
     public function restore()
     {
-        // $filename = $this->storePath($this->filename);
-        //
-        // if ($this->filesystem->isFile($filename)) {
-        //     $this->filename = $filename;
-        // }
-        //
-        // $this->unzipArchive($filename, $this->storePath('tmp'));
+        $filename = $this->storePath($this->filename);
 
-        dd('restore after execute', $this->filename, $options);
+        if ($this->filesystem->isFile($filename)) {
+            $this->filename = $filename;
+        } else {
+            throw new RuntimeException(sprintf(
+                "Cannot open zip archive [%s].",
+                $filename
+            ));
+        }
+
+        $destination = $this->storePath('tmp');
+
+        $this->unzipArchive($this->filename, $destination);
+
+        if (in_array('database', $this->options)) {
+            \Schema::disableForeignKeyConstraints();
+            
+            $contents = $this->filesystem->getRequire($destination.'/database_backup');
+
+            foreach ($contents as $table => [
+                'columns' => $columns,
+                'values' => $values
+            ]) {
+                $insert = [];
+
+                foreach ($values as $row) {
+                    $insert[] = array_combine($columns, $row);
+                }
+
+                \DB::table($table)
+                    ->truncate();
+
+                \DB::table($table)
+                    ->insert($insert);
+            }
+
+            \Schema::enableForeignKeyConstraints();
+        }
+
+        $messages[] = 'Success';
+
+        // Возвращение массива текстовых сообщений о выполненных операциях.
+        return $messages;
     }
 
     /**
@@ -104,13 +133,9 @@ class Extractor extends AbstractArchivist implements CanRestore
         @ini_set('max_execution_time', 120);
 
         try {
-            $opened = $this->ziparchive->open($filename);
-            $this->assertZiparchiveIsOpened($filename, $opened);
-
-            $extracted = $this->ziparchive->extractTo($destination);
-            $this->assertZiparchiveIsExtracted($filename, $extracted);
-
-            $this->ziparchive->close();
+            $ziparchive = $this->ziparchive->open($filename);
+            $ziparchive->extractTo($destination);
+            $ziparchive->close();
 
             $this->ensureSourceInRootDirectory($destination);
 
@@ -153,44 +178,6 @@ class Extractor extends AbstractArchivist implements CanRestore
                 });
 
             $this->filesystem->deleteDirectory($root);
-        }
-    }
-
-    /**
-     * Определить, произошла ли ошибка во время открытия архива.
-     *
-     * @param  string  $filename
-     * @param  mixed  $opened
-     * @return void
-     *
-     * @throws RuntimeException
-     */
-    protected function assertZiparchiveIsOpened(string $filename, $opened)
-    {
-        if ($opened !== true) {
-            throw new RuntimeException(sprintf(
-                "Cannot open zip archive [%s].",
-                $filename
-            ));
-        }
-    }
-
-    /**
-     * Определить, произошла ли ошибка во время извлечения файлов из архива.
-     *
-     * @param  string  $filename
-     * @param  mixed  $extracted
-     * @return void
-     *
-     * @throws RuntimeException
-     */
-    protected function assertZiparchiveIsExtracted(string $filename, $extracted)
-    {
-        if ($extracted !== true) {
-            throw new RuntimeException(sprintf(
-                "Unable to extract zip archive [%s].",
-                $filename
-            ));
         }
     }
 }
