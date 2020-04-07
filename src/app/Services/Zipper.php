@@ -79,6 +79,21 @@ class Zipper extends AbstractZipper
     }
 
     /**
+     * Добавить в архив файл, используя его содержимое.
+     * @param  string  $localname  Относительный путь к файлу в архиве, включая его имя.
+     * @param  string  $contents  Содержимое для создания файла. Используется в двоичном безопасном режиме.
+     * @return bool
+     */
+    public function addFromString(string $localname, string $contents) : bool
+    {
+        // Возвращает TRUE в случае успешного завершения
+        // или FALSE в случае возникновения ошибки.
+        $status = $this->ziparchive->addFromString($localname, $contents);
+
+        return $this->assertFileIsAdded($this->filename(), $localname, $status) ?: $status;
+    }
+
+    /**
      * Добавить в архив файл по указанному пути.
      * @param  string  $filename  Абсолютный путь добавляемого файла.
      * @param  string|null  $localname  Относительный путь к файлу в архиве, включая его имя.
