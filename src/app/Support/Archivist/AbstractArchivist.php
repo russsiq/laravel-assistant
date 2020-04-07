@@ -158,7 +158,7 @@ abstract class AbstractArchivist implements ArchivistContract
     public function without($options): ArchivistContract
     {
         $options = is_string($options) ? func_get_args() : $options;
-        
+
         $this->options = array_diff($this->options, $options);
 
         return $this;
@@ -204,7 +204,7 @@ abstract class AbstractArchivist implements ArchivistContract
      */
     public function backups(): object
     {
-        $files = $this->filesystem->allFiles($this->storePath());
+        $files = $this->filesystem->files($this->storePath());
 
         return collect($files)
             ->filter(function (SplFileInfo $file, int $index) {
