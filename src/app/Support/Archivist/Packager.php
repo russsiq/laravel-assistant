@@ -116,7 +116,7 @@ class Packager extends AbstractArchivist implements CanBackup
         return $messages;
     }
 
-    protected function backupDatabase(Collection $tables = null)
+    protected function backupDatabase(Collection $tables = null): string
     {
         // Получаем список таблиц.
         if (is_null($tables)) {
@@ -138,6 +138,10 @@ class Packager extends AbstractArchivist implements CanBackup
             ], true);
         });
 
+        // Подгружаем заглушку.
+        $stub = $this->filesystem->get(__DIR__.'/stubs/'.self::DATABASE_FILENAME);
+
+        // Заполняем переменные в заглушке.
         $stub = str_replace([
                 '{{ APP_NAME }}',
                 '{{ APP_VERSION }}',
@@ -153,7 +157,7 @@ class Packager extends AbstractArchivist implements CanBackup
                 $this->exportDatabaseToArrayFile($tables),
 
             ],
-            $this->filesystem->get(__DIR__.'/stubs/'.self::DATABASE_FILENAME)
+            $stub
         );
 
         return $stub;
