@@ -9,6 +9,7 @@ use InvalidArgumentException;
 use SplFileInfo;
 
 // Зарегистрированные фасады приложения.
+use Russsiq\Assistant\Facades\Archivist;
 use Russsiq\Assistant\Facades\Updater;
 
 // Сторонние зависимости.
