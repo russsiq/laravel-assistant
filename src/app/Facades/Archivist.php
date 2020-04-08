@@ -3,6 +3,7 @@
 namespace Russsiq\Assistant\Facades;
 
 // Сторонние зависимости.
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Facade;
 
 /**
@@ -24,11 +25,30 @@ class Archivist extends Facade
     const FILE_EXTENSION_BACKUP = 'zip';
 
     /**
+     * Имя файла с резервной копией базы данных.
+     * @const string
+     */
+    const DATABASE_FILENAME = 'database_backup';
+
+    /**
      * Получить зарегистрированное имя компонента.
      * @return string
      */
     protected static function getFacadeAccessor()
     {
         return 'laravel-archivist';
+    }
+
+    /**
+     * Сгенерировать новое имя файла для резервной копии.
+     * @return string
+     */
+    public static function generateBackupFilename(): string
+    {
+        return date('Y_m_d_His')
+            .'_backup_'
+            .Str::slug(config('app.name'))
+            .'.'
+            .Archivist::FILE_EXTENSION_BACKUP;
     }
 }

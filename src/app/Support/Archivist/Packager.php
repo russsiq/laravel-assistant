@@ -16,7 +16,6 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Schema\Builder;
 
 // Сторонние зависимости.
-use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
 use Russsiq\Assistant\Commands\BackupDatabase;
 use Russsiq\Assistant\Contracts\ArchivistContract;
@@ -81,7 +80,7 @@ class Packager extends AbstractArchivist implements CanBackup
         $messages = [];
 
         if (! $this->filename) {
-            $this->to($this->generateBackupFilename());
+            $this->to(Archivist::generateBackupFilename());
         }
 
         $filename = $this->storePath($this->filename);
@@ -95,7 +94,7 @@ class Packager extends AbstractArchivist implements CanBackup
             $contents = $this->backupDatabase();
 
             // Добавление дампа БД в архив.
-            $ziparchive->addFromString(self::DATABASE_FILENAME, $contents);
+            $ziparchive->addFromString(Archivist::DATABASE_FILENAME, $contents);
 
             // Удаление опции БД из списка запланированных.
             $this->without('database');
@@ -139,7 +138,7 @@ class Packager extends AbstractArchivist implements CanBackup
         });
 
         // Подгружаем заглушку.
-        $stub = $this->filesystem->get(__DIR__.'/stubs/'.self::DATABASE_FILENAME);
+        $stub = $this->filesystem->get(__DIR__.'/stubs/'.Archivist::DATABASE_FILENAME);
 
         // Заполняем переменные в заглушке.
         $stub = str_replace([
@@ -230,18 +229,5 @@ class Packager extends AbstractArchivist implements CanBackup
         foreach ($files as $file) {
             $ziparchive->addFile($this->basePath($file), $file);
         }
-    }
-
-    /**
-     * Сгенерировать новое имя файла для резервной копии.
-     * @return string
-     */
-    public function generateBackupFilename(): string
-    {
-        return date('Y_m_d_His')
-            .'_backup_'
-            .Str::slug(config('app.name'))
-            .'.'
-            .Archivist::FILE_EXTENSION_BACKUP;
     }
 }
