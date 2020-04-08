@@ -3,7 +3,7 @@
 namespace Russsiq\Assistant;
 
 // Зарегистрированные фасады приложения.
-use Route;
+use Illuminate\Support\Facades\Route;
 
 // Сторонние зависимости.
 use Illuminate\Support\ServiceProvider;
@@ -33,6 +33,7 @@ class AssistantServiceProvider extends ServiceProvider
         'laravel-cleaner' => Cleaner::class,
         'laravel-installer' => Installer::class,
         'laravel-updater' => Updater::class,
+
     ];
 
     /**
@@ -131,6 +132,7 @@ class AssistantServiceProvider extends ServiceProvider
     {
         $this->commands([
             BeforeInstalledMakeCommand::class,
+
         ]);
     }
 }
