@@ -94,7 +94,9 @@ class Extractor extends AbstractArchivist implements CanRestore
         if (in_array('database', $this->options)) {
             \Schema::disableForeignKeyConstraints();
 
-            $contents = $this->filesystem->getRequire($destination.'/database_backup');
+            $contents = $this->filesystem->getRequire(
+                $destination.DIRECTORY_SEPARATOR.self::DATABASE_FILENAME
+            );
 
             foreach ($contents as $table => [
                 'columns' => $columns,

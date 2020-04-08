@@ -31,6 +31,12 @@ use Illuminate\Contracts\Config\Repository as ConfigRepositoryContract;
 abstract class AbstractArchivist implements ArchivistContract
 {
     /**
+     * Имя файла с резервной копией базы данных.
+     * @const string
+     */
+    const DATABASE_FILENAME = 'database_backup';
+
+    /**
      * Экземпляр класса по работе с файловой системой.
      * @var Filesystem
      */

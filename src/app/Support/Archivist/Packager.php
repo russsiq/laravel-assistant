@@ -94,7 +94,7 @@ class Packager extends AbstractArchivist implements CanBackup
             $contents = $this->backupDatabase();
 
             // Добавление дампа БД в архив.
-            $ziparchive->addFromString('database_backup', $contents);
+            $ziparchive->addFromString(self::DATABASE_FILENAME, $contents);
 
             // Удаление опции БД из списка запланированных.
             $this->without('database');
