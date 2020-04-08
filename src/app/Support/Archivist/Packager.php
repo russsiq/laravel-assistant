@@ -8,6 +8,7 @@ use stdClass;
 
 // Зарегистрированные фасады приложения.
 use Russsiq\Assistant\Facades\Archivist;
+use Russsiq\EnvManager\Facades\EnvManager;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
@@ -137,34 +138,25 @@ class Packager extends AbstractArchivist implements CanBackup
             ], true);
         });
 
-        $headers = '';
+        $stub = str_replace([
+                '{{ APP_NAME }}',
+                '{{ APP_VERSION }}',
+                '{{ DATE }}',
+                '{{ TABLES }}',
+                '{{ CONTENTS }}',
 
-        // Комментарий.
-        $comment = '// ';
+            ], [
+                EnvManager::get('APP_NAME'),
+                EnvManager::get('APP_VERSION'),
+                gmdate("Y-m-d H:i:s", time()),
+                $tables->implode(', '),
+                $this->exportDatabaseToArrayFile($tables),
 
-        // Разделитель строк.
-        $separator = $comment.str_repeat('=', 60).PHP_EOL;
+            ],
+            $this->filesystem->get(__DIR__.'/stubs/'.self::DATABASE_FILENAME)
+        );
 
-        // `Пустая` строка.
-        $empty = $comment.PHP_EOL;
-
-        // Создаем заголовок.
-        $headers .= PHP_EOL.PHP_EOL;
-        $headers .= $separator;
-        $headers .= $comment."Backup file for `".\EnvManager::get('APP_NAME')."`".PHP_EOL;
-        $headers .= $separator;
-
-        $headers .= $empty;
-        $headers .= $comment."DATE: ".gmdate("Y-m-d H:i:s", time())." GMT".PHP_EOL;
-        $headers .= $comment."VERSION: ".\EnvManager::get('APP_VERSION').PHP_EOL;
-        $headers .= $empty;
-
-        $headers .= $comment."List of tables for backup: ".$tables->implode(', ').PHP_EOL;
-        $headers .= PHP_EOL;
-
-        $contents = $this->exportDatabaseToArrayFile($tables);
-
-        return "<?php {$headers} return {$contents};";
+        return $stub;
     }
 
     protected function exportDatabaseToArrayFile(Collection $tables): string
