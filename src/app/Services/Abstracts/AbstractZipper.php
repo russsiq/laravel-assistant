@@ -138,7 +138,7 @@ abstract class AbstractZipper implements ZipperContract, Countable
      * @param  string  $destination
      * @return void
      */
-    protected function ensureSourceInRootDirectory(string $destination)
+    public function ensureSourceInRootDirectory(string $destination)
     {
         $directories = $this->filesystem->directories($destination);
 
