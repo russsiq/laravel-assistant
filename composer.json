@@ -1,6 +1,6 @@
 {
     "name": "russsiq/laravel-assistant",
-    "description": "Ассистент приложения на Laravel 6.x.",
+    "description": "Ассистент приложения на Laravel 7.x.",
     "keywords": ["laravel", "laravel-assistant", "laravel-app-manager", "laravel-installer", "laravel-updater"],
     "homepage": "https://github.com/russsiq/laravel-assistant",
     "type": "library",
