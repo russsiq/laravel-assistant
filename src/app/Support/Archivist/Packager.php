@@ -20,8 +20,8 @@ use Illuminate\Support\Collection;
 use Russsiq\Assistant\Commands\BackupDatabase;
 use Russsiq\Assistant\Contracts\ArchivistContract;
 use Russsiq\Assistant\Contracts\Archivist\CanBackup;
-use Russsiq\Assistant\Services\Zipper;
 use Russsiq\Assistant\Support\Archivist\AbstractArchivist;
+use Russsiq\Zipper\Contracts\ZipperContract;
 
 /**
  * Экземпляр Упаковщика.
@@ -197,7 +197,7 @@ class Packager extends AbstractArchivist implements CanBackup
         return var_export($contents, true);
     }
 
-    protected function backupDirectories(Zipper $ziparchive, array $options = [])
+    protected function backupDirectories(ZipperContract $ziparchive, array $options = [])
     {
         foreach ($options as $option) {
             foreach ($this->directories($option) as $action => $directories) {
@@ -224,7 +224,7 @@ class Packager extends AbstractArchivist implements CanBackup
         }
     }
 
-    protected function backupFiles(Zipper $ziparchive, array $files = [])
+    protected function backupFiles(ZipperContract $ziparchive, array $files = [])
     {
         foreach ($files as $file) {
             $ziparchive->addFile($this->basePath($file), $file);

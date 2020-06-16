@@ -22,7 +22,7 @@ use Illuminate\Support\Manager;
 use Illuminate\Support\Traits\ForwardsCalls;
 use Russsiq\Assistant\Contracts\ArchivistContract;
 use Russsiq\Assistant\Contracts\Archivist\Factory as FactoryContract;
-use Russsiq\Assistant\Services\Zipper;
+use Russsiq\Zipper\Contracts\ZipperContract;
 
 use Russsiq\Assistant\Support\Archivist\Extractor;
 use Russsiq\Assistant\Support\Archivist\Packager;
@@ -51,7 +51,7 @@ class ArchivistManager implements FactoryContract
 
     /**
      * Экземпляр класса по работе с архивами.
-     * @var Zipper
+     * @var ZipperContract
      */
     protected $ziparchive;
 
@@ -209,14 +209,11 @@ class ArchivistManager implements FactoryContract
     /**
      * Получить экземпляр класса по работе с архивами.
      * @param  array  $config
-     * @return Zipper
+     * @return ZipperContract
      */
-    protected function ziparchive(array $config): Zipper
+    protected function ziparchive(array $config): ZipperContract
     {
-        return new Zipper(
-            $this->filesystem($config),
-            new ZipArchive
-        );
+        return $this->container->make('zipper');
     }
 
     /**

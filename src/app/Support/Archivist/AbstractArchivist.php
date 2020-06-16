@@ -19,7 +19,7 @@ use Russsiq\Assistant\Facades\Archivist;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
 use Russsiq\Assistant\Contracts\ArchivistContract;
-use Russsiq\Assistant\Services\Zipper;
+use Russsiq\Zipper\Contracts\ZipperContract;
 use Symfony\Component\Finder\Finder;
 
 // use Illuminate\Contracts\Container\Container;
@@ -38,7 +38,7 @@ abstract class AbstractArchivist implements ArchivistContract
 
     /**
      * Экземпляр класса по работе с архивами.
-     * @var Zipper
+     * @var ZipperContract
      */
     protected $ziparchive;
 
@@ -63,10 +63,13 @@ abstract class AbstractArchivist implements ArchivistContract
 
     /**
      * Создать экземпляр.
+     * @param  Filesystem  $filesystem
+     * @param  ZipperContract  $ziparchive
+     * @param  array  $config
      */
     public function __construct(
         Filesystem $filesystem,
-        Zipper $ziparchive,
+        ZipperContract $ziparchive,
         array $config
     ) {
         $this->filesystem = $filesystem;
