@@ -22,7 +22,7 @@
         "guzzlehttp/guzzle": "^6.5",
         "illuminate/support": "7.*",
         "russsiq/laravel-env-manager": "^0.2",
-        "russsiq/laravel-zipper": "dev-master"
+        "russsiq/laravel-zipper": "^0.1"
     },
     "require-dev": {},
     "autoload": {
