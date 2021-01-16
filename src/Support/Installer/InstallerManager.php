@@ -191,26 +191,18 @@ class InstallerManager implements InstallerContract
     public function migrate(): string
     {
         try {
-            // Запускаем запись транзакции.
-            DB::beginTransaction();
-
             // Выполняем миграции через Artisan.
             Artisan::call('migrate', [
                 '--force' => true,
 
             ]);
-
-            // После коммита текущая транзакция минусуется.
-            DB::commit();
         } catch (Throwable $e) {
+            // В случае ошибки пытаемся откатить миграции.
+            Artisan::call('migrate:reset', [
+
+            ]);
 
             throw $e;
-        } finally {
-            // Откат применяется только к текущей транзакции.
-            // После коммита нечего откатывать.
-            // Если выброшено исключение до коммита,
-            // то будет выполнен откат транзакции.
-            DB::rollback();
         }
 
         return Artisan::output();
