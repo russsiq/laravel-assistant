@@ -34,25 +34,20 @@ abstract class BaseController extends Controller
         //
     ];
 
-    public function __construct()
-    {
-        $this->fillableVariables();
-    }
-
     /**
      * Заполнить массив переменных начальными данными.
      *
      * @return void
      */
-    protected function fillableVariables()
+    protected function fillVariables()
     {
-        $this->variables = array_merge($this->variables, [
+        $this->variables = array_merge([
             'installed' => strtotime(EnvManager::get('APP_INSTALLED_AT')),
             'action' => $this->getCurrentAction(),
             'master' => $this->getCurrentMaster(),
             'stage' => $this->getCurrentStage(),
             'onFinishStage' => $this->onFinishStage(),
-        ]);
+        ], $this->variables);
     }
 
     /**
@@ -66,7 +61,7 @@ abstract class BaseController extends Controller
     }
 
     /**
-     * Получить значение текущущего действия
+     * Получить значение текущего действия
      * для атрибута `action` формы.
      *
      * @return string
@@ -93,7 +88,7 @@ abstract class BaseController extends Controller
     }
 
     /**
-     * Получить название текущущего мастера.
+     * Получить название текущего мастера.
      *
      * @return string
      */
@@ -132,6 +127,8 @@ abstract class BaseController extends Controller
      */
     public function makeResponse(string $template, array $variables = [])
     {
+        $this->fillVariables();
+
         $template = $this->templatePrefix.$template;
 
         if (view()->exists($template)) {
