@@ -21,7 +21,7 @@
         "ext-zip": "*",
         "guzzlehttp/guzzle": "^7.2",
         "illuminate/support": "8.*",
-        "russsiq/laravel-env-manager": "^0.3",
+        "russsiq/laravel-env-manager": "^0.4",
         "russsiq/laravel-zipper": "^0.2"
     },
     "require-dev": {},
