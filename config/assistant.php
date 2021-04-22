@@ -4,7 +4,7 @@ use Russsiq\Assistant\Services\BeforeInstalled;
 
 return [
     // Имя маршрута для выхода из Ассистента приложения.
-    // 'exit_route' => 'panel',
+    'exit_route' => 'dashboard',
 
     // Логирование событий.
     'log_events' => env('ASSISTANT_LOG_EVENTS', false),
