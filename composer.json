@@ -24,7 +24,9 @@
         "russsiq/laravel-env-manager": "^0.4",
         "russsiq/laravel-zipper": "^0.2"
     },
-    "require-dev": {},
+    "require-dev": {
+        "orchestra/testbench": "^6.18"
+    },
     "autoload": {
         "files": [
             "src/Support/helpers.php"
