@@ -3,7 +3,7 @@
 namespace Russsiq\Assistant\Http\Middleware;
 
 use Closure;
-use Installer;
+use Russsiq\Assistant\Facades\Installer;
 
 /**
  * Если существует дата установки приложения,
@@ -26,7 +26,9 @@ class AlreadyInstalled
         // Маркер, что приложение считается установленным.
         if (Installer::alreadyInstalled()) {
             return redirect('/')
-                ->withErrors(trans('assistant::install.messages.errors.already_installed'));
+                ->withErrors(trans(
+                    'assistant::install.messages.errors.already_installed'
+                ));
         }
 
         return $next($request);

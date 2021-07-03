@@ -2,10 +2,7 @@
 
 namespace Russsiq\Assistant\Http\Controllers\Archive;
 
-// Зарегистрированные фасады приложения.
 use Russsiq\Assistant\Facades\Archivist;
-
-// Сторонние зависимости.
 use Russsiq\Assistant\Http\Controllers\BaseController;
 use Russsiq\Assistant\Http\Requests\Archive\ArchiveRequest;
 
@@ -16,7 +13,6 @@ class WelcomeController extends BaseController
         return $this->makeResponse('archive.welcome', [
             'operator' => Archivist::KEY_NAME_OPERATOR,
             'backups' => Archivist::backups(),
-
         ]);
     }
 
@@ -30,14 +26,13 @@ class WelcomeController extends BaseController
             'messages' => Archivist::operator($action)
                 ->setOptions($request->all())
                 ->execute(),
-
         ]);
     }
 
     public function complete()
     {
         return $this->makeResponse('archive.complete', [
-
+            //
         ]);
     }
 

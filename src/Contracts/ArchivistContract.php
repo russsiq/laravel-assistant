@@ -2,14 +2,11 @@
 
 namespace Russsiq\Assistant\Contracts;
 
-/**
- * Контракт публичных методов Архивариуса.
- * @var interface
- */
 interface ArchivistContract
 {
     /**
      * Установить массив параметров.
+     *
      * @param  array  $options
      * @return self
      */
@@ -17,6 +14,7 @@ interface ArchivistContract
 
     /**
      * Установить операции, которые должны будут выполнены.
+     *
      * @param  mixed  $options
      * @return self
      */
@@ -24,6 +22,7 @@ interface ArchivistContract
 
     /**
      * Убрать операции из списка запланированных.
+     *
      * @param  mixed  $options
      * @return self
      */
@@ -31,6 +30,7 @@ interface ArchivistContract
 
     /**
      * Запустить архивирование / восстановление.
+     *
      * @return mixed
      */
     public function execute();
@@ -38,12 +38,14 @@ interface ArchivistContract
     /**
      * Получить коллекцию файлов резервных копий,
      * включая их свойства: имя, размер, дата создания.
+     *
      * @return object
      */
     public function backups(): object;
 
     /**
      * Удалить файл резервной копии.
+     *
      * @param  string  $filename
      * @return bool
      */
@@ -51,6 +53,7 @@ interface ArchivistContract
 
     /**
      * Удалить все файлы резервных копий.
+     *
      * @return bool
      */
     public function deleteAllBackups(): bool;

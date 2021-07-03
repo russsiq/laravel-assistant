@@ -2,20 +2,14 @@
 
 namespace Russsiq\Assistant\Support\Updater;
 
-// Исключения.
 use Exception;
-use InvalidArgumentException;
-use RuntimeException;
-use Throwable;
-
-// Базовые расширения PHP.
-use SplFileInfo;
-use ZipArchive;
-
-// Сторонние зависимости.
 use GuzzleHttp\ClientInterface;
 use Illuminate\Filesystem\Filesystem;
 use Psr\Http\Message\ResponseInterface;
+use RuntimeException;
+use SplFileInfo;
+use Throwable;
+use ZipArchive;
 
 /**
  * Класс, отвечающий за получения как сведений о релизе,

@@ -2,10 +2,8 @@
 
 namespace Russsiq\Assistant\Http\Controllers\Update;
 
-use Updater;
-
-use Carbon\Carbon;
-
+use Illuminate\Support\Carbon;
+use Russsiq\Assistant\Facades\Updater;
 use Russsiq\Assistant\Http\Controllers\BaseController;
 use Russsiq\Assistant\Http\Requests\Update\UpdateRequest;
 
@@ -19,7 +17,6 @@ class WelcomeController extends BaseController
             'is_new_version_available' => Updater::isNewVersionAvailable(),
             'installed_at' => Carbon::parse(Updater::installedAt())
                 ->isoFormat('LLLL'),
-
         ]);
     }
 
@@ -32,7 +29,6 @@ class WelcomeController extends BaseController
 
         return redirect()->route('assistant.update.complete')->with([
             'status' => 'success',
-
         ]);
     }
 

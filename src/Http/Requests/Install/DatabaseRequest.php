@@ -8,6 +8,7 @@ class DatabaseRequest extends Request
 {
     /**
      * Подготовить данные для валидации.
+     *
      * @return void
      */
     protected function prepareForValidation()
@@ -16,7 +17,6 @@ class DatabaseRequest extends Request
             '_token',
             '_method',
             'submit',
-
         ]);
 
         $this->replace($input)
@@ -25,13 +25,13 @@ class DatabaseRequest extends Request
                 'DB_HOST' => $this->input('DB_HOST', '127.0.0.1'),
                 'DB_PORT' => $this->input('DB_PORT', '3306'),
                 'test_seed' => $this->input('test_seed', false),
-
             ]);
     }
 
     /**
      * Получить массив правил валидации,
      * которые будут применены к запросу.
+     *
      * @return array
      */
     public function rules()
@@ -42,63 +42,55 @@ class DatabaseRequest extends Request
                 'required',
                 'string',
                 'in:mysql',
-
             ],
 
             'DB_HOST' => [
                 'bail',
                 'required',
                 'string',
-
             ],
 
             'DB_PORT' => [
                 'bail',
                 'required',
                 'integer',
-
             ],
 
             'DB_DATABASE' => [
                 'bail',
                 'required',
                 'string',
-
             ],
 
             'DB_PREFIX' => [
                 'bail',
                 'required',
                 'string',
-
             ],
 
             'DB_USERNAME' => [
                 'bail',
                 'required',
                 'string',
-
             ],
 
             'DB_PASSWORD' => [
                 'bail',
                 'nullable',
                 'string',
-
             ],
 
             'test_seed' => [
                 'sometimes',
                 'boolean',
-
             ],
-
         ];
     }
 
     /**
      * Получить массив пользовательских строк
      * для формирования сообщений валидатора.
+     *
      * @return array
      */
     public function messages()
@@ -111,6 +103,7 @@ class DatabaseRequest extends Request
     /**
      * Получить пользовательские имена атрибутов
      * для формирования сообщений валидатора.
+     *
      * @return array
      */
     public function attributes()

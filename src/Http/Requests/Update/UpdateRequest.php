@@ -8,6 +8,7 @@ class UpdateRequest extends Request
 {
     /**
      * Подготовить данные для валидации.
+     *
      * @return void
      */
     protected function prepareForValidation()
@@ -16,30 +17,31 @@ class UpdateRequest extends Request
             '_token',
             '_method',
             'submit',
-
         ]);
 
         $this->replace($input)
             ->merge([
-
+                //
             ]);
     }
 
     /**
      * Получить массив правил валидации,
      * которые будут применены к запросу.
+     *
      * @return array
      */
     public function rules()
     {
         return [
-
+            //
         ];
     }
 
     /**
      * Получить массив пользовательских строк
      * для формирования сообщений валидатора.
+     *
      * @return array
      */
     public function messages()
@@ -52,6 +54,7 @@ class UpdateRequest extends Request
     /**
      * Получить пользовательские имена атрибутов
      * для формирования сообщений валидатора.
+     *
      * @return array
      */
     public function attributes()

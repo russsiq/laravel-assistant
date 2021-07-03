@@ -2,32 +2,22 @@
 
 namespace Russsiq\Assistant\Http\Controllers\Install;
 
-use EnvManager;
-use Installer;
-
+use Russsiq\Assistant\Facades\Installer;
 use Russsiq\Assistant\Http\Controllers\BaseController;
-use Russsiq\Assistant\Http\Requests\Install\PermissionRequest;
 
 class PermissionController extends BaseController
 {
     public function index()
     {
-        $requirements = Installer::requirements();
-        $globals = Installer::antiGlobals();
-        $permissions = Installer::filePermissions();
-
-        return $this->makeResponse('install.permission', compact(
-            'requirements',
-            'globals',
-            'permissions'
-        ));
+        return $this->makeResponse('install.permission', [
+            'requirements' => Installer::requirements(),
+            'globals' => Installer::antiGlobals(),
+            'permissions' => Installer::filePermissions(),
+        ]);
     }
 
-    public function store(PermissionRequest $request)
+    public function store()
     {
-        // Save to `.env` file prev request from form
-        EnvManager::setMany($request->all())->save();
-
         return redirect()->route('assistant.install.database');
     }
 }

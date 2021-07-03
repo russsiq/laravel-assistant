@@ -2,14 +2,11 @@
 
 namespace Russsiq\Assistant\Contracts\Archivist;
 
-/**
- * Контракт публичных методов ...
- * @var interface
- */
 interface CanBackup
 {
     /**
      * Задать рабочий файл резервной копии.
+     * 
      * @param  string  $filename
      * @return self
      */
@@ -17,6 +14,7 @@ interface CanBackup
 
     /**
      * Создать резервную копию в соответствии с выбранными опциями.
+     * 
      * @return mixed
      */
     public function backup();

@@ -70,7 +70,6 @@ class BeforeInstalledMakeCommand extends GeneratorCommand
     {
         return [
             ['force', 'f', InputOption::VALUE_NONE, 'Create the class even if the BeforeInstalled already exists'],
-
         ];
     }
 }

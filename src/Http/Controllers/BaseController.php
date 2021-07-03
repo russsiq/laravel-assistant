@@ -2,32 +2,29 @@
 
 namespace Russsiq\Assistant\Http\Controllers;
 
-use EnvManager;
-use Route;
-
 use Illuminate\Routing\Controller;
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Route;
+use Russsiq\EnvManager\Facades\EnvManager;
 
 abstract class BaseController extends Controller
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
-
     /**
      * Префикс шаблона.
+     *
      * @var string
      */
     protected $templatePrefix = 'assistant::';
 
     /**
      * Индикатор, что данная стадия мастера завершающая.
-     * @var boolean
+     *
+     * @var bool
      */
     protected $onFinishStage = false;
 
     /**
      * Массив переменных для шаблона.
+     *
      * @var array
      */
     protected $variables = [
@@ -39,7 +36,7 @@ abstract class BaseController extends Controller
      *
      * @return void
      */
-    protected function fillVariables()
+    protected function fillVariables(): void
     {
         $this->variables = array_merge([
             'installed' => strtotime(EnvManager::get('APP_INSTALLED_AT')),
@@ -72,9 +69,9 @@ abstract class BaseController extends Controller
     }
 
     /**
+     * Get route part.
      *
-     *
-     * @return array
+     * @return string
      */
     protected function getRoutePart(int $part): string
     {
@@ -122,7 +119,6 @@ abstract class BaseController extends Controller
      *
      * @param  string $template  Имя шаблона
      * @param  array  $variables Массив переменных шаблона.
-     *
      * @return mixed
      */
     public function makeResponse(string $template, array $variables = [])

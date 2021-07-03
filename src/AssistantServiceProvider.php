@@ -2,137 +2,153 @@
 
 namespace Russsiq\Assistant;
 
-// Зарегистрированные фасады приложения.
 use Illuminate\Support\Facades\Route;
-
-// Сторонние зависимости.
 use Illuminate\Support\ServiceProvider;
 use Russsiq\Assistant\Commands\BeforeInstalledMakeCommand;
 use Russsiq\Assistant\Http\Middleware\AlreadyInstalled;
 use Russsiq\Assistant\Http\Middleware\CheckEnvFileExists;
-use Russsiq\Assistant\Support\Archivist\ArchivistManager as Archivist;
-use Russsiq\Assistant\Support\Cleaner\CleanerManager as Cleaner;
-use Russsiq\Assistant\Support\Installer\InstallerManager as Installer;
-use Russsiq\Assistant\Support\Updater\UpdaterManager as Updater;
+use Russsiq\Assistant\Support\Archivist\ArchivistManager;
+use Russsiq\Assistant\Support\Cleaner\CleanerManager;
+use Russsiq\Assistant\Support\Installer\InstallerManager;
+use Russsiq\Assistant\Support\Updater\UpdaterManager;
 
 class AssistantServiceProvider extends ServiceProvider
 {
     /**
-     * Путь до директории с исходниками.
-     * @var string
+     * Short package name.
+     *
+     * @const string
      */
-    const SOURCE_DIR = __DIR__.'/../';
+    const PACKAGE_NAME = 'laravel-assistant';
 
     /**
-     * Все синглтоны (одиночки) контейнера,
-     * которые должны быть зарегистрированы.
+     * Package root directory.
+     *
+     * @const string
+     */
+    const PACKAGE_DIR = __DIR__.'/../';
+
+    /**
+     * All of the container singletons that should be registered.
+     *
      * @var array
      */
     public $singletons = [
-        'laravel-archivist' => Archivist::class,
-        'laravel-cleaner' => Cleaner::class,
-        'laravel-installer' => Installer::class,
-        'laravel-updater' => Updater::class,
-
+        'laravel-archivist' => ArchivistManager::class,
+        'laravel-cleaner' => CleanerManager::class,
+        'laravel-installer' => InstallerManager::class,
+        'laravel-updater' => UpdaterManager::class,
     ];
 
     /**
-     * Bootstrap the application events.
-     * @return void
-     */
-    public function boot()
-    {
-        $this->setAssistantMiddlewareGroup();
-
-        $this->loadAssistantFiles();
-
-        // Действия, выполнение которых может быть только из консоли.
-        if ($this->app->runningInConsole()) {
-            // Публикация ресурсов.
-            $this->publishAssistantFiles();
-
-            // Регистрация команд консоли Artisan.
-            $this->registerAssistantCommands();
-        }
-    }
-
-    /**
-     * Регистрация Ассистента как поставщика служб.
+     * Register any application services.
+     *
      * @return void
      */
     public function register()
     {
-        $this->mergeConfigFrom(self::SOURCE_DIR.'config/assistant.php', 'assistant');
+        $this->configureAssistant();
     }
 
     /**
-     * Получить службы, предоставляемые Ассистентом.
-     * @return array
-     */
-    public function provides()
-    {
-        return [
-
-        ];
-    }
-
-    /**
-     * Установка посредников группы `web`.
+     * Bootstrap any application services.
+     *
      * @return void
      */
-    protected function setAssistantMiddlewareGroup()
+    public function boot()
+    {
+        $this->configureAssistantLoadableFiles();
+
+        if ($this->app->runningInConsole()) {
+            $this->configureAssistantPublishing();
+            $this->configureAssistantCommands();
+        }
+
+        $this->setAssistantMiddlewareGroup();
+    }
+
+    /**
+     * Setup the configuration for the package.
+     *
+     * @return void
+     */
+    protected function configureAssistant(): void
+    {
+        $this->mergeConfigFrom(
+            $this->packagePath('config/assistant.php'), 'assistant'
+        );
+    }
+
+    /**
+     * Configure the publishable resources offered by the package.
+     *
+     * @cmd `php artisan vendor:publish --provider="Russsiq\Assistant\AssistantServiceProvider"`
+     * @return void
+     */
+    protected function configureAssistantPublishing(): void
+    {
+        // @cmd `php artisan vendor:publish --tag=assistant-config`
+        $this->publishes([
+            $this->packagePath('config/assistant.php') => config_path('assistant.php'),
+        ], 'assistant-config');
+
+        // @cmd `php artisan vendor:publish --tag=assistant-lang`
+        $this->publishes([
+            $this->packagePath('resources/lang') => resource_path('lang/vendor/assistant'),
+        ], 'assistant-lang');
+
+        // @cmd `php artisan vendor:publish --tag=assistant-views`
+        $this->publishes([
+            $this->packagePath('resources/views') => resource_path('views/vendor/assistant'),
+        ], 'assistant-views');
+    }
+
+    /**
+     * Configure the commands offered by the package.
+     *
+     * @return void
+     */
+    protected function configureAssistantCommands(): void
+    {
+        $this->commands([
+            BeforeInstalledMakeCommand::class,
+        ]);
+    }
+
+    /**
+     * Configure the loadable files offered by the package.
+     *
+     * @return void
+     */
+    protected function configureAssistantLoadableFiles(): void
+    {
+        $this->loadRoutesFrom($this->packagePath('routes/web.php'));
+        $this->loadTranslationsFrom($this->packagePath('resources/lang'), 'assistant');
+        $this->loadViewsFrom($this->packagePath('resources/views'), 'assistant');
+    }
+
+    /**
+     * Set Assistant middleware group.
+     *
+     * @return void
+     */
+    protected function setAssistantMiddlewareGroup(): void
     {
         Route::prependMiddlewareToGroup('web', CheckEnvFileExists::class);
 
         Route::middlewareGroup('already-installed', [
             AlreadyInstalled::class,
-
         ]);
     }
 
     /**
-     * Загрузка файлов Ассистента.
-     * @return void
+     * Get the path to the package folder.
+     *
+     * @param  string  $path
+     * @return string
      */
-    protected function loadAssistantFiles()
+    protected function packagePath(string $path): string
     {
-        $this->loadRoutesFrom(self::SOURCE_DIR.'routes/web.php');
-        $this->loadTranslationsFrom(self::SOURCE_DIR.'resources/lang', 'assistant');
-        $this->loadViewsFrom(self::SOURCE_DIR.'resources/views', 'assistant');
-    }
-
-    /**
-     * Публикация файлов Ассистента.
-     * `php artisan vendor:publish --provider="Russsiq\Assistant\AssistantServiceProvider"`
-     * @return void
-     */
-    protected function publishAssistantFiles()
-    {
-        // php artisan vendor:publish --provider="Russsiq\Assistant\AssistantServiceProvider" --tag=config --force
-        $this->publishes([
-            self::SOURCE_DIR.'config/assistant.php' => config_path('assistant.php'),
-        ], 'config');
-
-        // php artisan vendor:publish --provider="Russsiq\Assistant\AssistantServiceProvider" --tag=lang --force
-        $this->publishes([
-            self::SOURCE_DIR.'resources/lang' => resource_path('lang/vendor/assistant'),
-        ], 'lang');
-
-        // php artisan vendor:publish --provider="Russsiq\Assistant\AssistantServiceProvider" --tag=views --force
-        $this->publishes([
-            self::SOURCE_DIR.'resources/views' => resource_path('views/vendor/assistant'),
-        ], 'views');
-    }
-
-    /**
-     * Регистрация команд консоли Artisan.
-     * @return void
-     */
-    protected function registerAssistantCommands()
-    {
-        $this->commands([
-            BeforeInstalledMakeCommand::class,
-
-        ]);
+        return self::PACKAGE_DIR.$path;
     }
 }

@@ -60,17 +60,19 @@
             </div>
         </div>
 
-		<div class="form-group row @error('test_seed') is-invalid @enderror">
-			<div class="col-sm-6"></div>
-			<div class="col-sm-6">
-				<label class="control-label">
-					<input type="checkbox" name="test_seed" value="1" {{ old('test_seed') ? 'checked' : '' }} />
-					@lang('assistant::install.forms.labels.test_seed')
-				</label>
-				@error ('test_seed')
-					<div class="invalid-feedback d-block">{{ $message }}</div>
-				@enderror
+		@if (! $isProductionEnvironment)
+			<div class="form-group row @error('test_seed') is-invalid @enderror">
+				<div class="col-sm-6"></div>
+				<div class="col-sm-6">
+					<label class="control-label">
+						<input type="checkbox" name="test_seed" value="1" {{ old('test_seed') ? 'checked' : '' }} />
+						@lang('assistant::install.forms.labels.test_seed')
+					</label>
+					@error ('test_seed')
+						<div class="invalid-feedback d-block">{{ $message }}</div>
+					@enderror
+				</div>
 			</div>
-		</div>
+		@endif
 	</fieldset>
 @endsection

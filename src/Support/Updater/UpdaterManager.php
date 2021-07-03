@@ -5,7 +5,7 @@ namespace Russsiq\Assistant\Support\Updater;
 // Базовые расширения PHP.
 use ZipArchive;
 
-// Сторонние зависимости.
+
 use GuzzleHttp\Client as HttpClient;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Manager;

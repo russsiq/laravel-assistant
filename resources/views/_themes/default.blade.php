@@ -63,8 +63,8 @@
     body {
         margin: 0;
         font-family: var(--font-family-sans-serif);
-        font-size: .9rem;
-        font-weight: 100;
+        font-size: .92rem;
+        font-weight: 300;
         line-height: 1.6;
         min-height: 100%;
         color: var(--dark);

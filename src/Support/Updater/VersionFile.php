@@ -2,14 +2,11 @@
 
 namespace Russsiq\Assistant\Support\Updater;
 
-// Исключения.
 use Exception;
-use InvalidArgumentException;
-use RuntimeException;
-
-// Сторонние зависимости.
 use Illuminate\Contracts\Cache\Factory as CacheFactoryContract;
 use Illuminate\Contracts\Cache\Repository;
+use InvalidArgumentException;
+use RuntimeException;
 
 /**
  * Класс, отвечающий за хранение информации о доступном релизе,

@@ -3,7 +3,7 @@
 namespace Russsiq\Assistant\Http\Middleware;
 
 use Closure;
-use Installer;
+use Russsiq\Assistant\Facades\Installer;
 
 /**
  * Проверка на то, что система является установленной.
@@ -29,6 +29,7 @@ class CheckEnvFileExists
     public function handle($request, Closure $next)
     {
         $args = func_get_args();
+
         $this->location = $request->route()->getPrefix();
 
         if (Installer::alreadyInitiated()) {
@@ -48,23 +49,18 @@ class CheckEnvFileExists
      */
     protected function handleWithEnvFile($request, Closure $next)
     {
-        // Маркер, что приложение считается установленным.
-        $installed = Installer::alreadyInstalled();
-
-        // Если приложение не установлено, то задаем
-        // необходимые для установки параметры конфигурации.
-        if (! $installed) {
+        // Если приложение не установлено:
+        if (! Installer::alreadyInstalled()) {
+            // Задаем необходимые для установки параметры конфигурации.
             config([
-                // Нельзя трогать БД.
-                'session.driver' => 'file',
+                'session.driver' => 'file', // Нельзя трогать БД.
             ]);
-        }
 
-        // Если приложение не установлено и
-        // текущий маршрут - не маршрут установщика,
-        // то перенаправляем на установку.
-        if (! $installed and ! $this->isLocation('assistant/install')) {
-            return redirect()->route('assistant.install.welcome');
+            // Если текущий маршрут – не маршрут установщика,
+            // то перенаправляем на установку.
+            if (! $this->isLocation('assistant/install')) {
+                return redirect()->route('assistant.install.welcome');
+            }
         }
 
         return $next($request);
@@ -100,7 +96,6 @@ class CheckEnvFileExists
      * Проверить, что текущий раздел маршрута совпадает с переданным.
      *
      * @param  string  $path
-     *
      * @return bool
      */
     protected function isLocation(string $path): bool

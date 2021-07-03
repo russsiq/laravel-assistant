@@ -2,7 +2,7 @@
 
 namespace Russsiq\Assistant\Support\Updater\Drivers;
 
-// Сторонние зависимости.
+
 use Russsiq\Assistant\Support\Updater\AbstractUpdater;
 use Russsiq\Assistant\Support\Updater\Release;
 

@@ -2,26 +2,27 @@
 
 namespace Russsiq\Assistant\Http\Controllers\Install;
 
-use EnvManager;
-
 use Russsiq\Assistant\Http\Controllers\BaseController;
 use Russsiq\Assistant\Http\Requests\Install\WelcomeRequest;
+use Russsiq\EnvManager\Facades\EnvManager;
 
 class WelcomeController extends BaseController
 {
     public function index()
     {
-        return $this->makeResponse('install.welcome');
+        return $this->makeResponse('install.welcome', [
+            'selecting_environments' => [
+                'local',
+                'dev',
+                'testing',
+                'production',
+            ],
+        ]);
     }
 
     public function store(WelcomeRequest $request)
     {
-        // Используем только те данные,
-        // для которых описаны правила валидации.
-        $data = $request->validated();
-
-        // Save to `.env` file prev request from form
-        EnvManager::setMany($data)->save();
+        EnvManager::setMany($request->validated())->save();
 
         return redirect()->route('assistant.install.permission');
     }

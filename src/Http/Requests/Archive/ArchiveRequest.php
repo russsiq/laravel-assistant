@@ -2,24 +2,20 @@
 
 namespace Russsiq\Assistant\Http\Requests\Archive;
 
-// Зарегистрированные фасады приложения.
 use Russsiq\Assistant\Facades\Archivist;
-
-// Сторонние зависимости.
-use Illuminate\Contracts\Validation\Validator as ValidatorContract;
 use Russsiq\Assistant\Http\Requests\Request;
 
 class ArchiveRequest extends Request
 {
     /**
      * Общий массив допустимых значений для правила `in:список_значений`.
+     * 
      * @var array
      */
     protected $allowedForInRule = [
         Archivist::KEY_NAME_OPERATOR => [
             'backup',
             'restore',
-
         ],
 
         'options' => [
@@ -27,13 +23,12 @@ class ArchiveRequest extends Request
             'system',
             'theme',
             'uploads',
-
         ],
-
     ];
 
     /**
      * Подготовить данные для валидации.
+     * 
      * @return void
      */
     protected function prepareForValidation(): void
@@ -70,6 +65,7 @@ class ArchiveRequest extends Request
     /**
      * Получить пользовательские имена атрибутов
      * для формирования сообщений валидатора.
+     * 
      * @return array
      */
     public function attributes(): array
@@ -82,6 +78,7 @@ class ArchiveRequest extends Request
     /**
      * Получить массив пользовательских строк перевода
      * для формирования сообщений валидатора.
+     * 
      * @return array
      */
     public function messages(): array
@@ -94,6 +91,7 @@ class ArchiveRequest extends Request
     /**
      * Получить массив правил валидации,
      * которые будут применены к запросу.
+     * 
      * @return array
      */
     public function rules(): array
@@ -101,20 +99,17 @@ class ArchiveRequest extends Request
         return [
             'backup' => [
                 'array',
-
             ],
 
             'backup.*' => [
                 'required',
                 'string',
                 'in:'.$this->allowedForInRule('options'),
-
             ],
 
             'restore' => [
                 'array',
                 'required_without:backup'
-
             ],
 
             'restore.*' => [
@@ -122,18 +117,14 @@ class ArchiveRequest extends Request
                 'string',
                 'in:'.$this->allowedForInRule('options', [
                     'system',
-
                 ]),
-
             ],
 
             'filename' => [
                 'string',
                 "required_if:{Archivist::KEY_NAME_OPERATOR},restore",
                 // 'in:'
-
             ],
-
         ];
     }
 }
