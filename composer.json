@@ -3,15 +3,16 @@
     "description": "Ассистент приложения на Laravel 8.x.",
     "keywords": ["laravel", "laravel-assistant", "laravel-app-manager", "laravel-installer", "laravel-updater"],
     "homepage": "https://github.com/russsiq/laravel-assistant",
-    "type": "library",
-
+    "type": "package",
     "license": "MIT",
-    "authors": [{
-        "name": "Рустам Гимранов",
-        "email": "rustam_gimranov@mail.ru",
-        "homepage": "https://github.com/russsiq",
-        "role": "Developer"
-    }],
+    "authors": [
+        {
+            "name": "Rustam Gimranov",
+            "email": "rustam_gimranov@mail.ru",
+            "homepage": "https://github.com/russsiq",
+            "role": "Developer"
+        }
+    ],
     "repositories": [{
         "type": "vcs",
         "url": "https://github.com/russsiq/laravel-assistant"

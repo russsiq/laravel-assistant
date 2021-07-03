@@ -2,7 +2,6 @@
 
 namespace Russsiq\Assistant\Services;
 
-// Сторонние зависимости.
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Validation\Validator as ValidatorContract;
 use Illuminate\Http\RedirectResponse;
@@ -21,12 +20,12 @@ class BeforeInstalled extends AbstractBeforeInstalled
 {
     /**
      * Экземпляр контейнера приложения.
-     * @var Container
      */
-    protected $container;
+    protected Container $container;
 
     /**
      * Создать новый экземпляр класса.
+     *
      * @param  Container  $container
      * @return void
      */
@@ -38,6 +37,7 @@ class BeforeInstalled extends AbstractBeforeInstalled
 
     /**
      * Обработка входящего запроса.
+     *
      * @param  Request  $request
      * @return RedirectResponse
      */
@@ -55,6 +55,7 @@ class BeforeInstalled extends AbstractBeforeInstalled
     /**
      * Получить валидатор для проверки входящих данных запроса.
      * @param  array  $data
+     *
      * @return ValidatorContract
      */
     protected function validator(array $data): ValidatorContract
@@ -65,6 +66,7 @@ class BeforeInstalled extends AbstractBeforeInstalled
     /**
      * Получить правила валидации,
      * применяемые к входящим данным запроса.
+     *
      * @return array
      */
     protected function rules(): array
@@ -76,9 +78,7 @@ class BeforeInstalled extends AbstractBeforeInstalled
                 'required',
                 'string',
                 'in:production,local,dev',
-
             ],
-
         ];
     }
 }

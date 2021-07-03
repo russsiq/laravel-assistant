@@ -8,6 +8,7 @@ class CommonRequest extends Request
 {
     /**
      * Подготовить данные для валидации.
+     * 
      * @return void
      */
     protected function prepareForValidation()
@@ -17,30 +18,31 @@ class CommonRequest extends Request
             '_method',
             'submit',
             'APP_INSTALLED_AT',
-
         ]);
 
         $this->replace($input)
             ->merge([
-
+                //
             ]);
     }
 
     /**
      * Получить массив правил валидации,
      * которые будут применены к запросу.
+     * 
      * @return array
      */
     public function rules()
     {
         return [
-
+            //
         ];
     }
 
     /**
      * Получить массив пользовательских строк
      * для формирования сообщений валидатора.
+     * 
      * @return array
      */
     public function messages()
@@ -53,6 +55,7 @@ class CommonRequest extends Request
     /**
      * Получить пользовательские имена атрибутов
      * для формирования сообщений валидатора.
+     * 
      * @return array
      */
     public function attributes()

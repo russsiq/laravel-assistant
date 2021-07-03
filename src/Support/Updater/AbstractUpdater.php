@@ -2,20 +2,11 @@
 
 namespace Russsiq\Assistant\Support\Updater;
 
-// Исключения.
-use Exception;
-use InvalidArgumentException;
+use Illuminate\Support\Facades\File;
 use RuntimeException;
-
-// Базовые расширения PHP.
-use SplFileInfo;
-
-// Зарегистрированные фасады приложения.
-use EnvManager;
-use File;
-
-// Сторонние зависимости.
 use Russsiq\Assistant\Contracts\UpdaterContract;
+use Russsiq\EnvManager\Facades\EnvManager;
+use SplFileInfo;
 use Symfony\Component\Finder\Finder;
 
 /**

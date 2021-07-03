@@ -2,28 +2,19 @@
 
 namespace Russsiq\Assistant\Support\Archivist;
 
-// Исключения.
 use Exception;
-use InvalidArgumentException;
-use RuntimeException;
-
-// Базовые расширения PHP.
-use SplFileInfo;
-use ZipArchive;
-
-// Зарегистрированные фасады приложения.
-use File;
-use Russsiq\Assistant\Facades\Archivist;
-
-// Сторонние зависимости.
+use Illuminate\Contracts\Config\Repository as ConfigRepositoryContract;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\File;
+use InvalidArgumentException;
+use RuntimeException;
 use Russsiq\Assistant\Contracts\ArchivistContract;
+use Russsiq\Assistant\Facades\Archivist;
 use Russsiq\Zipper\Contracts\ZipperContract;
+use SplFileInfo;
 use Symfony\Component\Finder\Finder;
-
-// use Illuminate\Contracts\Container\Container;
-use Illuminate\Contracts\Config\Repository as ConfigRepositoryContract;
+use ZipArchive;
 
 /**
  * Абстрактная реализация Архивариуса.
@@ -32,18 +23,17 @@ abstract class AbstractArchivist implements ArchivistContract
 {
     /**
      * Экземпляр класса по работе с файловой системой.
-     * @var Filesystem
      */
-    protected $filesystem;
+    protected Filesystem $filesystem;
 
     /**
      * Экземпляр класса по работе с архивами.
-     * @var ZipperContract
      */
-    protected $ziparchive;
+    protected ZipperContract $ziparchive;
 
     /**
      * Путь к рабочей папке, содержащей архивы приложения.
+     * 
      * @var string
      */
     protected $storePath;
@@ -51,18 +41,21 @@ abstract class AbstractArchivist implements ArchivistContract
     /**
      * Массив запланированных операций,
      * которые должны быть выполнены.
+     * 
      * @var array
      */
     protected $options = [];
 
     /**
      * Массив настроек.
+     * 
      * @var array
      */
     protected $config = [];
 
     /**
      * Создать экземпляр.
+     * 
      * @param  Filesystem  $filesystem
      * @param  ZipperContract  $ziparchive
      * @param  array  $config
@@ -80,6 +73,7 @@ abstract class AbstractArchivist implements ArchivistContract
 
     /**
      * Получить директорию, где расположены резервные копии приложения.
+     * 
      * @return string
      */
     protected function storePath(string $path = null): string
@@ -89,6 +83,7 @@ abstract class AbstractArchivist implements ArchivistContract
 
     /**
      * Получить базовую директорию приложения.
+     * 
      * @return string
      */
     protected function basePath(string $path = null): string
@@ -127,6 +122,7 @@ abstract class AbstractArchivist implements ArchivistContract
 
     /**
      * Массовое задание параметров архивирования / восстановления.
+     * 
      * @param  array  $options
      * @return self
      */
@@ -141,6 +137,7 @@ abstract class AbstractArchivist implements ArchivistContract
 
     /**
      * Установить операции, которые должны будут выполнены.
+     * 
      * @param  mixed  $options
      * @return self
      */
@@ -155,6 +152,7 @@ abstract class AbstractArchivist implements ArchivistContract
 
     /**
      * Убрать операции из списка запланированных.
+     * 
      * @param  mixed  $options
      * @return self
      */
@@ -203,6 +201,7 @@ abstract class AbstractArchivist implements ArchivistContract
     /**
      * Получить коллекцию файлов резервных копий,
      * включая их свойства: имя, размер, дата создания.
+     * 
      * @return object
      */
     public function backups(): object
@@ -229,6 +228,7 @@ abstract class AbstractArchivist implements ArchivistContract
 
     /**
      * Удалить файл резервной копии.
+     * 
      * @param  string  $filename
      * @return bool
      */
@@ -239,6 +239,7 @@ abstract class AbstractArchivist implements ArchivistContract
 
     /**
      * Удалить все файлы резервных копий.
+     * 
      * @return bool
      */
     public function deleteAllBackups(): bool
@@ -260,6 +261,7 @@ abstract class AbstractArchivist implements ArchivistContract
     /**
      * Рекурсивное удаление директорий из директории исходника,
      * исключаемых из процесса обновления согласно конфигурации.
+     * 
      * @param  string  $sourcePath
      * @return void
      */
@@ -275,6 +277,7 @@ abstract class AbstractArchivist implements ArchivistContract
 
     /**
      * Рекурсивное копирование содержимого директории исходников.
+     * 
      * @param  string  $sourcePath
      * @param  string  $destinationPath
      * @return void
@@ -331,6 +334,7 @@ abstract class AbstractArchivist implements ArchivistContract
 
     /**
      * Рекурсивная проверка файлов по указанному пути на доступность для записи.
+     * 
      * @param  string  $destinationPath
      * @return bool
      *

@@ -1926,16 +1926,16 @@
         },
         {
             "name": "russsiq/laravel-env-manager",
-            "version": "0.5.1",
+            "version": "0.5.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/russsiq/laravel-env-manager.git",
-                "reference": "6a458994c057cc141d754c9aa2781c5e0aa947aa"
+                "reference": "2e3ccf52143849eb0e431d18859bfdfbcb2b9e66"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/russsiq/laravel-env-manager/zipball/6a458994c057cc141d754c9aa2781c5e0aa947aa",
-                "reference": "6a458994c057cc141d754c9aa2781c5e0aa947aa",
+                "url": "https://api.github.com/repos/russsiq/laravel-env-manager/zipball/2e3ccf52143849eb0e431d18859bfdfbcb2b9e66",
+                "reference": "2e3ccf52143849eb0e431d18859bfdfbcb2b9e66",
                 "shasum": ""
             },
             "require": {
@@ -1981,9 +1981,9 @@
             ],
             "support": {
                 "issues": "https://github.com/russsiq/laravel-env-manager/issues",
-                "source": "https://github.com/russsiq/laravel-env-manager/tree/0.5.1"
+                "source": "https://github.com/russsiq/laravel-env-manager/tree/0.5.3"
             },
-            "time": "2021-07-03T03:32:17+00:00"
+            "time": "2021-07-03T05:01:13+00:00"
         },
         {
             "name": "russsiq/laravel-zipper",

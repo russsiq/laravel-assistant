@@ -3,13 +3,13 @@
 namespace Russsiq\Assistant\Http\Requests\Clean;
 
 use Illuminate\Validation\Validator;
-
 use Russsiq\Assistant\Http\Requests\Request;
 
 class CleanRequest extends Request
 {
     /**
      * Подготовить данные для валидации.
+     * 
      * @return void
      */
     protected function prepareForValidation()
@@ -29,6 +29,7 @@ class CleanRequest extends Request
     /**
      * Получить массив правил валидации,
      * которые будут применены к запросу.
+     * 
      * @return array
      */
     public function rules()
@@ -45,13 +46,13 @@ class CleanRequest extends Request
             'cache_view' => 'boolean',
 
             'complex_optimize' => 'boolean',
-
         ];
     }
 
     /**
      * Получить массив пользовательских строк
      * для формирования сообщений валидатора.
+     * 
      * @return array
      */
     public function messages()
@@ -64,6 +65,7 @@ class CleanRequest extends Request
     /**
      * Получить пользовательские имена атрибутов
      * для формирования сообщений валидатора.
+     * 
      * @return array
      */
     public function attributes()
@@ -75,6 +77,7 @@ class CleanRequest extends Request
 
     /**
      * Надстройка экземпляра валидатора.
+     * 
      * @param  Validator  $validator
      * @return void
      */

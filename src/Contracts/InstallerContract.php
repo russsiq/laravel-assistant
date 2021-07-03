@@ -2,14 +2,14 @@
 
 namespace Russsiq\Assistant\Contracts;
 
-// Сторонние зависимости.
-use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
 interface InstallerContract
 {
     /**
      * Инициировать начальный этап установки.
+     * 
      * @return void
      */
     public function initiate();
@@ -17,56 +17,65 @@ interface InstallerContract
     /**
      * Маркер того, что была выполнена
      * первоначальная инициализация установки.
+     * 
      * @return bool
      */
     public function alreadyInitiated(): bool;
 
     /**
      * Маркер, что приложение установлено.
+     * 
      * @return bool
      */
     public function alreadyInstalled(): bool;
 
     /**
      * Получить дату установки приложения.
+     * 
      * @return mixed
      */
     public function installedAt();
 
     /**
      * Получить массив с набором минимальных системных требований к серверу.
+     * 
      * @return array
      */
     public static function requirements(): array;
 
     /**
      * Получить массив "зловредных" глобальных переменных.
+     * 
      * @return array
      */
     public static function antiGlobals(): array;
 
     /**
      * Получить массив прав на доступ к директориям.
+     * 
      * @return array
      */
     public static function filePermissions(): array;
 
     /**
      * Выполнить проверку подключения к БД с переданными параметрами.
+     * 
      * @return void
      *
-     * @throws InstallerFailed
+     * @throws \Russsiq\Assistant\Exceptions\InstallerFailed
      */
     public function checkConnection(array $params, string $connection);
 
     /**
      * Выполнить миграции БД.
+     * 
      * @return string  Сообщение о выполненной операции.
      */
     public function migrate(): string;
 
     /**
      * Заполнить БД данными.
+     * 
      * @param  string  $class  Класс заполнителя.
      * @return string  Сообщение о выполненной операции.
      */
@@ -75,6 +84,7 @@ interface InstallerContract
     /**
      * Посредник, выполняющий заданные операции
      * на завершающей стадии установки приложения.
+     * 
      * @param  Request  $request
      * @return RedirectResponse
      */
@@ -82,12 +92,14 @@ interface InstallerContract
 
     /**
      * Копирование директорий, заданных в массиве конфигурации.
+     * 
      * @return void
      */
     public function copyDirectories();
 
     /**
      * Копирование директории со всеми файлами.
+     * 
      * @param  string  $fromDir
      * @param  string  $toDir
      * @return void
@@ -96,12 +108,14 @@ interface InstallerContract
 
     /**
      * Создание ссылок, заданных в массиве конфигурации.
+     * 
      * @return void
      */
     public function createSymbolicLinks();
 
     /**
      * Создание ссылки.
+     * 
      * @param  string  $target
      * @param  string  $link
      * @return void
@@ -110,6 +124,7 @@ interface InstallerContract
 
     /**
      * Применить замыкание, если переданное условие `$condition` правдиво.
+     * 
      * @param  bool  $condition
      * @param  callable  $callback
      * @return self

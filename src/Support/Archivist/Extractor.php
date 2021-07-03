@@ -2,19 +2,10 @@
 
 namespace Russsiq\Assistant\Support\Archivist;
 
-// Исключения.
 use InvalidArgumentException;
-
-// Базовые расширения PHP.
-use SplFileInfo;
-
-// Зарегистрированные фасады приложения.
-use Russsiq\Assistant\Facades\Archivist;
-use Russsiq\Assistant\Facades\Updater;
-
-// Сторонние зависимости.
 use Russsiq\Assistant\Contracts\ArchivistContract;
 use Russsiq\Assistant\Contracts\Archivist\CanRestore;
+use Russsiq\Assistant\Facades\Archivist;
 use Russsiq\Assistant\Support\Archivist\AbstractArchivist;
 
 /**

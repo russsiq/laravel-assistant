@@ -2,7 +2,7 @@
 
 namespace DummyNamespace;
 
-// Сторонние зависимости.
+
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Validation\Validator as ValidatorContract;
 use Illuminate\Http\RedirectResponse;

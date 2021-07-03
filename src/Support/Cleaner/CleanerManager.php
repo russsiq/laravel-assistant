@@ -2,24 +2,14 @@
 
 namespace Russsiq\Assistant\Support\Cleaner;
 
-// Исключения.
-use InvalidArgumentException;
-
-// Базовые расширения PHP.
-use SplFileInfo;
-
-// Зарегистрированные фасады приложения.
-use Artisan;
-
-// Сторонние зависимости.
-// use Illuminate\Console\Events\CommandFinished;
-use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Console\Kernel as ConsoleKernelContract;
+use Illuminate\Contracts\Container\Container;
 use Illuminate\Support\MessageBag;
 use Illuminate\Support\Str;
+use InvalidArgumentException;
 use Russsiq\Assistant\Contracts\CleanerContract;
+use SplFileInfo;
 use Symfony\Component\Console\Output\BufferedOutput;
-use Symfony\Component\Console\Output\NullOutput;
 
 class CleanerManager implements CleanerContract
 {

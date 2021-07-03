@@ -2,30 +2,17 @@
 
 namespace Russsiq\Assistant\Support\Archivist;
 
-// Исключения.
-use InvalidArgumentException;
-// use Throwable;
-
-// Базовые расширения PHP.
-use SplFileInfo;
-use ZipArchive;
-
-// Зарегистрированные фасады приложения.
-use Russsiq\Assistant\Facades\Archivist;
-
-// Сторонние зависимости.
-use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Config\Repository as ConfigRepositoryContract;
+use Illuminate\Contracts\Container\Container;
 use Illuminate\Filesystem\Filesystem;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Manager;
 use Illuminate\Support\Traits\ForwardsCalls;
+use InvalidArgumentException;
 use Russsiq\Assistant\Contracts\ArchivistContract;
 use Russsiq\Assistant\Contracts\Archivist\Factory as FactoryContract;
-use Russsiq\Zipper\Contracts\ZipperContract;
-
+use Russsiq\Assistant\Facades\Archivist;
 use Russsiq\Assistant\Support\Archivist\Extractor;
 use Russsiq\Assistant\Support\Archivist\Packager;
+use Russsiq\Zipper\Contracts\ZipperContract;
 
 class ArchivistManager implements FactoryContract
 {
@@ -33,48 +20,56 @@ class ArchivistManager implements FactoryContract
 
     /**
      * Экземпляр контейнера приложения.
+     *
      * @var Container
      */
     protected $container;
 
     /**
      * Экземпляр репозитория конфигураций.
+     *
      * @var ConfigRepositoryContract
      */
     protected $config;
 
     /**
      * Экземпляр класса по работе с файловой системой.
+     *
      * @var Filesystem
      */
     protected $filesystem;
 
     /**
      * Экземпляр класса по работе с архивами.
+     *
      * @var ZipperContract
      */
     protected $ziparchive;
 
     /**
      * Массив созданных операторов (помощников).
+     *
      * @var array
      */
     protected $operators = [];
 
     /**
      * Текущий выбранный оператор операций.
+     *
      * @var string
      */
     protected $currentOperator;
 
     /**
      * Коллекция файлов архивов.
+     *
      * @var array
      */
     protected $backups;
 
     /**
      * Создать новый экземпляр Оптимизатора.
+     *
      * @param  Container  $container
      * @param  ConsoleKernelContract  $artisan
      * @param  MessageBag  $messages
@@ -90,6 +85,7 @@ class ArchivistManager implements FactoryContract
 
     /**
      * Получить экземпляр класса оператора.
+     *
      * @param  string|null  $name
      * @return ArchivistContract
      *
@@ -113,7 +109,8 @@ class ArchivistManager implements FactoryContract
     }
 
     /**
-     * Получить имя драйвера, используемого по умолчанию
+     * Получить имя драйвера, используемого по умолчанию.
+     *
      * @return string
      */
     public function getDefaultDriver(): string
@@ -123,6 +120,7 @@ class ArchivistManager implements FactoryContract
 
     /**
      * Получить Текущий выбранный оператор операций.
+     *
      * @return string
      */
     protected function currentOperator()
@@ -132,6 +130,7 @@ class ArchivistManager implements FactoryContract
 
     /**
      * Установить Текущий выбранный оператор операций.
+     *
      * @return string
      */
     protected function setCurrentOperator(string $name)
@@ -141,6 +140,7 @@ class ArchivistManager implements FactoryContract
 
     /**
      * Создать новый экземпляр класса оператора.
+     *
      * @param  string  $name
      * @return mixed
      *
@@ -182,6 +182,7 @@ class ArchivistManager implements FactoryContract
 
     /**
      * Получить конфигурацию поставщика услуг.
+     *
      * @param  string  $operator
      * @return array
      */
@@ -198,6 +199,7 @@ class ArchivistManager implements FactoryContract
 
     /**
      * Получить экземпляр класса по работе с файловой системой.
+     *
      * @param  array  $config
      * @return Filesystem
      */
@@ -208,12 +210,13 @@ class ArchivistManager implements FactoryContract
 
     /**
      * Получить экземпляр класса по работе с архивами.
+     *
      * @param  array  $config
      * @return ZipperContract
      */
     protected function ziparchive(array $config): ZipperContract
     {
-        return $this->container->make('zipper');
+        return $this->container->make('laravel-zipper');
     }
 
     /**

@@ -2,28 +2,21 @@
 
 namespace Russsiq\Assistant\Support\Installer;
 
-// Исключения.
-use Russsiq\Assistant\Exceptions\InstallerFailed;
-use Throwable;
-
-// Базовые расширения PHP.
-use SplFileInfo;
-
-// Зарегистрированные фасады приложения.
-use Artisan;
-use Cleaner;
-use DB;
-use EnvManager;
-
-// Сторонние зависимости.
-use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Config\Repository as ConfigRepositoryContract;
+use Illuminate\Contracts\Container\Container;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\DB;
 use Russsiq\Assistant\Contracts\InstallerContract;
+use Russsiq\Assistant\Exceptions\InstallerFailed;
+use Russsiq\Assistant\Facades\Cleaner;
 use Russsiq\Assistant\Services\Abstracts\AbstractBeforeInstalled;
+use Russsiq\EnvManager\Facades\EnvManager;
+use SplFileInfo;
 use Symfony\Component\Finder\Finder;
+use Throwable;
 
 /**
  * Установщик.
@@ -32,31 +25,31 @@ class InstallerManager implements InstallerContract
 {
     /**
      * Расположение класса финальной стадии Установщика.
+     *
      * @var string
      */
     const DEFAULT_BEFORE_INSTALLED = '\Russsiq\Assistant\Services\BeforeInstalled';
 
     /**
      * Экземпляр контейнера приложения.
-     * @var Container
      */
-    protected $container;
+    protected Container $container;
 
     /**
      * Экземпляр репозитория конфигураций.
-     * @var ConfigRepositoryContract
      */
-    protected $config;
+    protected ConfigRepositoryContract $config;
 
     /**
      * Экземпляр класса по работе с файловой системой.
-     * @var Filesystem
      */
-    protected $filesystem;
+    protected Filesystem $filesystem;
 
     /**
      * Создать новый экземпляр Установщика приложения.
+     *
      * @param  Container  $container
+     *
      * @return void
      */
     public function __construct(
@@ -69,6 +62,7 @@ class InstallerManager implements InstallerContract
 
     /**
      * Инициировать начальный этап установки.
+     *
      * @return void
      */
     public function initiate()
@@ -94,13 +88,14 @@ class InstallerManager implements InstallerContract
 
         // Для запуска приложения необходимо задать минимальные параметры.
         $this->config->set([
-            'app.key' => EnvManager::get('APP_KEY')
+            'app.key' => EnvManager::get('APP_KEY'),
         ]);
     }
 
     /**
      * Маркер того, что была выполнена
      * первоначальная инициализация установки.
+     *
      * @return bool
      */
     public function alreadyInitiated(): bool
@@ -110,6 +105,7 @@ class InstallerManager implements InstallerContract
 
     /**
      * Маркер, что приложение установлено.
+     *
      * @return bool
      */
     public function alreadyInstalled(): bool
@@ -119,6 +115,7 @@ class InstallerManager implements InstallerContract
 
     /**
      * Получить дату установки приложения.
+     *
      * @return mixed
      */
     public function installedAt()
@@ -128,6 +125,7 @@ class InstallerManager implements InstallerContract
 
     /**
      * Получить массив с набором минимальных системных требований к серверу.
+     *
      * @return array
      */
     public static function requirements(): array
@@ -137,6 +135,7 @@ class InstallerManager implements InstallerContract
 
     /**
      * Получить массив "зловредных" глобальных переменных.
+     *
      * @return array
      */
     public static function antiGlobals(): array
@@ -146,6 +145,7 @@ class InstallerManager implements InstallerContract
 
     /**
      * Получить массив прав на доступ к директориям.
+     *
      * @return array
      */
     public static function filePermissions(): array
@@ -155,6 +155,7 @@ class InstallerManager implements InstallerContract
 
     /**
      * Выполнить проверку подключения к БД с переданными параметрами.
+     *
      * @return void
      *
      * @throws InstallerFailed
@@ -166,7 +167,7 @@ class InstallerManager implements InstallerContract
 
         $this->config->set([
             "database.connections.$connection" => array_merge($config, [
-                'host' =>  $params['DB_HOST'],
+                'host' => $params['DB_HOST'],
                 'database' => $params['DB_DATABASE'],
                 'prefix' => $params['DB_PREFIX'],
                 'username' => $params['DB_USERNAME'],
@@ -187,6 +188,7 @@ class InstallerManager implements InstallerContract
 
     /**
      * Выполнить миграции БД.
+     *
      * @return string  Сообщение о выполненной операции.
      */
     public function migrate(): string
@@ -211,7 +213,9 @@ class InstallerManager implements InstallerContract
 
     /**
      * Заполнить БД данными.
+     *
      * @param  string  $class  Класс заполнителя.
+     *
      * @return string  Сообщение о выполненной операции.
      */
     public function seed(string $class): string
@@ -230,7 +234,6 @@ class InstallerManager implements InstallerContract
             // После коммита текущая транзакция минусуется.
             DB::commit();
         } catch (Throwable $e) {
-
             throw $e;
         } finally {
             // Откат применяется только к текущей транзакции.
@@ -246,7 +249,9 @@ class InstallerManager implements InstallerContract
     /**
      * Посредник, выполняющий заданные операции
      * на завершающей стадии установки приложения.
+     *
      * @param  Request  $request
+     *
      * @return RedirectResponse
      */
     public function beforeInstalled(Request $request): RedirectResponse
@@ -260,7 +265,9 @@ class InstallerManager implements InstallerContract
 
     /**
      * Создание посредника завершающей стадии.
+     *
      * @param  string  $class
+     *
      * @return AbstractBeforeInstalled
      */
     protected function createBeforeInstalled(string $class): AbstractBeforeInstalled
@@ -270,6 +277,7 @@ class InstallerManager implements InstallerContract
 
     /**
      * Копирование директорий, заданных в массиве конфигурации.
+     *
      * @return void
      */
     public function copyDirectories()
@@ -285,8 +293,10 @@ class InstallerManager implements InstallerContract
 
     /**
      * Копирование директории со всеми файлами.
+     *
      * @param  string  $fromDir
      * @param  string  $toDir
+     *
      * @return void
      */
     public function copyDirectory(string $fromDir, string $toDir)
@@ -314,6 +324,7 @@ class InstallerManager implements InstallerContract
 
     /**
      * Создание ссылок, заданных в массиве конфигурации.
+     *
      * @return void
      */
     public function createSymbolicLinks()
@@ -329,8 +340,10 @@ class InstallerManager implements InstallerContract
 
     /**
      * Создание ссылки.
+     *
      * @param  string  $target
      * @param  string  $link
+     *
      * @return void
      */
     public function createSymbolicLink(string $target, string $link)
@@ -344,8 +357,10 @@ class InstallerManager implements InstallerContract
 
     /**
      * Применить замыкание, если переданное условие `$condition` правдиво.
+     *
      * @param  bool  $condition
      * @param  callable  $callback
+     *
      * @return self
      */
     public function when(bool $condition, callable $callback): InstallerContract

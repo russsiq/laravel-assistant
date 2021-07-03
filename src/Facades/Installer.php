@@ -2,7 +2,6 @@
 
 namespace Russsiq\Assistant\Facades;
 
-// Сторонние зависимости.
 use Illuminate\Support\Facades\Facade;
 
 /**
@@ -13,6 +12,7 @@ class Installer extends Facade
 {
     /**
      * Получить зарегистрированное имя компонента.
+     * 
      * @return string
      */
     protected static function getFacadeAccessor()

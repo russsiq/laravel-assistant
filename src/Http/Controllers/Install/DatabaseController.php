@@ -2,17 +2,20 @@
 
 namespace Russsiq\Assistant\Http\Controllers\Install;
 
-use EnvManager;
-use Installer;
-
+use Exception;
+use Illuminate\Contracts\Foundation\Application;
+use Russsiq\Assistant\Facades\Installer;
 use Russsiq\Assistant\Http\Controllers\BaseController;
 use Russsiq\Assistant\Http\Requests\Install\DatabaseRequest;
+use Russsiq\EnvManager\Facades\EnvManager;
 
 class DatabaseController extends BaseController
 {
-    public function index()
+    public function index(Application $app)
     {
-        return $this->makeResponse('install.database');
+        return $this->makeResponse('install.database', [
+            'isProductionEnvironment' => $app->environment('production')
+        ]);
     }
 
     public function store(DatabaseRequest $request)
@@ -31,7 +34,6 @@ class DatabaseController extends BaseController
                 'seeds' => [
                     //
                 ],
-
             ];
 
             // Наполнить БД начальными данными.
@@ -53,7 +55,7 @@ class DatabaseController extends BaseController
                     );
                 }
             );
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect()
                 ->back()
                 ->withInput()
