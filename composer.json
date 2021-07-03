@@ -17,11 +17,11 @@
         "url": "https://github.com/russsiq/laravel-assistant"
     }],
     "require": {
-        "php": "^7.3|^8.0",
+        "php": "8.0.*",
         "ext-zip": "*",
-        "guzzlehttp/guzzle": "^7.2",
+        "guzzlehttp/guzzle": "^7.3",
         "illuminate/support": "8.*",
-        "russsiq/laravel-env-manager": "^0.4",
+        "russsiq/laravel-env-manager": "^0.5",
         "russsiq/laravel-zipper": "^0.2"
     },
     "require-dev": {

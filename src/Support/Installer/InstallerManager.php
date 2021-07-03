@@ -73,9 +73,10 @@ class InstallerManager implements InstallerContract
      */
     public function initiate()
     {
-        // Создаем новый файл из образца,
-        // попутно генерируя ключ для приложения.
-        EnvManager::newFromPath(base_path('.env.example'), true)
+        // Создаем новый файл из образца.
+		EnvManager::newFromPath(base_path('.env.example'))
+			// Попутно генерируем ключ для приложения.
+			->withNewAppKey()
             // Устанавливаем необходимые значения.
             ->setMany([
                 'APP_URL' => url('/'),
