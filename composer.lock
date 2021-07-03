@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b74bae3beff384bcb67d504e9c21bdb0",
+    "content-hash": "877577913e88473159257279297f4cbc",
     "packages": [
         {
             "name": "brick/math",
@@ -1926,16 +1926,16 @@
         },
         {
             "name": "russsiq/laravel-env-manager",
-            "version": "0.5.0",
+            "version": "0.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/russsiq/laravel-env-manager.git",
-                "reference": "e21f823fe693459c9cd460c4d06339e998c0229f"
+                "reference": "6a458994c057cc141d754c9aa2781c5e0aa947aa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/russsiq/laravel-env-manager/zipball/e21f823fe693459c9cd460c4d06339e998c0229f",
-                "reference": "e21f823fe693459c9cd460c4d06339e998c0229f",
+                "url": "https://api.github.com/repos/russsiq/laravel-env-manager/zipball/6a458994c057cc141d754c9aa2781c5e0aa947aa",
+                "reference": "6a458994c057cc141d754c9aa2781c5e0aa947aa",
                 "shasum": ""
             },
             "require": {
@@ -1981,9 +1981,9 @@
             ],
             "support": {
                 "issues": "https://github.com/russsiq/laravel-env-manager/issues",
-                "source": "https://github.com/russsiq/laravel-env-manager/tree/0.5.0"
+                "source": "https://github.com/russsiq/laravel-env-manager/tree/0.5.1"
             },
-            "time": "2021-07-03T02:48:36+00:00"
+            "time": "2021-07-03T03:32:17+00:00"
         },
         {
             "name": "russsiq/laravel-zipper",
