@@ -20,13 +20,13 @@
     "require": {
         "php": "8.1.*",
         "ext-zip": "*",
-        "guzzlehttp/guzzle": "^7.4.2",
+        "guzzlehttp/guzzle": "^7.4.4",
         "illuminate/support": "9.*",
         "russsiq/laravel-env-manager": "^0.6.0",
         "russsiq/laravel-zipper": "^0.3.0"
     },
     "require-dev": {
-        "orchestra/testbench": "^7.4.0"
+        "orchestra/testbench": "^7.5.0"
     },
     "autoload": {
         "files": [
